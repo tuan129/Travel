@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .content {
+        width: var(--default-layout-width);
+        border: 2px solid var(--black);
+        border-radius: 5px;
+        padding: 8px 16px;
+
+        .list-customer {
+            margin-top: 16px;
+        }
+    }
+}
+
+.list-customer-item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .customer-of-airline {
+        width: 49%;
+
+        h1 {
+            text-indent: 15px;
+        }
+    }
+
+    .customer-item {
+        margin: 12px 0;
+        border: 1px solid var(--primary);
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+
+        .customer-info {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            padding: 8px 16px;
+        }
+
+        .btn-delete {
+            min-height: 40px;
+            align-self: center;
+            margin-right: 12px;
+        }
+    }
+}

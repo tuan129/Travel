@@ -1,0 +1,288 @@
+.home {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.wrapper {
+    background-color: var(--primary);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 50px;
+}
+
+.banner {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+
+    .title-banner {
+        color: var(--white);
+        padding-right: 8px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        line-height: 28px;
+    }
+
+    .title-banner h1 {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
+    .title-banner h2 {
+        font-size: 20px;
+        opacity: var(--opacity);
+    }
+
+    img {
+        border-radius: 5px;
+    }
+}
+
+.next-link {
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 16px;
+    color: var(--white);
+    opacity: 0.8;
+    text-shadow: 0 2px 4px rgba(27, 27, 27, 0.2);
+    margin-top: 24px;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+        text-decoration: underline;
+    }
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.find-ticket {
+    width: 960px;
+    box-shadow: 0px 2px 5px rgba(3, 18, 26, 0.15);
+}
+
+.ticket {
+    padding-top: 24px;
+    background-image: url(https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/1/19d70f54525b8bd167113e49116b5c7d.png);
+    min-height: 300px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+
+    .title-content {
+        width: fit-content;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--white);
+        border: 1px solid var(--white);
+        border-radius: 5px;
+        padding: 8px 16px;
+        margin-left: 24px;
+    }
+
+    .buy-ticket {
+        background-color: var(--white);
+        margin-top: 24px;
+        border-radius: 10px;
+        width: 100%;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.info-customer {
+    display: flex;
+    margin-bottom: 24px;
+}
+
+.right-info {
+    display: flex;
+    width: 58.99%;
+    justify-content: space-around;
+
+    .from {
+        margin-top: 8px;
+        border-bottom: 1px solid rgba(205, 208, 209, 1);
+        width: 240px;
+    }
+
+    .from .name-input {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: rgba(104, 113, 118, 1);
+    }
+
+    .from input {
+        border: none;
+        padding: 8px 10px;
+        font-size: 16px;
+    }
+
+    .from .icon {
+        height: 15px;
+    }
+}
+
+.info-customer .right-info .btn-check-box {
+    label {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgb(104, 113, 118);
+        margin-left: 8px;
+    }
+}
+
+.btn-check-box {
+    display: flex;
+}
+
+.search-start h3 {
+    font-size: 14px;
+    color: rgb(3, 18, 26);
+    font-weight: 700;
+    line-height: 20px;
+}
+.search-start {
+    width: 100%;
+}
+
+.right-info,
+.search-start {
+    min-width: 190px;
+}
+
+.left-info {
+    width: 41.01%;
+}
+
+.amount-cus {
+    margin-top: 8px;
+    border-bottom: 1px solid rgba(205, 208, 209, 1);
+
+    .name-input {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: rgba(104, 113, 118, 1);
+    }
+
+    input {
+        border: none;
+        padding: 8px 60px 8px 12px;
+        font-size: 16px;
+    }
+
+    .icon {
+        height: 15px;
+    }
+}
+
+.amount-cus {
+    position: relative;
+    cursor: pointer;
+
+    .passenger-details {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        z-index: 1;
+
+        .passenger-count {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-bottom: 1px solid #ddd;
+
+            .per-count {
+                font-size: 14px;
+                font-weight: 600;
+                text-align: center;
+                line-height: 20px;
+                width: 31.99%;
+
+                h6 {
+                    font-size: 8px;
+                    font-weight: 500;
+                }
+            }
+
+            .person {
+                line-height: 40px;
+                font-size: 14px;
+                font-weight: 600;
+                width: 9.01%;
+                text-align: center;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            button {
+                background: none;
+                color: var(--primary);
+                font-size: 28px;
+                padding: 4px 8px;
+                cursor: pointer;
+                width: 24.99%;
+
+                &:first-child {
+                    margin-right: 8px;
+                }
+
+                &:last-child {
+                    margin-left: 8px;
+                }
+            }
+        }
+    }
+
+    &:focus-within .passenger-details,
+    &:hover .passenger-details {
+        display: block;
+    }
+}
+
+.btnFind {
+    max-width: 400px;
+    align-self: flex-end;
+    margin: 6px 24px;
+    margin-bottom: 18px;
+
+    .icon {
+        height: 15px;
+    }
+
+    &:hover {
+        opacity: var(--opacity);
+    }
+}
+
+.error {
+    color: #fe0007;
+    font-size: 14px;
+    font-weight: 600;
+    width: fit-content;
+    padding: 8px 16px;
+    align-self: flex-end;
+}

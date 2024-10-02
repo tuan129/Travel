@@ -1,0 +1,71 @@
+.wrapper {
+    font-size: 1.2rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    min-width: 80px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: var(--white);
+    cursor: pointer;
+    border: 1px solid transparent;
+    user-select: none;
+    text-align: center;
+    color: var(--black);
+
+    + .wrapper {
+        margin-left: 12px;
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+.icon + .title,
+.title + .icon {
+    margin-left: 8px;
+}
+
+// Button types
+.primary {
+    background-color: var(--primary);
+    color: var(--white);
+
+    &:hover {
+        opacity: 0.65;
+    }
+}
+
+.outline {
+    border-color: var(--primary);
+    background-color: var(--white);
+    padding: 4px 16px;
+
+    &:hover {
+        opacity: 0.65;
+    }
+}
+
+.text {
+    text-decoration: underline;
+    padding: 0;
+    min-width: 0;
+}
+//Size button
+
+.small {
+    min-width: 115px;
+    padding: 8px 12px;
+    background-color: var(--orange);
+    color: var(--white);
+}
+
+.large {
+    min-width: 380px;
+    padding: 8px 16px;
+    background-color: var(--orange);
+    color: var(--white);
+}

@@ -1,0 +1,39 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content {
+    width: var(--default-layout-width);
+}
+
+.chart-layout {
+    margin: 36px auto 0 auto;
+    padding: 32px 0;
+    height: 320px;
+    display: flex;
+    justify-content: space-around;
+
+    .chart-layout__item {
+        align-self: flex-end;
+        width: 60px;
+        color: #fff;
+        text-align: center;
+        background-color: var(--orange);
+        animation: growth ease-in 0.5s;
+        --percent: 10;
+        height: var(--percent);
+    }
+}
+
+@keyframes growth {
+    from {
+        opacity: 0;
+        height: calc(var(--percent) - 50%);
+    }
+    to {
+        opacity: 1;
+        height: var(--percent);
+    }
+}

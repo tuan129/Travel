@@ -1,0 +1,49 @@
+.wrapper {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--black);
+    padding: 8px 16px;
+
+    &:hover {
+        background-color: rgb(242, 243, 243);
+    }
+}
+
+.info {
+    flex: 1;
+    display: flex;
+}
+
+.icon {
+    width: 15px;
+    height: 15px;
+    margin-top: 8px;
+    margin-right: 8px;
+}
+
+.info-airfield {
+    .name-country {
+        font-size: 1.2rem;
+        font-weight: 500;
+        line-height: 16px;
+        color: rgba(104, 113, 118, 1);
+    }
+}
+
+.name-airfield {
+    display: flex;
+
+    p {
+        color: rgb(3, 18, 26);
+        font-weight: 700;
+        font-size: 1.4rem;
+        line-height: 20px;
+    }
+
+    .code-airfield {
+        color: rgba(104, 113, 118, 1);
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-left: 8px;
+    }
+}
