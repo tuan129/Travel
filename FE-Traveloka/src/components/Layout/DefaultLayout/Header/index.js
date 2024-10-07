@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
@@ -5,6 +6,18 @@ import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 function Header() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    }, []);
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+    };
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -16,20 +29,32 @@ function Header() {
                         <img className={cx('percent')} src={images.percent} alt="khuyen_mai" />
                         <a href="/">Khuyến Mãi</a>
                     </li>
-
                     <li>
                         <a href="/">Hỗ Trợ</a>
                     </li>
                     <li>
                         <a href="/">Hợp Tác Với Chúng Tôi</a>
                     </li>
-                    <Button outline to="/login" leftIcon={<img src={images.user} alt="User" />}>
-                        Đăng Nhập
-                    </Button>
+                    {isLoggedIn ? (
+                        <>
+                            <Button outline to="/info" leftIcon={<img src={images.user} alt="User" />}>
+                                Tài Khoản
+                            </Button>
+                            <Button primary onClick={handleLogout}>
+                                Đăng Xuất
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button outline to="/login" leftIcon={<img src={images.user} alt="User" />}>
+                                Đăng Nhập
+                            </Button>
 
-                    <Button primary to="/register">
-                        Đăng Ký
-                    </Button>
+                            <Button primary to="/register">
+                                Đăng Ký
+                            </Button>
+                        </>
+                    )}
                 </ul>
             </div>
             <div className={cx('title-page')}>

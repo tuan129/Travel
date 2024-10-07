@@ -5,19 +5,20 @@ import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 
 import styles from './Register.module.scss';
+import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
 function Register() {
-    const [name, setName] = useState('');
-    const [emailOrPhone, setEmailOrPhone] = useState('');
+    const [fullname, setFullname] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleRegister = async () => {
-        if (!name || !emailOrPhone || !password || !rePassword) {
+        if (!fullname || !email || !password || !rePassword) {
             setError('Vui lòng điền đầy đủ thông tin.');
             return;
         }
@@ -28,12 +29,10 @@ function Register() {
         }
 
         try {
-            const response = await fetch('http://localhost:3001/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, emailOrPhone, password, role: 'customer' }),
+            const response = await axios.post('http://localhost:5000/api/users/register', {
+                fullname,
+                email,
+                password,
             });
 
             if (response.status === 200) {
@@ -55,8 +54,8 @@ function Register() {
                                 <input
                                     className={cx('name-account')}
                                     type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    value={fullname}
+                                    onChange={(e) => setFullname(e.target.value)}
                                 />
                             </label>
                         </div>
@@ -66,8 +65,8 @@ function Register() {
                                 <input
                                     className={cx('name-login')}
                                     type="text"
-                                    value={emailOrPhone}
-                                    onChange={(e) => setEmailOrPhone(e.target.value)}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </label>
                         </div>

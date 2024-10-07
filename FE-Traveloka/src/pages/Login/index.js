@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
@@ -20,29 +21,21 @@ function Login() {
         }
 
         try {
-            const response = await fetch('http://localhost:3001/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
+            const response = await axios.post('http://localhost:5000/api/users/login', {
+                email,
+                password,
             });
 
-            const data = await response.json();
-
+            const data = await response.data;
             if (response.status === 200) {
                 const { role, token } = data;
-
                 // Lưu token vào localStorage
                 localStorage.setItem('token', token);
-
                 // Chuyển hướng người dùng dựa trên vai trò của họ
                 if (role === 'admin') {
-                    navigate('/admin-dashboard');
-                } else if (role === 'customer') {
-                    navigate('/');
-                } else if (role === 'employee') {
                     navigate('/listfilght');
+                } else if (role === 'user') {
+                    navigate('/');
                 }
             } else {
                 setError(data.message || 'Đăng nhập thất bại.');
