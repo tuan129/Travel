@@ -60,16 +60,16 @@ const flightSchema = new mongoose.Schema({
         ],
       },
     },
-    thuongprice: {
+    thuongGia: {
       price: {
         type: Number,
-        required: [true, 'giá thương price của chuyến bay phải có giá trị'],
+        required: [true, 'giá thương gia của chuyến bay phải có giá trị'],
       },
       soLuongVe: {
         type: Number,
         required: [
           true,
-          'số lượng vé thương price của chuyến bay phải có giá trị',
+          'số lượng vé thương gia của chuyến bay phải có giá trị',
         ],
       },
     },
