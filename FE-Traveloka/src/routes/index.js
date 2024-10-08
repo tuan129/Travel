@@ -11,7 +11,7 @@ const publicRoutes = [
     { path: '/', component: Home },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-    { path: '/info', component: Info, layout: null },
+    { path: '/infoAccount', component: Info },
     { path: '/ticketPlane', component: TicketPlane },
     { path: '/infocustomer', component: InfoCustomer },
     { path: '/payment', component: Payment },

@@ -15,7 +15,10 @@ const login = async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
           expiresIn: '2d',
         });
-        res.json({ token });
+        res.json({
+          token,
+          role: user.role,
+        });
       } else {
         return res.status(401).json({ message: 'Password incorrect!' });
       }

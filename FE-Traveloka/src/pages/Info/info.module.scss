@@ -1,0 +1,163 @@
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    margin: 24px 0;
+    align-items: center;
+    .content {
+        width: var(--default-layout-width);
+        display: flex;
+    }
+}
+
+.left-content{
+    width: 29.999999%;
+    border: 1px solid rgba(205, 208, 209, 1.00);
+    border-radius: 6px;
+}
+
+.container{
+    padding: 16px 16px;
+    
+}
+
+.header-left{
+    display: flex;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    .icon{
+        font-size: 60px;
+        color: #b7b3b3;
+    }
+    .name-user{
+        font-size: 24px;
+        line-height: 60px;
+        margin-left: 16px;
+    }
+}
+
+.my-booking{
+    background-color: var(--primary);
+    display: flex;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: var(--white);
+    
+    p{
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: 500;
+        margin-left: 16px;
+    }
+}
+
+.btn-logout {
+    font-size: 14px;
+}
+
+.icon,
+.icon-setting
+{
+    font-size: 20px;
+}
+
+////////////////////////////////
+
+.right-content{
+    width: 69.99999%;
+    margin-left: 16px;
+}
+
+.header-right{
+    background-color: var(--primary);
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    border-radius: 6px;
+
+    .img{
+        object-fit: contain;
+    }
+
+    .content-header{
+        color: var(--white);
+        h1{
+            font-size: 24px;
+            font-weight: bold;
+            unicode-bidi: isolate;
+            margin-bottom: 12px ;
+        }
+        h3{
+            font-size: 16px;
+        }
+    }
+}
+
+.content-right{
+    margin-top: 16px;
+
+    .title{
+        font-size: 24px;
+        line-height: 28px;
+        margin-bottom: 16px;
+        font-weight: 700;
+    }
+}
+
+.booking{
+    box-shadow: 0px 1px 2px rgba(3, 18, 26, 0.20);
+    display: flex;
+    padding: 18px 12px;
+
+    img{
+        object-fit: contain;
+    }
+
+    .null-booking{
+        display: flex;
+        padding: 12px 24px;
+        color: rgb(3, 18, 26);
+        h1{
+            font-size: 16px;
+            font-weight: 700;
+        }
+        p{
+            line-height: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+}
+
+
+.header-user-booking{
+    display: flex;
+    margin-bottom: 12px;
+
+    .info-booking{
+        display: flex;
+        line-height: 30px;
+    }
+
+    .icon-arrow{
+        margin-left:16px;
+        font-size: 20px;
+    }
+    .icon-plane{
+        width: 30px;
+        height: 30px;
+    }
+    p{
+        margin-left: 16px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+}
+
+.user-booking-content{
+    p{
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+}

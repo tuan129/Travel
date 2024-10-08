@@ -1,6 +1,6 @@
 const Flight = require('../models/flightModel');
 
-exports.getAllFlights = async (req, res) => {
+const getAllFlights = async (req, res) => {
   try {
     // Build Query
     // 1A. Filterings
@@ -13,9 +13,7 @@ exports.getAllFlights = async (req, res) => {
     // 1B. Advanced Filterings
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
     const query = Flight.find(JSON.parse(queryStr));
-
     //gte, gt, lte, lt
     const Flights = await query;
     res.status(200).json({
@@ -33,7 +31,7 @@ exports.getAllFlights = async (req, res) => {
   }
 };
 
-exports.getFlight = async (req, res) => {
+const getFlight = async (req, res) => {
   try {
     const flight = await Flight.findById(req.params.id);
     res.status(200).json({
@@ -50,7 +48,7 @@ exports.getFlight = async (req, res) => {
   }
 };
 
-exports.createFlight = async (req, res) => {
+const createFlight = async (req, res) => {
   try {
     const newFlight = await Flight.create(req.body);
 
@@ -68,7 +66,7 @@ exports.createFlight = async (req, res) => {
   }
 };
 
-exports.updateFlight = async (req, res) => {
+const updateFlight = async (req, res) => {
   try {
     const flight = await Flight.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -89,7 +87,7 @@ exports.updateFlight = async (req, res) => {
   }
 };
 
-exports.deleteFlight = async (req, res) => {
+const deleteFlight = async (req, res) => {
   try {
     await Flight.findByIdAndDelete(req.params.id);
     res.status(204).json({
@@ -102,4 +100,12 @@ exports.deleteFlight = async (req, res) => {
       message: err.message,
     });
   }
+};
+
+module.exports = {
+  getAllFlights,
+  getFlight,
+  createFlight,
+  updateFlight,
+  deleteFlight,
 };
