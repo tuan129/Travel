@@ -5,18 +5,18 @@ const flightSchema = new mongoose.Schema({
     type: String,
     required: [true, 'mã chuyến bay phải có giá trị'],
   },
-  Airlines: {
+  airlines: {
     type: String,
     required: [true, 'hãng hàng không phải có giá trị'],
   },
   airfield: {
     from: {
       type: String,
-      required: [true, 'chuyến bay phải được bắt đầu từ đâu'],
+      required: [true, 'chuyến bay phải được bắt đầu từ sân bay nào'],
     },
     to: {
       type: String,
-      required: [true, 'chuyến bay phải đi đến đâu'],
+      required: [true, 'chuyến bay phải đi đến sân bay nào'],
     },
   },
   time: {
@@ -47,43 +47,31 @@ const flightSchema = new mongoose.Schema({
     phoThongDacBiet: {
       price: {
         type: Number,
-        required: [
-          true,
-          'giá phổ thông đặc biệt của chuyến bay phải có giá trị',
-        ],
+        default: 0,
       },
       soLuongVe: {
         type: Number,
-        required: [
-          true,
-          'số lượng vé phổ thông đặc biệt của chuyến bay phải có giá trị',
-        ],
+        default: 0,
       },
     },
     thuongGia: {
       price: {
         type: Number,
-        required: [true, 'giá thương gia của chuyến bay phải có giá trị'],
+        default: 0,
       },
       soLuongVe: {
         type: Number,
-        required: [
-          true,
-          'số lượng vé thương gia của chuyến bay phải có giá trị',
-        ],
+        default: 0,
       },
     },
     hangNhat: {
       price: {
         type: Number,
-        required: [true, 'giá hạng nhất của chuyến bay phải có giá trị'],
+        default: 0,
       },
       soLuongVe: {
         type: Number,
-        required: [
-          true,
-          'số lượng vé hạng nhất của chuyến bay phải có giá trị',
-        ],
+        default: 0,
       },
     },
   },

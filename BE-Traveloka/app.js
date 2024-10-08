@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes');
+const flightRoutes = require('./routes/flightRoutes');
 
 const app = express();
 
@@ -18,5 +19,5 @@ app.use(express.static(`${__dirname}/public`));
 
 // 3) ROUTES
 app.use('/api/users', userRoutes);
-
+app.use('/api/flight', flightRoutes);
 module.exports = app;

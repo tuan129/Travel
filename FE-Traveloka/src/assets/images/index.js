@@ -48,6 +48,10 @@ const images = {
     //banner
 
     banner: require('~/assets/images/banner.webp'),
+
+    easyreschedule: require('~/assets/images/easyreschedule.png'),
+    zzz: require('~/assets/images/zzz.png'),
+    plane: require('~/assets/images/plane.svg').default,
 };
 
 export default images;

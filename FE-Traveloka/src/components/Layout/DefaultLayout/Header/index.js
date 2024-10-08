@@ -37,7 +37,7 @@ function Header() {
                     </li>
                     {isLoggedIn ? (
                         <>
-                            <Button outline to="/info" leftIcon={<img src={images.user} alt="User" />}>
+                            <Button outline to="/infoAccount" leftIcon={<img src={images.user} alt="User" />}>
                                 Tài Khoản
                             </Button>
                             <Button primary onClick={handleLogout}>
