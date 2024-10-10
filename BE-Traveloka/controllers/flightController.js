@@ -15,6 +15,7 @@ const getAllFlights = async (req, res) => {
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     const query = Flight.find(JSON.parse(queryStr));
     //gte, gt, lte, lt
+
     const Flights = await query;
     res.status(200).json({
       status: 'success',

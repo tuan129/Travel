@@ -48,7 +48,7 @@ function AddFlight() {
     const fetchAirports = async (query) => {
         try {
             setLoading(true);
-            const response = await fetch(`http://localhost:3001/api/search?keyword=${query}`);
+            const response = await fetch(`http://localhost:5000/api/search?keyword=${query}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch search results');
             }
@@ -67,7 +67,7 @@ function AddFlight() {
     const fetchAirlines = async (query) => {
         try {
             setLoading(true);
-            const response = await fetch(`http://localhost:3001/api/airlines?keyword=${query}`);
+            const response = await fetch(`http://localhost:5000/api/airlines?keyword=${query}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch search results');
             }
@@ -211,7 +211,7 @@ function AddFlight() {
                                                     ) : (
                                                         airlineResults.map((airline) => (
                                                             <AirlineItems
-                                                                key={airline.id}
+                                                                key={airline._id}
                                                                 data={airline}
                                                                 onClick={() => handleSelect(airline, 'airlines')}
                                                             />
