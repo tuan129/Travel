@@ -4,7 +4,7 @@ import styles from './info.module.scss';
 import Button from '~/components/Button';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faCircleUser, faGear, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faCircleUser, faTableList } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets/images';
 const cx = classNames.bind(styles);
 function Info() {

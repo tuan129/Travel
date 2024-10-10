@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bookingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'users',
     required: true,
   },
   flight: {
@@ -34,16 +34,14 @@ const bookingSchema = new mongoose.Schema({
   },
   totalPrice: {
     type: Number,
-    required: true,
   },
 });
-
-// Sử dụng function thông thường
-bookingSchema.pre('save', (next) => {
-  this.totalPrice = this.ticketPrice * this.totalTickets;
+bookingSchema.pre('save', function (next) {
+  if (!this.totalPrice) {
+    this.totalPrice = this.ticketPrice * this.totalTickets;
+  }
   next();
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);
-
 module.exports = Booking;

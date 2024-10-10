@@ -24,11 +24,13 @@ import {
     faPlaneDeparture,
     faUserLarge,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
 function Home() {
     const navigate = useNavigate();
+
     //lưu giữ trạng thái sân bay đi
     const [from, setFrom] = useState('');
 
@@ -97,29 +99,26 @@ function Home() {
     ];
 
     //Call Api khi user nhập từ khóa
-    useEffect(() => {
-        const fetchSearchResults = async () => {
-            try {
-                const response = await fetch(`http://localhost:3001/api/search?keyword=${searchKeyword}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch search results');
-                }
-                const data = await response.json();
-                setSearchResults(data.results);
-                setShowSearchResults(true);
-            } catch (error) {
-                console.error('Error fetching search results:', error);
-                setSearchResults([]);
-                setShowSearchResults(false);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchSearchResults = async () => {
+    //         try {
+    //             const res = await axios.get(`http://localhost:5000/api/search?keyword=${searchKeyword}`);
+    //             const data = res.data;
+    //             setSearchResults(data.data.Flights);
+    //             setShowSearchResults(true);
+    //         } catch (error) {
+    //             console.error('Error fetching search results:', error);
+    //             setSearchResults([]);
+    //             setShowSearchResults(false);
+    //         }
+    //     };
 
-        if (searchKeyword.length > 0) {
-            fetchSearchResults();
-        } else {
-            setShowSearchResults(false);
-        }
-    }, [searchKeyword]);
+    //     if (searchKeyword.length > 0) {
+    //         fetchSearchResults();
+    //     } else {
+    //         setShowSearchResults(false);
+    //     }
+    // }, [searchKeyword]);
 
     const handleFromInputChange = (e) => {
         const keyword = e.target.value;
@@ -143,7 +142,7 @@ function Home() {
         setShowSearchResults(false); // Ẩn kết quả tìm kiếm sau khi chọn
     };
 
-    // Hàm để hiển thị thông báo lỗi và tự động ẩn
+    // Hàm để hiển thị thông báo lỗi
     const displayError = (message) => {
         setErrorMessage(message);
         setTimeout(() => {
@@ -152,57 +151,51 @@ function Home() {
     };
 
     // handle tìm kiếm vé
-    const handleSearch = async () => {
-        if (!from || !to || !departureDate) {
-            displayError('Vui lòng điền đầy đủ thông tin !!!');
-            return;
-        }
+    // const handleSearch = async () => {
+    //     if (!from || !to || !departureDate) {
+    //         displayError('Vui lòng điền đầy đủ thông tin !!!');
+    //         return;
+    //     }
 
-        try {
-            const response = await fetch('http://localhost:3001/api/search-flights', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    //Đi từ đâu
-                    from,
+    //     try {
+    //         const res = await axios.get('http://localhost:5000/api/flights', {
+    //             //Đi từ đâu
+    //             from,
 
-                    //Đi đến đâu
-                    to,
+    //             //Đi đến đâu
+    //             to,
 
-                    //Ngày đi
-                    departureDate,
+    //             //Ngày đi
+    //             departureDate,
 
-                    //Ngày về (nếu có)
-                    returnDate: isRoundTrip ? returnDate : '',
+    //             //Ngày về (nếu có)
+    //             returnDate: isRoundTrip ? returnDate : '',
 
-                    //Hạng ghế
-                    seatClass,
+    //             //Hạng ghế
+    //             seatClass,
 
-                    //Sô lượng người lớn
-                    adultCount,
+    //             //Sô lượng người lớn
+    //             adultCount,
 
-                    //Sô lượng trẻ em
-                    childCount,
+    //             //Sô lượng trẻ em
+    //             childCount,
 
-                    //Sô lượng em bé
-                    infantCount,
-                }),
-            });
+    //             //Sô lượng em bé
+    //             infantCount,
+    //         });
 
-            const data = await response.json();
+    //         const data = await res.json();
 
-            // Kiểm tra nếu có dữ liệu chuyến bay trả về
-            if (data.flights && data.flights.length > 0) {
-                navigate('/ticketplane', { state: { flights: data.flights } });
-            } else {
-                displayError('Không tìm thấy chuyến bay phù hợp.');
-            }
-        } catch (error) {
-            displayError('Không thể tìm thấy chuyến bay.');
-        }
-    };
+    //         // Kiểm tra nếu có dữ liệu chuyến bay trả về
+    //         if (data.flights && data.flights.length > 0) {
+    //             navigate('/ticketplane', { state: { flights: data.flights } });
+    //         } else {
+    //             displayError('Không tìm thấy chuyến bay phù hợp.');
+    //         }
+    //     } catch (error) {
+    //         displayError('Không thể tìm thấy chuyến bay.');
+    //     }
+    // };
 
     //handle khi user click chọn số hành khách
     const handlePassengerInputClick = (e) => {
@@ -517,7 +510,7 @@ function Home() {
                                 large
                                 leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faMagnifyingGlass} />}
                                 className={cx('btnFind')}
-                                onClick={handleSearch}
+                                // onClick={handleSearch}
                             >
                                 Tìm chuyến bay
                             </Button>
