@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
+//Hãng hàng không
 const airlineSchema = new mongoose.Schema({
   nameAirline: {
     type: String,
     required: true,
+    unique: true,
   },
 });
 

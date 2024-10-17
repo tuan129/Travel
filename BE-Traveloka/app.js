@@ -5,6 +5,8 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const flightRoutes = require('./routes/flightRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const airfieldRoutes = require('./routes/airfieldRoutes');
+const airlineRoutes = require('./routes/airlineRoutes');
 
 const app = express();
 
@@ -22,4 +24,6 @@ app.use(express.static(`${__dirname}/public`));
 app.use('/api/users', userRoutes);
 app.use('/api/flight', flightRoutes);
 app.use('/api/booking', bookingRoutes);
+app.use('/api/airfield', airfieldRoutes);
+app.use('/api/airline', airlineRoutes);
 module.exports = app;
