@@ -6,7 +6,7 @@ import TicketPlane from './TicketPlane';
 import InfoCustomer from './InfoCustomer';
 import Payment from './Payment';
 
-import { AddFlight, ListFilght, Statistics, Viewcustomer } from './EmployeePage';
+import { AddFlight, ListFilght, Statistics, Viewcustomer, AddAirline, AddAirfield } from './EmployeePage';
 
 export { Home, Login, Register, Info, TicketPlane, InfoCustomer, Payment };
-export { AddFlight, ListFilght, Statistics, Viewcustomer };
+export { AddFlight, ListFilght, Statistics, Viewcustomer, AddAirline, AddAirfield };

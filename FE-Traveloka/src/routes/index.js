@@ -4,7 +4,7 @@ import DefaultLayoutEmployee from '~/components/Layout/DefaultLayoutEmployee';
 import { Home, Login, Register, Info, TicketPlane, InfoCustomer, Payment } from '~/pages';
 
 //Employments
-import { AddFlight, ListFilght, Statistics, Viewcustomer } from '~/pages';
+import { AddFlight, ListFilght, Statistics, Viewcustomer, AddAirline, AddAirfield } from '~/pages';
 
 const publicRoutes = [
     // User
@@ -21,6 +21,8 @@ const publicRoutes = [
     { path: '/addflight', component: AddFlight, layout: DefaultLayoutEmployee },
     { path: '/statistics', component: Statistics, layout: DefaultLayoutEmployee },
     { path: '/viewcustomer', component: Viewcustomer, layout: DefaultLayoutEmployee },
+    { path: '/addairline', component: AddAirline, layout: DefaultLayoutEmployee },
+    { path: '/addairfield', component: AddAirfield, layout: DefaultLayoutEmployee },
 ];
 const privateRoutes = [];
 

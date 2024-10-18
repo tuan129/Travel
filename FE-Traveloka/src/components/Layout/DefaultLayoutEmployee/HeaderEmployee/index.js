@@ -35,6 +35,12 @@ function HeaderEmployee() {
                     <Button outline to="/statistics" className={cx('btn-nav-bar')}>
                         Thống kê doanh thu
                     </Button>
+                    <Button outline to="/addairline" className={cx('btn-nav-bar')}>
+                        Hãng hàng không
+                    </Button>
+                    <Button outline to="/addairfield" className={cx('btn-nav-bar')}>
+                        Các sân bay
+                    </Button>
                     <Button primary className={cx('btn-nav-bar')} onClick={handleLogout}>
                         Đăng xuất
                     </Button>
