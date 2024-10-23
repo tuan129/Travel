@@ -32,18 +32,18 @@
 
 .name-airfield {
     display: flex;
+    font-size: 14px;
 
     p {
         color: rgb(3, 18, 26);
         font-weight: 700;
-        font-size: 1.4rem;
         line-height: 20px;
     }
 
     .code-airfield {
         color: rgba(104, 113, 118, 1);
-        font-size: 1.4rem;
         font-weight: 500;
         margin-left: 8px;
+        line-height: 20px;
     }
 }

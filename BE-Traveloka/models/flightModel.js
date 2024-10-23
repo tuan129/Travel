@@ -11,12 +11,14 @@ const flightSchema = new mongoose.Schema({
   },
   airfield: {
     from: {
-      type: String,
-      required: [true, 'chuyến bay phải được bắt đầu từ sân bay nào'],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Airfield',
+      required: [true, 'Chuyến bay phải được bắt đầu từ sân bay nào'],
     },
     to: {
-      type: String,
-      required: [true, 'chuyến bay phải đi đến sân bay nào'],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Airfield',
+      required: [true, 'Chuyến bay phải đi đến sân bay nào'],
     },
   },
   time: {

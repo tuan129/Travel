@@ -1,4 +1,5 @@
 const Flight = require('../models/flightModel');
+const Airfield = require('../models/airfieldModel');
 
 const seatClassMapping = {
   'Phổ thông': 'phoThong',
@@ -10,15 +11,27 @@ const seatClassMapping = {
 const getAllFlights = async (req, res) => {
   try {
     const queryObj = { ...req.query };
+
+    console.log(queryObj.from);
+
     const mappedSeatClass = seatClassMapping[queryObj.seatClass];
 
+    const fromAirfield = await Airfield.findOne({
+      city: { $regex: new RegExp(`^${queryObj.from}$`, 'i') },
+    });
+
+    const toAirfield = await Airfield.findOne({
+      city: { $regex: new RegExp(`^${queryObj.to}$`, 'i') },
+    });
     const departureQuery = {
-      'airfield.from': queryObj.from,
-      'airfield.to': queryObj.to,
+      'airfield.from': fromAirfield,
+      'airfield.to': toAirfield,
       date: {
-        $elemMatch: { $eq: new Date(queryObj.departureDate) },
+        $elemMatch: {
+          $eq: new Date(queryObj.departureDate),
+        },
       },
-      [`tickets.${mappedSeatClass}.soLuongVe`]: { $gt: 0 },
+      [`tickets.${mappedSeatClass}.soLuongVe`]: { $gt: queryObj.totalCustomer },
     };
 
     if (queryObj.returnDate) {
@@ -26,15 +39,19 @@ const getAllFlights = async (req, res) => {
         'airfield.from': queryObj.to,
         'airfield.to': queryObj.from,
         date: {
-          $elemMatch: { $eq: new Date(queryObj.departureDate) },
+          $elemMatch: {
+            $eq: new Date(queryObj.returnDate),
+          },
         },
-        // [`tickets.${mappedSeatClass}.soLuongVe`]: {
-        //   $gt: queryObj.totalCustomer,
-        // },
+        [`tickets.${mappedSeatClass}.soLuongVe`]: {
+          $gt: queryObj.totalCustomer,
+        },
       };
 
       const returnFlights = await Flight.find(returnQuery);
-      const flights = await Flight.find(departureQuery);
+      const flights = await Flight.find(departureQuery)
+        .populate('airfield.from', 'city')
+        .populate('airfield.to', 'city');
 
       res.status(200).json({
         status: 'success',
@@ -48,8 +65,9 @@ const getAllFlights = async (req, res) => {
         },
       });
     } else {
-      const flights = await Flight.find(departureQuery);
-      console.log(flights);
+      const flights = await Flight.find(departureQuery)
+        .populate('airfield.from', 'city')
+        .populate('airfield.to', 'city');
       res.status(200).json({
         status: 'success',
         results: flights.length,

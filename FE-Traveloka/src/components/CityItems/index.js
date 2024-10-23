@@ -14,9 +14,9 @@ function CityItems({ data, onClick }) {
                 <div className={cx('info-airfield')}>
                     <div className={cx('name-airfield')}>
                         {/* tên sân bay */}
-                        <p>{data.name}</p>
+                        <p>{data.nameAirfield}</p>
                         {/* mã sân bay */}
-                        <span className={cx('code-airfield')}>{data.code}</span>
+                        <span className={cx('code-airfield')}>{data.codeAirfield}</span>
                     </div>
                     <p className={cx('name-country')}>
                         {data.city}, {data.country}

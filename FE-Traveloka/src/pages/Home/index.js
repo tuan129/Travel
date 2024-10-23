@@ -99,28 +99,6 @@ function Home() {
         },
     ];
 
-    //Call Api khi user nhập từ khóa
-    useEffect(() => {
-        const fetchSearchResults = async () => {
-            try {
-                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
-                const data = res.data;
-                setSearchResults(data.data.airfields);
-                setShowSearchResults(true);
-            } catch (error) {
-                console.error('Error fetching search results:', error);
-                setSearchResults([]);
-                setShowSearchResults(false);
-            }
-        };
-
-        if (searchKeyword.length > 0) {
-            fetchSearchResults();
-        } else {
-            setShowSearchResults(false);
-        }
-    }, [searchKeyword]);
-
     const handleFromInputChange = (e) => {
         const keyword = e.target.value;
         setFrom(keyword);
@@ -156,6 +134,28 @@ function Home() {
         return setTotalCustomer(total);
     }, [adultCount, childCount, infantCount]);
 
+    //Call Api khi user nhập từ khóa
+    useEffect(() => {
+        const fetchSearchResults = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
+                const data = res.data;
+                setSearchResults(data.data.airfields);
+                setShowSearchResults(true);
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+                setSearchResults([]);
+                setShowSearchResults(false);
+            }
+        };
+
+        if (searchKeyword.length > 0) {
+            fetchSearchResults();
+        } else {
+            setShowSearchResults(false);
+        }
+    }, [searchKeyword]);
+
     // handle tìm kiếm vé
     const handleSearch = async () => {
         if (!from || !to || !departureDate) {
@@ -187,9 +187,10 @@ function Home() {
 
             // Kiểm tra nếu có dữ liệu chuyến bay trả về
             if (res.data.data.flights && res.data.data.flights.length > 0) {
-                navigate('/ticketplane', { state: { flights: res.data.data.flights, seatClass: seatClass } });
+                navigate('/ticketplane', {
+                    state: { flights: res.data.data.flights, seatClass, adultCount, childCount, infantCount },
+                });
             } else {
-                console.log(res.data.data.flights);
                 displayError('Không tìm thấy chuyến bay phù hợp.');
             }
         } catch (error) {
@@ -297,12 +298,12 @@ function Home() {
                                                     <h3>Thành Phố Hoặc Sân Bay Phổ biến</h3>
                                                     {showSearchResults && (
                                                         <div className={cx('city-items-list')}>
-                                                            {searchResults.map((airfields) => (
+                                                            {searchResults.map((data) => (
                                                                 // Nhận các props thông qua API và truyền vào CityItems để render
                                                                 <CityItems
-                                                                    key={airfields.id}
-                                                                    data={airfields}
-                                                                    onClick={() => handleAirportSelect(airfields)}
+                                                                    key={data.id}
+                                                                    data={data}
+                                                                    onClick={() => handleAirportSelect(data)}
                                                                 />
                                                             ))}
                                                         </div>
