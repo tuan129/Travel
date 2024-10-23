@@ -1,29 +1,64 @@
 const Flight = require('../models/flightModel');
 
+const seatClassMapping = {
+  'Phổ thông': 'phoThong',
+  'Phổ thông đặt biệt': 'phoThongDacBiet',
+  'Thương gia': 'thuongGia',
+  'Hạng nhất': 'hangNhat',
+};
+
 const getAllFlights = async (req, res) => {
   try {
-    // Build Query
-    // 1A. Filterings
     const queryObj = { ...req.query };
-    const excludeFields = ['page', 'sort', 'limit', 'fields'];
-    excludeFields.forEach((el) => {
-      delete queryObj[el];
-    });
+    const mappedSeatClass = seatClassMapping[queryObj.seatClass];
 
-    // 1B. Advanced Filterings
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    const query = Flight.find(JSON.parse(queryStr));
-    //gte, gt, lte, lt
-
-    const Flights = await query;
-    res.status(200).json({
-      status: 'success',
-      results: Flights.length,
-      data: {
-        Flights,
+    const departureQuery = {
+      'airfield.from': queryObj.from,
+      'airfield.to': queryObj.to,
+      date: {
+        $elemMatch: { $eq: new Date(queryObj.departureDate) },
       },
-    });
+      [`tickets.${mappedSeatClass}.soLuongVe`]: { $gt: 0 },
+    };
+
+    if (queryObj.returnDate) {
+      const returnQuery = {
+        'airfield.from': queryObj.to,
+        'airfield.to': queryObj.from,
+        date: {
+          $elemMatch: { $eq: new Date(queryObj.departureDate) },
+        },
+        // [`tickets.${mappedSeatClass}.soLuongVe`]: {
+        //   $gt: queryObj.totalCustomer,
+        // },
+      };
+
+      const returnFlights = await Flight.find(returnQuery);
+      const flights = await Flight.find(departureQuery);
+
+      res.status(200).json({
+        status: 'success',
+        results: {
+          departureFlights: flights.length,
+          returnFlights: returnFlights.length,
+          data: {
+            departure: flights,
+            return: returnFlights,
+          },
+        },
+      });
+    } else {
+      const flights = await Flight.find(departureQuery);
+      console.log(flights);
+      res.status(200).json({
+        status: 'success',
+        results: flights.length,
+
+        data: {
+          flights,
+        },
+      });
+    }
   } catch (err) {
     res.status(404).json({
       status: 'fail',

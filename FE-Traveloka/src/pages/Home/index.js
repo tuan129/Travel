@@ -44,7 +44,7 @@ function Home() {
     const [returnDate, setReturnDate] = useState('');
 
     //lưu giữ trạng thái hạng ghế
-    const [seatClass, setSeatClass] = useState('Phổ Thông');
+    const [seatClass, setSeatClass] = useState('Phổ thông');
 
     //lưu giữ trạng thái có phải vé khứ hồi hay không
     const [isRoundTrip, setIsRoundTrip] = useState(false);
@@ -53,6 +53,7 @@ function Home() {
     const [adultCount, setAdultCount] = useState(1);
     const [childCount, setChildCount] = useState(0);
     const [infantCount, setInfantCount] = useState(0);
+    const [totalCustomer, setTotalCustomer] = useState(0);
 
     //lưu giữ trạng thái người dùng đã click vô ô input để thay đổi số lượng người
     const [isPassengerInputActive, setIsPassengerInputActive] = useState(false);
@@ -73,9 +74,9 @@ function Home() {
     //Danh sách các hạng ghế
     const MENU_ITEMS = [
         {
-            title: 'Phổ Thông',
+            title: 'Phổ thông',
             onClick: function () {
-                return setSeatClass('Phổ Thông');
+                return setSeatClass('Phổ thông');
             },
         },
         {
@@ -99,26 +100,26 @@ function Home() {
     ];
 
     //Call Api khi user nhập từ khóa
-    // useEffect(() => {
-    //     const fetchSearchResults = async () => {
-    //         try {
-    //             const res = await axios.get(`http://localhost:5000/api/search?keyword=${searchKeyword}`);
-    //             const data = res.data;
-    //             setSearchResults(data.data.Flights);
-    //             setShowSearchResults(true);
-    //         } catch (error) {
-    //             console.error('Error fetching search results:', error);
-    //             setSearchResults([]);
-    //             setShowSearchResults(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const fetchSearchResults = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
+                const data = res.data;
+                setSearchResults(data.data.airfields);
+                setShowSearchResults(true);
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+                setSearchResults([]);
+                setShowSearchResults(false);
+            }
+        };
 
-    //     if (searchKeyword.length > 0) {
-    //         fetchSearchResults();
-    //     } else {
-    //         setShowSearchResults(false);
-    //     }
-    // }, [searchKeyword]);
+        if (searchKeyword.length > 0) {
+            fetchSearchResults();
+        } else {
+            setShowSearchResults(false);
+        }
+    }, [searchKeyword]);
 
     const handleFromInputChange = (e) => {
         const keyword = e.target.value;
@@ -132,12 +133,12 @@ function Home() {
         setSearchKeyword(keyword);
     };
 
-    const handleAirportSelect = (airport) => {
+    const handleAirportSelect = (airfields) => {
         // Đặt giá trị cho từng trường tương ứng (from hoặc to)
         if (isSelectingOrigin) {
-            setFrom(`${airport.city} (${airport.code})`);
+            setFrom(`${airfields.city}`);
         } else {
-            setTo(`${airport.city} (${airport.code})`);
+            setTo(`${airfields.city}`);
         }
         setShowSearchResults(false); // Ẩn kết quả tìm kiếm sau khi chọn
     };
@@ -150,52 +151,51 @@ function Home() {
         }, 3000);
     };
 
+    useEffect(() => {
+        const total = adultCount + childCount + infantCount;
+        return setTotalCustomer(total);
+    }, [adultCount, childCount, infantCount]);
+
     // handle tìm kiếm vé
-    // const handleSearch = async () => {
-    //     if (!from || !to || !departureDate) {
-    //         displayError('Vui lòng điền đầy đủ thông tin !!!');
-    //         return;
-    //     }
+    const handleSearch = async () => {
+        if (!from || !to || !departureDate) {
+            displayError('Vui lòng điền đầy đủ thông tin !!!');
+            return;
+        }
+        try {
+            const res = await axios.get('http://localhost:5000/api/flight', {
+                params: {
+                    //Đi từ đâu
+                    from,
 
-    //     try {
-    //         const res = await axios.get('http://localhost:5000/api/flights', {
-    //             //Đi từ đâu
-    //             from,
+                    //Đi đến đâu
+                    to,
 
-    //             //Đi đến đâu
-    //             to,
+                    //Ngày đi
+                    departureDate,
 
-    //             //Ngày đi
-    //             departureDate,
+                    //Ngày về (nếu có)
+                    returnDate: isRoundTrip ? returnDate : '',
 
-    //             //Ngày về (nếu có)
-    //             returnDate: isRoundTrip ? returnDate : '',
+                    //Hạng ghế
+                    seatClass,
 
-    //             //Hạng ghế
-    //             seatClass,
+                    // Số lượng khách hàng
+                    totalCustomer,
+                },
+            });
 
-    //             //Sô lượng người lớn
-    //             adultCount,
-
-    //             //Sô lượng trẻ em
-    //             childCount,
-
-    //             //Sô lượng em bé
-    //             infantCount,
-    //         });
-
-    //         const data = await res.json();
-
-    //         // Kiểm tra nếu có dữ liệu chuyến bay trả về
-    //         if (data.flights && data.flights.length > 0) {
-    //             navigate('/ticketplane', { state: { flights: data.flights } });
-    //         } else {
-    //             displayError('Không tìm thấy chuyến bay phù hợp.');
-    //         }
-    //     } catch (error) {
-    //         displayError('Không thể tìm thấy chuyến bay.');
-    //     }
-    // };
+            // Kiểm tra nếu có dữ liệu chuyến bay trả về
+            if (res.data.data.flights && res.data.data.flights.length > 0) {
+                navigate('/ticketplane', { state: { flights: res.data.data.flights, seatClass: seatClass } });
+            } else {
+                console.log(res.data.data.flights);
+                displayError('Không tìm thấy chuyến bay phù hợp.');
+            }
+        } catch (error) {
+            displayError('Không thể tìm thấy chuyến bay.');
+        }
+    };
 
     //handle khi user click chọn số hành khách
     const handlePassengerInputClick = (e) => {
@@ -240,7 +240,6 @@ function Home() {
             // Tháng bắt đầu từ 0 nên cần +1
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
-            // Định dạng YYYY-MM-DD để có thể so sánh ngày
             return `${year}-${month}-${day}`;
         };
 
@@ -298,12 +297,12 @@ function Home() {
                                                     <h3>Thành Phố Hoặc Sân Bay Phổ biến</h3>
                                                     {showSearchResults && (
                                                         <div className={cx('city-items-list')}>
-                                                            {searchResults.map((airport) => (
+                                                            {searchResults.map((airfields) => (
                                                                 // Nhận các props thông qua API và truyền vào CityItems để render
                                                                 <CityItems
-                                                                    key={airport.id}
-                                                                    data={airport}
-                                                                    onClick={() => handleAirportSelect(airport)}
+                                                                    key={airfields.id}
+                                                                    data={airfields}
+                                                                    onClick={() => handleAirportSelect(airfields)}
                                                                 />
                                                             ))}
                                                         </div>
@@ -336,12 +335,12 @@ function Home() {
                                                 <div className={cx('search-start')} tabIndex="-1" {...attrs}>
                                                     <PoperWrapper>
                                                         <h3>Thành Phố Hoặc Sân Bay Phổ biến</h3>
-                                                        {searchResults.map((airport) => (
+                                                        {searchResults.map((airfields) => (
                                                             // Nhận các props thông qua API và truyền vào CityItems để render
                                                             <CityItems
-                                                                key={airport.id}
-                                                                data={airport}
-                                                                onClick={() => handleAirportSelect(airport)}
+                                                                key={airfields.id}
+                                                                data={airfields}
+                                                                onClick={() => handleAirportSelect(airfields)}
                                                             />
                                                         ))}
                                                     </PoperWrapper>
@@ -501,6 +500,7 @@ function Home() {
                                             <p className={cx('name-input')}>Hạng ghế</p>
                                             <FontAwesomeIcon className={cx('icon')} icon={faChair} />
                                             <input type="text" value={seatClass} readOnly />
+                                            {console.log(seatClass)}
                                         </div>
                                     </Menu>
                                 </div>
@@ -510,7 +510,7 @@ function Home() {
                                 large
                                 leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faMagnifyingGlass} />}
                                 className={cx('btnFind')}
-                                // onClick={handleSearch}
+                                onClick={handleSearch}
                             >
                                 Tìm chuyến bay
                             </Button>

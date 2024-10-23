@@ -5,16 +5,37 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // library
 import classNames from 'classnames/bind';
 import styles from './TicketPlane.module.scss';
+import { format } from 'date-fns';
 
 // component
 import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
+const formatDateTime = (isoString) => {
+    return format(new Date(isoString), 'HH:mm (dd/MM)');
+};
+
 function TicketPlane() {
     const location = useLocation();
     const navigate = useNavigate();
     const flights = location.state?.flights || [];
+    console.log(flights);
+    const seatClass = location.state?.seatClass;
+
+    const seatClassMapping = (seatClass) => {
+        if (seatClass === 'Phổ thông') {
+            return 'phoThong';
+        } else if (seatClass === 'Phổ thông đặt biệt') {
+            return 'phoThongDacBiet';
+        } else if (seatClass === 'Thương gia') {
+            return 'thuongGia';
+        } else {
+            return 'hangNhat';
+        }
+    };
+
+    const seatMapping = seatClassMapping(seatClass);
 
     const [selectedFlight, setSelectedFlight] = useState(null);
 
@@ -62,50 +83,56 @@ function TicketPlane() {
                             </div>
                         </li>
                     ) : (
-                        flights.map((flight, index) => (
+                        flights.map((flights, index) => (
                             <li key={index} className={cx('ticket-item')}>
                                 <div className={cx('info-ticket')}>
-                                    <p>{flight.airline || ''}</p>
+                                    <p>{flights.airlines || ''}</p>
                                     <p className={cx('place')}>
-                                        {flight.from || ''} {flight.departureCode || ''} - {flight.to || ''}{' '}
-                                        {flight.arrivalCode || ''}
+                                        {flights.airfield.from || ''} - {flights.airfield.to || ''}
                                         <br />
                                         <span className={cx('time')}>
-                                            {flight.departureTime || ''} - {flight.arrivalTime || ''}
+                                            {formatDateTime(flights.time.departure) || ''} -{' '}
+                                            {formatDateTime(flights.time.arrival) || ''}
                                         </span>
                                     </p>
                                     <p className={cx('money')}>
-                                        Giá vé: {flight.price ? flight.price.toLocaleString() : ''} VND
+                                        Giá vé:
+                                        {flights.tickets[seatMapping]?.price
+                                            ? flights.tickets[seatMapping].price.toLocaleString()
+                                            : ''}{' '}
+                                        VND
                                     </p>
                                 </div>
                                 <div className={cx('btn-handle')}>
-                                    <Button className={cx('details')} onClick={() => handleDetailClick(flight)}>
+                                    <Button className={cx('details')} onClick={() => handleDetailClick(flights)}>
                                         Chi tiết
                                     </Button>
-                                    <Button primary onClick={() => handleSelectClick(flight)}>
+                                    <Button primary onClick={() => handleSelectClick(flights)}>
                                         Chọn
                                     </Button>
                                 </div>
-                                {selectedFlight && selectedFlight.flightNumber === flight.flightNumber && (
+                                {selectedFlight && selectedFlight.flightCode === flights.flightCode && (
                                     <div className={cx('flight-details')}>
                                         <h2>Chi tiết chuyến bay</h2>
-                                        <p>Hãng hàng không: {selectedFlight.airline || ''}</p>
-                                        <p>Mã chuyến bay: {selectedFlight.flightNumber || ''}</p>
+                                        <p>Hãng hàng không: {selectedFlight.airlines || ''}</p>
+                                        <p>Mã chuyến bay: {selectedFlight.flightCode || ''}</p>
                                         <p>
-                                            Thành phố cất cánh: {selectedFlight.from || ''}{' '}
+                                            Thành phố cất cánh: {selectedFlight.airfield.from || ''}{' '}
                                             {selectedFlight.departureCode || ''}
                                         </p>
                                         <p>
-                                            Thành phố hạ cánh: {selectedFlight.to || ''}{' '}
+                                            Thành phố hạ cánh: {selectedFlight.airfield.to || ''}{' '}
                                             {selectedFlight.arrivalCode || ''}
                                         </p>
                                         <p>
-                                            Thời gian cất cánh: {selectedFlight.departureTime || ''} - Thời gian hạ
-                                            cánh: {selectedFlight.arrivalTime || ''}
+                                            Thời gian cất cánh: {formatDateTime(selectedFlight.time.departure)} - Thời
+                                            gian hạ cánh: {formatDateTime(selectedFlight.time.arrival)}
                                         </p>
                                         <p>
-                                            {selectedFlight.price ? selectedFlight.price.toLocaleString() : ''} VND/
-                                            Khách{' '}
+                                            {flights.tickets[seatMapping]?.price
+                                                ? flights.tickets[seatMapping].price.toLocaleString()
+                                                : ''}{' '}
+                                            VND/ Khách{' '}
                                         </p>
                                     </div>
                                 )}
