@@ -99,11 +99,11 @@ function TicketPlane() {
                                     <p>Hãng hàng không: {selectedFlight.airlines || ''}</p>
                                     <p>Mã chuyến bay: {selectedFlight.flightCode || ''}</p>
                                     <p>
-                                        Thành phố cất cánh: {selectedFlight.airfield.from || ''}{' '}
+                                        Thành phố cất cánh: {selectedFlight.airfield.from.city || ''}{' '}
                                         {selectedFlight.departureCode || ''}
                                     </p>
                                     <p>
-                                        Thành phố hạ cánh: {selectedFlight.airfield.to || ''}{' '}
+                                        Thành phố hạ cánh: {selectedFlight.airfield.to.city || ''}{' '}
                                         {selectedFlight.arrivalCode || ''}
                                     </p>
                                     <p>
