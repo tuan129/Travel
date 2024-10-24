@@ -231,8 +231,6 @@ function Home() {
                 },
             });
 
-            console.log(res.data.data.return.length);
-
             // Kiểm tra nếu có dữ liệu chuyến bay trả về
             if (res.data.data.departure) {
                 if (res.data.data.return && res.data.data.return.length > 0) {
@@ -265,6 +263,7 @@ function Home() {
                 displayError('Không tìm thấy chuyến bay phù hợp !!!');
             }
         } catch (err) {
+            console.log(err);
             displayError('Có lỗi trong quá trình tìm chuyến bay, vui lòng thử lại !!!');
         }
     };

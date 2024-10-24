@@ -1,21 +1,18 @@
 // Hook
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 // library
 import classNames from 'classnames/bind';
 import styles from './TicketPlane.module.scss';
 import { format } from 'date-fns';
-
 // component
 import Button from '~/components/Button';
-
 const cx = classNames.bind(styles);
-
+// Hàm format ngày/giờ
 const formatDateTime = (isoString) => {
     return format(new Date(isoString), 'HH:mm (dd/MM)');
 };
-
+//Hàm kiểm tra hạng ghế khách hàng chọn
 const seatClassMapping = (seatClass) => {
     if (seatClass === 'Phổ thông') {
         return 'phoThong';
@@ -32,21 +29,18 @@ function TicketPlane() {
     const location = useLocation();
     const navigate = useNavigate();
     const { flights, returnFlights, seatClass, adultCount, childCount, infantCount, totalCustomer } = location.state;
-
-    console.log(flights, returnFlights);
-
     const seatMapping = seatClassMapping(seatClass);
-
+    //Quản lý trạng xem chi tiết chuyến bay
     const [selectedFlight, setSelectedFlight] = useState(null);
+    //Quản lý xem có phải khứ hồi hay ko
     const [isSelectingReturn, setIsSelectingReturn] = useState(false);
+    //Quản lý chuyến bay đã chọn
     const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null);
 
     const handleDetailClick = (index) => {
         if (selectedFlight === index) {
-            // Nếu đã chọn chuyến bay này rồi, ẩn chi tiết
             setSelectedFlight(null);
         } else {
-            // Nếu chọn chuyến bay khác, hiển thị chi tiết
             setSelectedFlight(index);
         }
     };
@@ -65,13 +59,11 @@ function TicketPlane() {
             });
         } else {
             setSelectedDepartureFlight(flight);
-            // console.log(flight);
             setIsSelectingReturn(true);
         }
     };
 
     const handleSelectClick = (returnFlight) => {
-        // Điều hướng đến trang InfoCustomer và truyền thông tin chuyến bay cùng số lượng hành khách
         navigate('/infocustomer', {
             state: {
                 flight: selectedDepartureFlight,

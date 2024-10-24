@@ -7,22 +7,16 @@ import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 function InfoCustomer() {
-    // Khởi tạo hook
     const location = useLocation();
     const navigate = useNavigate();
-
-    // Lấy các giá trị từ location
     const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, seatMapping } = location.state;
-
-    console.log(flight, returnFlight);
-
-    // Khai bao cac state
+    // quản lý trạng thái thông tin liên hệ
     const [contactInfo, setContactInfo] = useState({
         fullName: '',
         phone: '',
         email: '',
     });
-
+    // Quản lý trạng thái thông tin khách hàng
     const [customerInfo, setCustomerInfo] = useState(
         Array.from({ length: totalCustomer }, () => ({
             fullName: '',
@@ -31,12 +25,12 @@ function InfoCustomer() {
             customerType: '',
         })),
     );
-
+    // Lưu trữ trạng thái thông tin liên hệ
     const handleContactChange = (e) => {
         const { name, value } = e.target;
         setContactInfo((prev) => ({ ...prev, [name]: value }));
     };
-
+    // Lưu trữ trạng thái thông tin khách hàng
     const handlePassengerChange = (index, e) => {
         const { name, value } = e.target;
         setCustomerInfo((prev) => {
@@ -50,7 +44,7 @@ function InfoCustomer() {
         navigate('/payment', {
             state: {
                 flight,
-                returnFlight,
+                returnFlight: returnFlight ? returnFlight : null,
                 adultCount,
                 childCount,
                 infantCount,
