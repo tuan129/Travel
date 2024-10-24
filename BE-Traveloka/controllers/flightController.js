@@ -66,8 +66,8 @@ const getAllFlights = async (req, res) => {
       });
     } else {
       const flights = await Flight.find(departureQuery)
-        .populate('airfield.from', 'city')
-        .populate('airfield.to', 'city');
+        .populate('airfield.from', 'city codeAirfield nameAirfield')
+        .populate('airfield.to', 'city codeAirfield nameAirfield');
       res.status(200).json({
         status: 'success',
         results: flights.length,

@@ -188,7 +188,14 @@ function Home() {
             // Kiểm tra nếu có dữ liệu chuyến bay trả về
             if (res.data.data.flights && res.data.data.flights.length > 0) {
                 navigate('/ticketplane', {
-                    state: { flights: res.data.data.flights, seatClass, adultCount, childCount, infantCount },
+                    state: {
+                        flights: res.data.data.flights,
+                        seatClass,
+                        adultCount,
+                        childCount,
+                        infantCount,
+                        totalCustomer,
+                    },
                 });
             } else {
                 displayError('Không tìm thấy chuyến bay phù hợp.');

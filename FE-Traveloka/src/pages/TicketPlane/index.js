@@ -1,5 +1,5 @@
 // Hook
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // library
@@ -38,24 +38,26 @@ function TicketPlane() {
 
     const [selectedFlight, setSelectedFlight] = useState(null);
 
-    const handleDetailClick = (flight) => {
-        if (selectedFlight && selectedFlight.flightNumber === flight.flightNumber) {
+    const handleDetailClick = (flights) => {
+        if (selectedFlight && selectedFlight.flightNumber === flights.flightNumber) {
             // Nếu chuyến bay hiện tại đang được chọn thì bỏ chọn (ẩn chi tiết)
             setSelectedFlight(null);
         } else {
             // Nếu chuyến bay khác được chọn thì hiển thị chi tiết của chuyến bay đó
-            setSelectedFlight(flight);
+            setSelectedFlight(flights);
         }
     };
 
-    const handleSelectClick = (flight) => {
+    const handleSelectClick = (flights) => {
         // Điều hướng đến trang InfoCustomer và truyền thông tin chuyến bay cùng số lượng hành khách
         navigate('/infocustomer', {
             state: {
-                flight,
+                flights,
                 adultCount: location.state?.adultCount,
                 childCount: location.state?.childCount,
                 infantCount: location.state?.infantCount,
+                totalCustomer: location.state?.totalCustomer,
+                seatMapping,
             },
         });
     };
@@ -68,13 +70,13 @@ function TicketPlane() {
                     {flights.map((flights, index) => (
                         <li key={index} className={cx('ticket-item')}>
                             <div className={cx('info-ticket')}>
-                                <p>{flights.airlines || ''}</p>
+                                <p>{flights.airlines}</p>
                                 <p className={cx('place')}>
-                                    {flights.airfield.from.city || ''} - {flights.airfield.to.city || ''}
+                                    {flights.airfield.from.city} - {flights.airfield.to.city}
                                     <br />
                                     <span className={cx('time')}>
-                                        {formatDateTime(flights.time.departure) || ''} -{' '}
-                                        {formatDateTime(flights.time.arrival) || ''}
+                                        {formatDateTime(flights.time.departure)} -{' '}
+                                        {formatDateTime(flights.time.arrival)}
                                     </span>
                                 </p>
                                 <p className={cx('money')}>
@@ -96,26 +98,21 @@ function TicketPlane() {
                             {selectedFlight && selectedFlight.flightCode === flights.flightCode && (
                                 <div className={cx('flight-details')}>
                                     <h2>Chi tiết chuyến bay</h2>
-                                    <p>Hãng hàng không: {selectedFlight.airlines || ''}</p>
-                                    <p>Mã chuyến bay: {selectedFlight.flightCode || ''}</p>
+                                    <p>Hãng hàng không: {selectedFlight.airlines}</p>
+                                    <p>Mã chuyến bay: {selectedFlight.flightCode}</p>
                                     <p>
-                                        Thành phố cất cánh: {selectedFlight.airfield.from.city || ''}{' '}
-                                        {selectedFlight.departureCode || ''}
+                                        Thành phố cất cánh: {selectedFlight.airfield.from.city}{' '}
+                                        {selectedFlight.departureCode}
                                     </p>
                                     <p>
-                                        Thành phố hạ cánh: {selectedFlight.airfield.to.city || ''}{' '}
-                                        {selectedFlight.arrivalCode || ''}
+                                        Thành phố hạ cánh: {selectedFlight.airfield.to.city}{' '}
+                                        {selectedFlight.arrivalCode}
                                     </p>
                                     <p>
                                         Thời gian cất cánh: {formatDateTime(selectedFlight.time.departure)} - Thời gian
                                         hạ cánh: {formatDateTime(selectedFlight.time.arrival)}
                                     </p>
-                                    <p>
-                                        {flights.tickets[seatMapping]?.price
-                                            ? flights.tickets[seatMapping].price.toLocaleString()
-                                            : ''}{' '}
-                                        VND/ Khách{' '}
-                                    </p>
+                                    <p>{flights.tickets.seatMapping.price.toLocaleString()} VND/ Khách </p>
                                 </div>
                             )}
                         </li>
