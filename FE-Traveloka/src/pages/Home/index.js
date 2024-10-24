@@ -1,17 +1,15 @@
 //hook
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 // images
 import images from '~/assets/images';
-
 // component
 import styles from './Home.module.scss';
 import Button from '~/components/Button';
 import { Wrapper as PoperWrapper } from '~/components/Poper';
 import CityItems from '~/components/CityItems';
-
 //library
+import axios from 'axios';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
@@ -24,50 +22,37 @@ import {
     faPlaneDeparture,
     faUserLarge,
 } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
 function Home() {
     const navigate = useNavigate();
-
     //lưu giữ trạng thái sân bay đi
     const [from, setFrom] = useState('');
-
     //lưu giữ trạng thái sân bay đến
     const [to, setTo] = useState('');
-
     //lưu giữ trạng thái ngày đi
     const [departureDate, setDepartureDate] = useState('');
-
     //lưu giữ trạng thái ngày về
     const [returnDate, setReturnDate] = useState('');
-
     //lưu giữ trạng thái hạng ghế
     const [seatClass, setSeatClass] = useState('Phổ thông');
-
     //lưu giữ trạng thái có phải vé khứ hồi hay không
     const [isRoundTrip, setIsRoundTrip] = useState(false);
-
     //lưu giữ trạng thái số lượng người
     const [adultCount, setAdultCount] = useState(1);
     const [childCount, setChildCount] = useState(0);
     const [infantCount, setInfantCount] = useState(0);
     const [totalCustomer, setTotalCustomer] = useState(0);
-
     //lưu giữ trạng thái người dùng đã click vô ô input để thay đổi số lượng người
     const [isPassengerInputActive, setIsPassengerInputActive] = useState(false);
-
     //lưu giữ trạng thái các kết quả tìm kiếm khi lấy từ API lên
     const [searchResults, setSearchResults] = useState([]);
-
     //lưu giữ trạng thái từ khóa tìm kiếm
     const [searchKeyword, setSearchKeyword] = useState('');
-
     //lưu giữ trạng thái hiển thị kết quả tìm kiếm
     const [showSearchResults, setShowSearchResults] = useState(false);
     const [isSelectingOrigin, setIsSelectingOrigin] = useState(true);
-
     //Thông báo lỗi
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -99,6 +84,11 @@ function Home() {
         },
     ];
 
+    const preventDefault = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     const handleFromInputChange = (e) => {
         const keyword = e.target.value;
         setFrom(keyword);
@@ -112,13 +102,74 @@ function Home() {
     };
 
     const handleAirportSelect = (airfields) => {
-        // Đặt giá trị cho từng trường tương ứng (from hoặc to)
         if (isSelectingOrigin) {
             setFrom(`${airfields.city}`);
         } else {
             setTo(`${airfields.city}`);
         }
-        setShowSearchResults(false); // Ẩn kết quả tìm kiếm sau khi chọn
+        setShowSearchResults(false);
+    };
+
+    useEffect(() => {
+        const total = adultCount + childCount + infantCount;
+        return setTotalCustomer(total);
+    }, [adultCount, childCount, infantCount]);
+
+    //handle khi user click chọn số hành khách
+    const handlePassengerInputClick = (e) => {
+        e.stopPropagation();
+        setIsPassengerInputActive(true);
+    };
+
+    // xử lý khi user blur input
+    const handleBlur = (e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+            setIsPassengerInputActive(false);
+        }
+    };
+
+    //handle khi tăng số lượng khách
+    const handleIncrease = (type) => {
+        if (type === 'adults') setAdultCount(adultCount + 1);
+        if (type === 'children') setChildCount(childCount + 1);
+        if (type === 'infants') setInfantCount(infantCount + 1);
+    };
+
+    //handle khi giảm số lượng khách tối thiểu ít hơn 1 người lớn
+    const handleDecrease = (type) => {
+        if (type === 'adults' && adultCount > 1) setAdultCount(adultCount - 1);
+        if (type === 'children' && childCount > 0) setChildCount(childCount - 1);
+        if (type === 'infants' && infantCount > 0) setInfantCount(infantCount - 1);
+    };
+
+    //handle khi chọn ngày đi nhỏ hơn ngày hiện tại
+    const handleDepartureDateChange = (e) => {
+        const getCurrentDateFormatted = () => {
+            const today = new Date();
+            const year = today.getFullYear();
+            // Tháng bắt đầu từ 0 nên cần +1
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        const selectedDate = e.target.value;
+
+        if (selectedDate >= getCurrentDateFormatted()) {
+            setDepartureDate(selectedDate);
+        } else {
+            setDepartureDate(getCurrentDateFormatted());
+        }
+    };
+
+    //handle khi chọn ngày về nhỏ hơn ngày đi
+    const handleReturnDateChange = (e) => {
+        const newReturnDate = e.target.value;
+        if (newReturnDate < departureDate) {
+            setReturnDate(departureDate);
+        } else {
+            setReturnDate(newReturnDate);
+        }
     };
 
     // Hàm để hiển thị thông báo lỗi
@@ -128,11 +179,6 @@ function Home() {
             setErrorMessage('');
         }, 3000);
     };
-
-    useEffect(() => {
-        const total = adultCount + childCount + infantCount;
-        return setTotalCustomer(total);
-    }, [adultCount, childCount, infantCount]);
 
     //Call Api khi user nhập từ khóa
     useEffect(() => {
@@ -185,88 +231,41 @@ function Home() {
                 },
             });
 
+            console.log(res.data.data.return.length);
+
             // Kiểm tra nếu có dữ liệu chuyến bay trả về
-            if (res.data.data.flights && res.data.data.flights.length > 0) {
-                navigate('/ticketplane', {
-                    state: {
-                        flights: res.data.data.flights,
-                        seatClass,
-                        adultCount,
-                        childCount,
-                        infantCount,
-                        totalCustomer,
-                    },
-                });
+            if (res.data.data.departure) {
+                if (res.data.data.return && res.data.data.return.length > 0) {
+                    navigate('/ticketplane', {
+                        state: {
+                            flights: res.data.data.departure,
+                            returnFlights: res.data.data.return,
+                            seatClass,
+                            adultCount,
+                            childCount,
+                            infantCount,
+                            totalCustomer,
+                        },
+                    });
+                } else if (isRoundTrip && res.data.data.return.length <= 0) {
+                    displayError('Không tìm thấy chuyến bay về phù hợp !!!');
+                } else {
+                    navigate('/ticketplane', {
+                        state: {
+                            flights: res.data.data.departure,
+                            seatClass,
+                            adultCount,
+                            childCount,
+                            infantCount,
+                            totalCustomer,
+                        },
+                    });
+                }
             } else {
-                displayError('Không tìm thấy chuyến bay phù hợp.');
+                displayError('Không tìm thấy chuyến bay phù hợp !!!');
             }
-        } catch (error) {
-            displayError('Không thể tìm thấy chuyến bay.');
-        }
-    };
-
-    //handle khi user click chọn số hành khách
-    const handlePassengerInputClick = (e) => {
-        e.stopPropagation();
-        setIsPassengerInputActive(true);
-    };
-
-    // xử lý khi user blur input
-    const handleBlur = (e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-            setIsPassengerInputActive(false);
-        }
-    };
-
-    //handle khi tăng số lượng khách
-    const handleIncrease = (type) => {
-        if (type === 'adults') setAdultCount(adultCount + 1);
-        if (type === 'children') setChildCount(childCount + 1);
-        if (type === 'infants') setInfantCount(infantCount + 1);
-    };
-
-    //handle khi giảm số lượng khách tối thiểu ít hơn 1 người lớn
-    const handleDecrease = (type) => {
-        if (type === 'adults' && adultCount > 1) setAdultCount(adultCount - 1);
-        if (type === 'children' && childCount > 0) setChildCount(childCount - 1);
-        if (type === 'infants' && infantCount > 0) setInfantCount(infantCount - 1);
-    };
-
-    //ngăn cản cái hiệu ứng default của trang web
-    const preventDefault = (e) => {
-        // bỏ các hiệu ứng default
-        e.preventDefault();
-        //ngăn không cho nổi bọt ra thẻ cha
-        e.stopPropagation();
-    };
-
-    //handle khi chọn ngày đi nhỏ hơn ngày hiện tại
-    const handleDepartureDateChange = (e) => {
-        const getCurrentDateFormatted = () => {
-            const today = new Date();
-            const year = today.getFullYear();
-            // Tháng bắt đầu từ 0 nên cần +1
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        };
-
-        const selectedDate = e.target.value;
-
-        if (selectedDate >= getCurrentDateFormatted()) {
-            setDepartureDate(selectedDate);
-        } else {
-            setDepartureDate(getCurrentDateFormatted());
-        }
-    };
-
-    //handle khi chọn ngày về nhỏ hơn ngày đi
-    const handleReturnDateChange = (e) => {
-        const newReturnDate = e.target.value;
-        if (newReturnDate < departureDate) {
-            setReturnDate(departureDate);
-        } else {
-            setReturnDate(newReturnDate);
+        } catch (err) {
+            displayError('Có lỗi trong quá trình tìm chuyến bay, vui lòng thử lại !!!');
         }
     };
 
@@ -508,7 +507,6 @@ function Home() {
                                             <p className={cx('name-input')}>Hạng ghế</p>
                                             <FontAwesomeIcon className={cx('icon')} icon={faChair} />
                                             <input type="text" value={seatClass} readOnly />
-                                            {console.log(seatClass)}
                                         </div>
                                     </Menu>
                                 </div>

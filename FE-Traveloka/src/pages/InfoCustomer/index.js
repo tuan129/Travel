@@ -12,11 +12,9 @@ function InfoCustomer() {
     const navigate = useNavigate();
 
     // Lấy các giá trị từ location
-    const flights = location.state?.flights;
-    const adultCount = location.state?.adultCount;
-    const childCount = location.state?.childCount;
-    const infantCount = location.state?.infantCount;
-    const totalCustomer = location.state?.totalCustomer;
+    const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, seatMapping } = location.state;
+
+    console.log(flight, returnFlight);
 
     // Khai bao cac state
     const [contactInfo, setContactInfo] = useState({
@@ -51,14 +49,15 @@ function InfoCustomer() {
     const handleNextClick = () => {
         navigate('/payment', {
             state: {
-                flights,
+                flight,
+                returnFlight,
                 adultCount,
                 childCount,
                 infantCount,
                 contactInfo,
                 customerInfo,
-                totalCustomer: location.state?.totalCustomer,
-                seatMapping: location.state?.seatMapping,
+                totalCustomer,
+                seatMapping,
             },
         });
     };

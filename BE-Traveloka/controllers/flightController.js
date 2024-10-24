@@ -16,13 +16,15 @@ const getAllFlights = async (req, res) => {
 
     const mappedSeatClass = seatClassMapping[queryObj.seatClass];
 
+    /// Tìm id của sân bay
     const fromAirfield = await Airfield.findOne({
       city: { $regex: new RegExp(`^${queryObj.from}$`, 'i') },
     });
-
     const toAirfield = await Airfield.findOne({
       city: { $regex: new RegExp(`^${queryObj.to}$`, 'i') },
     });
+
+    /// tìm tất cả sân bay có chuyến đi phù hợp với khách hàng
     const departureQuery = {
       'airfield.from': fromAirfield,
       'airfield.to': toAirfield,
@@ -31,49 +33,54 @@ const getAllFlights = async (req, res) => {
           $eq: new Date(queryObj.departureDate),
         },
       },
-      [`tickets.${mappedSeatClass}.soLuongVe`]: { $gt: queryObj.totalCustomer },
+      [`tickets.${mappedSeatClass}.soLuongVe`]: {
+        $gte: queryObj.totalCustomer,
+      },
     };
 
     if (queryObj.returnDate) {
+      /// tìm tất cả sân bay có chuyến đi phù hợp với khách hàng
       const returnQuery = {
-        'airfield.from': queryObj.to,
-        'airfield.to': queryObj.from,
+        'airfield.from': toAirfield,
+        'airfield.to': fromAirfield,
+
         date: {
           $elemMatch: {
             $eq: new Date(queryObj.returnDate),
           },
         },
         [`tickets.${mappedSeatClass}.soLuongVe`]: {
-          $gt: queryObj.totalCustomer,
+          $gte: queryObj.totalCustomer,
         },
       };
 
-      const returnFlights = await Flight.find(returnQuery);
+      const returnFlights = await Flight.find(returnQuery)
+        .populate('airfield.from', 'city codeAirfield nameAirfield')
+        .populate('airfield.to', 'city codeAirfield nameAirfield');
+
       const flights = await Flight.find(departureQuery)
-        .populate('airfield.from', 'city')
-        .populate('airfield.to', 'city');
+        .populate('airfield.from', 'city codeAirfield nameAirfield')
+        .populate('airfield.to', 'city codeAirfield nameAirfield');
 
       res.status(200).json({
         status: 'success',
-        results: {
-          departureFlights: flights.length,
-          returnFlights: returnFlights.length,
-          data: {
-            departure: flights,
-            return: returnFlights,
-          },
+        departureFlights: flights.length,
+        returnFlights: returnFlights.length,
+        data: {
+          departure: flights,
+          return: returnFlights,
         },
       });
     } else {
       const flights = await Flight.find(departureQuery)
         .populate('airfield.from', 'city codeAirfield nameAirfield')
         .populate('airfield.to', 'city codeAirfield nameAirfield');
+
       res.status(200).json({
         status: 'success',
         results: flights.length,
-
         data: {
-          flights,
+          departure: flights,
         },
       });
     }
