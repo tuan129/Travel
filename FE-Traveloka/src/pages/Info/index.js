@@ -28,7 +28,9 @@ function Info() {
                     <div className={cx('container')}>
                         <div className={cx('header-left')}>
                             <FontAwesomeIcon className={cx('icon')} icon={faCircleUser} />
-                            <h1 className={cx('name-user')}>{user.fullname}</h1>
+                            <h1 className={cx('name-user')}>
+                                <span className={cx('wellcome')}>Hello</span> {user.fullname}
+                            </h1>
                         </div>
                         <div className={cx('content-left')}>
                             <div className={cx('my-booking')}>

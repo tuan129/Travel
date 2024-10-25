@@ -23,15 +23,19 @@
 .header-left{
     display: flex;
     margin-bottom: 12px;
-    text-transform: uppercase;
     .icon{
         font-size: 60px;
         color: #b7b3b3;
     }
     .name-user{
-        font-size: 24px;
+        font-size: 20px;
         line-height: 60px;
         margin-left: 16px;
+
+        .wellcome{
+            color: var(--primary);
+            font-size: 22px;
+        }
     }
 }
 
