@@ -28,14 +28,17 @@ function Login() {
 
             const data = await response.data;
             if (response.status === 200) {
-                const { role, token } = data;
+                const { role, token, user } = data;
                 // Lưu token vào localStorage
                 localStorage.setItem('token', token);
+                localStorage.setItem('User', JSON.stringify(user));
                 // Chuyển hướng người dùng dựa trên vai trò của họ
                 if (role === 'admin') {
                     navigate('/listfilght');
+                    window.location.reload();
                 } else if (role === 'user') {
                     navigate('/');
+                    window.location.reload();
                 }
             } else {
                 setError(data.message || 'Đăng nhập thất bại.');

@@ -8,17 +8,17 @@ import { faArrowRight, faCircleUser, faTableList } from '@fortawesome/free-solid
 import images from '~/assets/images';
 const cx = classNames.bind(styles);
 function Info() {
+    const user = JSON.parse(localStorage.getItem('User'));
     const [bookings, setBookings] = useState([]);
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const response = await axios.get('API_ENDPOINT_HERE');
-                setBookings(response.data);
+                // const response = await axios.get('API_ENDPOINT_HERE');
+                // setBookings(response.data);
             } catch (err) {
                 console.error(err);
             }
         };
-
         fetchBookings();
     }, []);
     return (
@@ -28,7 +28,7 @@ function Info() {
                     <div className={cx('container')}>
                         <div className={cx('header-left')}>
                             <FontAwesomeIcon className={cx('icon')} icon={faCircleUser} />
-                            <h1 className={cx('name-user')}>ThaiTuan</h1>
+                            <h1 className={cx('name-user')}>{user.fullname}</h1>
                         </div>
                         <div className={cx('content-left')}>
                             <div className={cx('my-booking')}>

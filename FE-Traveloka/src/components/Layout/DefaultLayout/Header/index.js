@@ -3,9 +3,11 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
 import Button from '~/components/Button';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 function Header() {
+    const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -15,6 +17,9 @@ function Header() {
     }, []);
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('User');
+        navigate('/login');
+        window.location.reload();
         setIsLoggedIn(false);
     };
 
