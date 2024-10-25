@@ -8,7 +8,7 @@ import { faArrowRight, faCircleUser, faTableList } from '@fortawesome/free-solid
 import images from '~/assets/images';
 const cx = classNames.bind(styles);
 function Info() {
-    const user = JSON.parse(localStorage.getItem('User'));
+    const user = JSON.parse(localStorage.getItem('user'));
     const [bookings, setBookings] = useState([]);
     useEffect(() => {
         const fetchBookings = async () => {

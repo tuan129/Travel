@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Account = require('../models/userModel');
-const lodash = require('lodash');
 // module.exports = new AuthController()
 
 const login = async (req, res) => {
@@ -17,11 +16,14 @@ const login = async (req, res) => {
           expiresIn: '2d',
         });
 
-        const User = lodash.pick(user, ['_id', 'fullname', 'email']);
         res.json({
           token,
           role: user.role,
-          User,
+          user: {
+            _id: user._id,
+            fullname: user.fullname,
+            email: user.email,
+          },
         });
       } else {
         return res.status(401).json({ message: 'Password incorrect!' });

@@ -31,7 +31,7 @@ function Login() {
                 const { role, token, user } = data;
                 // Lưu token vào localStorage
                 localStorage.setItem('token', token);
-                localStorage.setItem('User', JSON.stringify(user));
+                localStorage.setItem('user', JSON.stringify(user));
                 // Chuyển hướng người dùng dựa trên vai trò của họ
                 if (role === 'admin') {
                     navigate('/listfilght');
