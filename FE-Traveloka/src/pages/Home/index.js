@@ -54,7 +54,7 @@ function Home() {
     const [showSearchResults, setShowSearchResults] = useState(false);
     const [isSelectingOrigin, setIsSelectingOrigin] = useState(true);
     //Thông báo lỗi
-    const [errorMessage, setErrorMessage] = useState('');
+    const [error, setError] = useState('');
 
     //Danh sách các hạng ghế
     const MENU_ITEMS = [
@@ -174,9 +174,9 @@ function Home() {
 
     // Hàm để hiển thị thông báo lỗi
     const displayError = (message) => {
-        setErrorMessage(message);
+        setError(message);
         setTimeout(() => {
-            setErrorMessage('');
+            setError('');
         }, 3000);
     };
 
@@ -510,7 +510,7 @@ function Home() {
                                     </Menu>
                                 </div>
                             </div>
-                            {errorMessage && <p className={cx('error')}>{errorMessage}</p>}
+                            {error && <p className={cx('error')}>{error}</p>}
                             <Button
                                 large
                                 leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faMagnifyingGlass} />}

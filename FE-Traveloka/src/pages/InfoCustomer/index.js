@@ -10,6 +10,14 @@ function InfoCustomer() {
     const location = useLocation();
     const navigate = useNavigate();
     const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, seatMapping } = location.state;
+
+    const [error, setError] = useState('');
+    const displayError = (message) => {
+        setError(message);
+        setTimeout(() => {
+            setError('');
+        }, 3000);
+    };
     // quản lý trạng thái thông tin liên hệ
     const [contactInfo, setContactInfo] = useState({
         fullName: '',
@@ -41,19 +49,29 @@ function InfoCustomer() {
     };
 
     const handleNextClick = () => {
-        navigate('/payment', {
-            state: {
-                flight,
-                returnFlight: returnFlight ? returnFlight : null,
-                adultCount,
-                childCount,
-                infantCount,
-                contactInfo,
-                customerInfo,
-                totalCustomer,
-                seatMapping,
-            },
-        });
+        const contactInfoValid = Object.values(contactInfo).every((field) => field !== '');
+        const customerInfoValid = customerInfo.every((customer) =>
+            Object.values(customer).every((field) => field !== ''),
+        );
+
+        if (contactInfoValid && customerInfoValid) {
+            navigate('/payment', {
+                state: {
+                    flight,
+                    returnFlight: returnFlight ? returnFlight : null,
+                    adultCount,
+                    childCount,
+                    infantCount,
+                    contactInfo,
+                    customerInfo,
+                    totalCustomer,
+                    seatMapping,
+                },
+            });
+        } else {
+            displayError('Vui lòng điền đầy đủ thông tin.');
+            return;
+        }
     };
 
     const renderPassengerForms = () => {
@@ -220,6 +238,7 @@ function InfoCustomer() {
                         <h1>Thông tin hành khách</h1>
                         {renderPassengerForms()}
                     </div>
+                    {error && <span className={cx('error')}>{error}</span>}
                     <Button primary className={cx('next')} onClick={handleNextClick}>
                         Tiếp tục
                     </Button>

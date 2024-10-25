@@ -10,21 +10,27 @@ import axios from 'axios';
 const cx = classNames.bind(styles);
 
 function Register() {
+    const navigate = useNavigate();
     const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
+    const displayError = (message) => {
+        setError(message);
+        setTimeout(() => {
+            setError('');
+        }, 3000);
+    };
 
     const handleRegister = async () => {
         if (!fullname || !email || !password || !rePassword) {
-            setError('Vui lòng điền đầy đủ thông tin.');
+            displayError('Vui lòng điền đầy đủ thông tin.');
             return;
         }
 
         if (password !== rePassword) {
-            setError('Mật khẩu không khớp.');
+            displayError('Mật khẩu không khớp.');
             return;
         }
 
@@ -39,7 +45,7 @@ function Register() {
                 navigate('/');
             }
         } catch (error) {
-            setError('Đăng ký không thành công.');
+            displayError('Đăng ký không thành công.');
         }
     };
     return (
