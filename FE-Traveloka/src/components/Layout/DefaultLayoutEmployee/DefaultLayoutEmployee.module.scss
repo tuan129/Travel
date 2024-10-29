@@ -5,6 +5,11 @@
 }
 
 .container {
-    width: 100%;
+    display: flex;
+    width: 1300px;
     margin-top: 20px;
+}
+
+.content{
+    width: 84.99999%;
 }

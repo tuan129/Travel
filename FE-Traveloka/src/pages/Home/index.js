@@ -45,14 +45,14 @@ function Home() {
     const [infantCount, setInfantCount] = useState(0);
     const [totalCustomer, setTotalCustomer] = useState(0);
     //lưu giữ trạng thái người dùng đã click vô ô input để thay đổi số lượng người
-    const [isPassengerInputActive, setIsPassengerInputActive] = useState(false);
+    const [isPassenger, setIsPassenger] = useState(false);
     //lưu giữ trạng thái các kết quả tìm kiếm khi lấy từ API lên
     const [searchResults, setSearchResults] = useState([]);
     //lưu giữ trạng thái từ khóa tìm kiếm
     const [searchKeyword, setSearchKeyword] = useState('');
     //lưu giữ trạng thái hiển thị kết quả tìm kiếm
     const [showSearchResults, setShowSearchResults] = useState(false);
-    const [isSelectingOrigin, setIsSelectingOrigin] = useState(true);
+    const [isSelecting, setIsSelecting] = useState(true);
     //Thông báo lỗi
     const [error, setError] = useState('');
 
@@ -102,7 +102,7 @@ function Home() {
     };
 
     const handleAirportSelect = (airfields) => {
-        if (isSelectingOrigin) {
+        if (isSelecting) {
             setFrom(`${airfields.city}`);
         } else {
             setTo(`${airfields.city}`);
@@ -118,13 +118,13 @@ function Home() {
     //handle khi user click chọn số hành khách
     const handlePassengerInputClick = (e) => {
         e.stopPropagation();
-        setIsPassengerInputActive(true);
+        setIsPassenger(true);
     };
 
     // xử lý khi user blur input
     const handleBlur = (e) => {
         if (!e.currentTarget.contains(e.relatedTarget)) {
-            setIsPassengerInputActive(false);
+            setIsPassenger(false);
         }
     };
 
@@ -182,7 +182,7 @@ function Home() {
 
     //Call Api khi user nhập từ khóa
     useEffect(() => {
-        const fetchSearchResults = async () => {
+        const searchResults = async () => {
             try {
                 const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
                 const data = res.data;
@@ -194,9 +194,8 @@ function Home() {
                 setShowSearchResults(false);
             }
         };
-
         if (searchKeyword.length > 0) {
-            fetchSearchResults();
+            searchResults();
         } else {
             setShowSearchResults(false);
         }
@@ -325,7 +324,7 @@ function Home() {
                                                 placeholder="Origin"
                                                 value={from}
                                                 onChange={handleFromInputChange}
-                                                onFocus={() => setIsSelectingOrigin(true)}
+                                                onFocus={() => setIsSelecting(true)}
                                             />
                                         </div>
                                     </Tippy>
@@ -358,7 +357,7 @@ function Home() {
                                                 placeholder="Destination"
                                                 value={to}
                                                 onChange={handleToInputChange}
-                                                onFocus={() => setIsSelectingOrigin(false)}
+                                                onFocus={() => setIsSelecting(false)}
                                             />
                                         </Tippy>
                                     </div>
@@ -368,7 +367,7 @@ function Home() {
                                 <div className="left-info" onBlur={handleBlur}>
                                     <div
                                         className={cx('amount-cus')}
-                                        onFocus={() => setIsPassengerInputActive(true)}
+                                        onFocus={() => setIsPassenger(true)}
                                         onClick={handlePassengerInputClick}
                                     >
                                         <p className={cx('name-input')}>Số hành khách</p>
@@ -378,7 +377,7 @@ function Home() {
                                             value={`${adultCount} Người lớn, ${childCount} Trẻ em, ${infantCount} Em bé`}
                                             readOnly
                                         />
-                                        {isPassengerInputActive && (
+                                        {isPassenger && (
                                             <div className={cx('passenger-details')}>
                                                 <div className={cx('passenger-count')}>
                                                     <span className={cx('per-count')}>

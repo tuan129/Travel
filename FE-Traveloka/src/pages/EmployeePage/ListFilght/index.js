@@ -92,7 +92,7 @@ function ListFlight() {
                                             </label>
                                         </div>
                                         <label className={cx('place')}>
-                                            - From:
+                                            Khởi hành
                                             <input
                                                 type="text"
                                                 value={editData.departureCity}
@@ -229,12 +229,12 @@ function ListFlight() {
                                                 Edit
                                             </Button>
                                         </div>
-                                        <p className={cx('place')}>- From: {flight.departureCity}</p>
-                                        <p>- To: {flight.arrivalCity}</p>
+                                        <p className={cx('place')}>Khởi hành: {flight.departureCity}</p>
+                                        <p>Hạ cánh: {flight.arrivalCity}</p>
                                         <p className={cx('time')}>
-                                            - Time: {flight.departureTime} - {flight.arrivalTime}
+                                            Thời gian: {flight.departureTime} - {flight.arrivalTime}
                                         </p>
-                                        <p className={cx('date-departure')}>- Date: {flight.departureDate}</p>
+                                        <p className={cx('date-departure')}>Ngày khởi hành: {flight.departureDate}</p>
                                         <div className={cx('ticket-price')}>
                                             <span>- Giá vé:</span>
                                             <p>

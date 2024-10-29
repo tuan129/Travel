@@ -5,7 +5,10 @@
 }
 
 .content {
-    width: var(--default-layout-width);
+    width: 100%;
+    h1{
+        font-size: 24px;
+    }
 }
 
 .chart-layout {

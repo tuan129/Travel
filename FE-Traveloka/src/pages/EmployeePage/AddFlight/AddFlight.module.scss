@@ -1,5 +1,4 @@
 .wrapper {
-    width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -7,7 +6,7 @@
 .content {
     display: flex;
     flex-direction: column;
-    width: var(--default-layout-width);
+    width: 100%;
     border: 1px solid var(--black);
     border-radius: 10px;
     padding: 16px 8px;
@@ -38,13 +37,13 @@
     span {
         font-size: 14px;
         color: rgb(104, 113, 118);
-        margin-right: 8px;
-        line-height: 25px;
+        margin-right: 12px;
+        line-height: 42px;
     }
 
     input {
-        min-width: 210px;
-        padding: 8px 16px;
+        min-width: 260px;
+        padding: 14px 16px;
         border: 1px solid var(--black);
         border-radius: 5px;
         font-size: 14px;
@@ -66,7 +65,7 @@
         flex-direction: column;
 
         input {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
     }
 }
@@ -79,3 +78,65 @@
 .search-start {
     min-width: 200px;
 }
+
+
+.field {
+	width: 100%;
+	float: left;
+	padding: 0.45em;
+	box-sizing: border-box;
+	position: relative;
+}
+.field-label {
+    font-size: 0.85714em;
+    font-weight: normal;
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    width: 50%;
+    padding: 0 0.93333em;
+    z-index: 1;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    opacity: 0;
+    color: #999999;
+    transition: all 0.2s ease-out;
+    margin: 0.5em 0;
+    margin-top: 0.3em;
+    display: block;
+}
+
+.show-field-label {
+    transform: none;
+    opacity: 1 !important;
+}
+
+
+.field-input {
+    box-shadow: 0 0 0 1px #d9d9d9;
+    transition: all 0.2s ease-out;
+    background-color: white;
+    color: #333333;
+    border-radius: 4px;
+    display: block;
+    box-sizing: border-box;
+    width: 50%;
+    padding: 16px 8px;
+    word-break: normal;
+    border: none;
+    line-height: 24px;
+    font-size: 16px;
+}
+
+
+
+

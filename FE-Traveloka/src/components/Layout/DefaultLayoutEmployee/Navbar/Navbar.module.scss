@@ -1,0 +1,16 @@
+.wrapper{
+    width: 14.99999%;
+    margin-right: 18px;
+}
+
+.content-employee{
+    display: flex;
+    flex-direction: column;
+    
+    .btn-nav-bar{
+        margin-left: 0 !important;
+        margin-bottom: 12px;
+        min-height: 10rem;
+    }
+    
+}
