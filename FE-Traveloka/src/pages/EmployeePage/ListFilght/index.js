@@ -3,10 +3,13 @@ import { useEffect, useState } from 'react';
 // component
 import styles from './ListFilght.module.scss';
 import Button from '~/components/Button';
+import { Wrapper as PoperWrapper } from '~/components/Poper';
+import CityItems from '~/components/CityItems';
 
 // library
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Tippy from '@tippyjs/react/headless';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -14,9 +17,12 @@ import { format } from 'date-fns';
 const cx = classNames.bind(styles);
 
 function ListFlight() {
-    const [flights, setFlights] = useState([]); // Khởi tạo state cho danh sách chuyến bay
-    const [editingFlight, setEditingFlight] = useState(null); // State để lưu chuyến bay đang chỉnh sửa
-    const [editData, setEditData] = useState({}); // State để lưu dữ liệu chỉnh sửa
+    const [flights, setFlights] = useState([]);
+    const [editingFlight, setEditingFlight] = useState(null);
+    const [editData, setEditData] = useState({});
+    const [showAirfiled, setShowAirfiled] = useState(false);
+    const [searchAirfield, setSearchAirfield] = useState([]);
+    const [searchKeyword, setSearchKeyword] = useState('');
 
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
@@ -26,7 +32,6 @@ function ListFlight() {
         return format(new Date(isoString), 'HH:mm');
     };
 
-    // Hàm xóa chuyến bay
     const handleDelete = async (flightNumber) => {
         try {
             await axios.delete(`http://localhost:5000/api/flight/${flightNumber}`);
@@ -37,29 +42,55 @@ function ListFlight() {
         }
     };
 
-    // Hàm bắt đầu chỉnh sửa chuyến bay
     const handleEdit = (flight) => {
         setEditingFlight(flight._id);
         setEditData(flight);
     };
-    // Hàm hủy chỉnh sửa
-    const handleCancel = () => {
-        setEditingFlight(null);
+
+    const handleSave = async () => {
+        try {
+            const dataUpdate = {
+                airlines: editData.airlines,
+                flightCode: editData.flightCode,
+                airfield: {
+                    from: editData.airfield.from.id || editData.airfield.from._id,
+                    to: editData.airfield.to.id || editData.airfield.to._id,
+                },
+                time: {
+                    departure: editData.time.departure,
+                    arrival: editData.time.arrival,
+                },
+                date: editData.date,
+                tickets: {
+                    phoThong: {
+                        price: editData.tickets.phoThong.price,
+                        soLuongVe: editData.tickets.phoThong.soLuongVe,
+                    },
+                    phoThongDacBiet: {
+                        price: editData.tickets.phoThongDacBiet.price,
+                        soLuongVe: editData.tickets.phoThongDacBiet.soLuongVe,
+                    },
+                    thuongGia: {
+                        price: editData.tickets.thuongGia.price,
+                        soLuongVe: editData.tickets.thuongGia.soLuongVe,
+                    },
+                    hangNhat: {
+                        price: editData.tickets.hangNhat.price,
+                        soLuongVe: editData.tickets.hangNhat.soLuongVe,
+                    },
+                },
+            };
+            await axios.put(`http://localhost:5000/api/flight/${editingFlight}`, dataUpdate);
+            setEditingFlight(null);
+            console.log(dataUpdate);
+        } catch (err) {
+            console.error('Error saving flight:', err);
+            alert('Failed to save flight. Please try again.');
+        }
     };
 
-    // Hàm lưu chuyến bay đã chỉnh sửa
-    const handleSave = async () => {
-        // try {
-        //     await axios.patch(`http://localhost:5000/api/flight/${editingFlight}`, editData);
-        //     setFlights((prevFlights) =>
-        //         prevFlights.map((flight) => (flight._id === editingFlight ? editData : flight)),
-        //     );
-        //     setEditingFlight(null);
-        // } catch (error) {
-        //     console.error('Error updating flight:', error);
-        //     alert('Failed to update flight. Please try again.');
-        // }
-        console.log(editData);
+    const handleCancel = () => {
+        setEditingFlight(null);
     };
 
     useEffect(() => {
@@ -75,36 +106,107 @@ function ListFlight() {
         fetchFlights();
     }, []);
 
-    // Hàm xử lý thay đổi dữ liệu trong form chỉnh sửa
+    useEffect(() => {
+        const search = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
+                const data = res.data;
+                setSearchAirfield(data.data.airfields);
+                setShowAirfiled(true);
+            } catch (err) {
+                console.error('Error fetching search results:', err);
+                setSearchAirfield([]);
+                setShowAirfiled(false);
+            }
+        };
+        if (searchKeyword.length > 0) {
+            search();
+        } else {
+            setShowAirfiled(false);
+        }
+    }, [searchKeyword]);
+
+    const handleChange = (e, type) => {
+        const keyword = e.target.value;
+        setSearchKeyword(keyword);
+        if (type === 'departure') {
+            setEditData((prevData) => ({
+                ...prevData,
+                airfield: {
+                    ...prevData.airfield,
+                    from: {
+                        ...prevData.airfield.from,
+                        city: keyword,
+                    },
+                },
+            }));
+        } else if (type === 'arrival') {
+            setEditData((prevData) => ({
+                ...prevData,
+                airfield: {
+                    ...prevData.airfield,
+                    to: {
+                        ...prevData.airfield.to,
+                        city: keyword,
+                    },
+                },
+            }));
+        }
+    };
+
+    const handleSelect = (airfield, type) => {
+        if (type === 'departure') {
+            setEditData((prevData) => ({
+                ...prevData,
+                airfield: {
+                    ...prevData.airfield,
+                    from: {
+                        city: airfield.city,
+                        id: airfield._id,
+                    },
+                },
+            }));
+        } else if (type === 'arrival') {
+            setEditData((prevData) => ({
+                ...prevData,
+                airfield: {
+                    ...prevData.airfield,
+                    to: {
+                        city: airfield.city,
+                        id: airfield._id,
+                    },
+                },
+            }));
+        }
+        setShowAirfiled(false);
+    };
+
     const handleInputChange = (newData, field) => {
         if (field.includes('.')) {
-            const [parentField, subField, childField] = field.split('.');
+            const [parentField, subField] = field.split('.');
             if (parentField === 'time') {
-                const dateValue = new Date();
-                setEditData({
-                    ...editData,
+                const { value } = newData.target;
+                const [hours, minutes] = value.split(':');
+                const departureDate = editData.date;
+                const timeValue = new Date(`${departureDate}T${hours}:${minutes}:00`);
+                setEditData((prevData) => ({
+                    ...prevData,
                     [parentField]: {
-                        ...editData[parentField],
-                        [subField]: {
-                            ...editData[parentField][subField],
-                            [childField]: dateValue.toISOString(),
-                        },
+                        ...prevData[parentField],
+                        [subField]: timeValue.toISOString(),
                     },
-                });
+                }));
             } else {
-                setEditData({
-                    ...editData,
+                setEditData((prevData) => ({
+                    ...prevData,
                     [parentField]: {
-                        ...editData[parentField],
-                        [subField]: {
-                            ...editData[parentField][subField],
-                            [childField]: newData.target.value,
-                        },
+                        ...prevData[parentField],
+                        [subField]: newData.target.value,
                     },
-                });
+                }));
             }
         } else {
-            setEditData({ ...editData, [field]: newData.target.value });
+            setEditData((prevData) => ({ ...prevData, [field]: newData.target.value }));
         }
     };
 
@@ -140,19 +242,79 @@ function ListFlight() {
                                         </div>
                                         <label className={cx('place')}>
                                             Khởi hành
-                                            <input
-                                                type="text"
-                                                value={editData.airfield.from.city}
-                                                onChange={(e) => handleInputChange(e, 'airfield.from.city')}
-                                                className={cx('input-edit')}
-                                            />
+                                            <span> Sân bay khởi hành</span>
+                                            <Tippy
+                                                placement="bottom-start"
+                                                interactive
+                                                render={(attrs) => (
+                                                    <div className={cx('search-start')} tabIndex="-1" {...attrs}>
+                                                        <PoperWrapper>
+                                                            <h3>Các sân bay</h3>
+                                                            {showAirfiled && (
+                                                                <div className={cx('city-items-list')}>
+                                                                    {searchAirfield.map((data) => (
+                                                                        <CityItems
+                                                                            key={data.id}
+                                                                            data={data}
+                                                                            onClick={() =>
+                                                                                handleSelect(data, 'departure')
+                                                                            }
+                                                                        />
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </PoperWrapper>
+                                                    </div>
+                                                )}
+                                            >
+                                                <input
+                                                    type="text"
+                                                    value={editData.airfield.from.city}
+                                                    onChange={(e) => handleChange(e, 'departure')}
+                                                    className={cx('input-edit')}
+                                                />
+                                            </Tippy>
                                         </label>
                                         <label>
                                             To
+                                            <Tippy
+                                                placement="bottom-start"
+                                                interactive
+                                                render={(attrs) => (
+                                                    <div className={cx('search-start')} tabIndex="-1" {...attrs}>
+                                                        <PoperWrapper>
+                                                            <h3>Các sân bay</h3>
+                                                            {showAirfiled && (
+                                                                <div className={cx('city-items-list')}>
+                                                                    {searchAirfield.map((data) => (
+                                                                        <CityItems
+                                                                            key={data.id}
+                                                                            data={data}
+                                                                            onClick={() =>
+                                                                                handleSelect(data, 'arrival')
+                                                                            }
+                                                                        />
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </PoperWrapper>
+                                                    </div>
+                                                )}
+                                            >
+                                                <input
+                                                    type="text"
+                                                    value={editData.airfield.to.city}
+                                                    onChange={(e) => handleChange(e, 'arrival')}
+                                                    className={cx('input-edit')}
+                                                />
+                                            </Tippy>
+                                        </label>
+                                        <label className={cx('date-departure')}>
+                                            Date
                                             <input
-                                                type="text"
-                                                value={editData.airfield.to.city}
-                                                onChange={(e) => handleInputChange(e, 'airfield.to.city')}
+                                                type="date"
+                                                value={editData.date}
+                                                onChange={(e) => handleInputChange(e, 'date')}
                                                 className={cx('input-edit')}
                                             />
                                         </label>
@@ -172,15 +334,7 @@ function ListFlight() {
                                                 className={cx('input-edit')}
                                             />
                                         </label>
-                                        <label className={cx('date-departure')}>
-                                            Date
-                                            <input
-                                                type="date"
-                                                value={editData.date}
-                                                onChange={(e) => handleInputChange(e, 'date')}
-                                                className={cx('input-edit')}
-                                            />
-                                        </label>
+
                                         <div className={cx('ticket-price-edit')}>
                                             <span>- Giá vé:</span>
                                             <label className={cx('label-edit')}>
