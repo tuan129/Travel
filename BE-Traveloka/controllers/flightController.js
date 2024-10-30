@@ -11,11 +11,7 @@ const seatClassMapping = {
 const getAllFlights = async (req, res) => {
   try {
     const queryObj = { ...req.query };
-
-    console.log(queryObj.from);
-
     const mappedSeatClass = seatClassMapping[queryObj.seatClass];
-
     /// Tìm id của sân bay
     const fromAirfield = await Airfield.findOne({
       city: { $regex: new RegExp(`^${queryObj.from}$`, 'i') },
@@ -94,7 +90,9 @@ const getAllFlights = async (req, res) => {
 
 const getFlight = async (req, res) => {
   try {
-    const flight = await Flight.findById(req.params.id);
+    const flight = await Flight.find(req.query)
+      .populate('airfield.from', 'city codeAirfield nameAirfield')
+      .populate('airfield.to', 'city codeAirfield nameAirfield');
     res.status(200).json({
       status: 'success',
       data: {
@@ -111,8 +109,20 @@ const getFlight = async (req, res) => {
 
 const createFlight = async (req, res) => {
   try {
-    const newFlight = await Flight.create(req.body);
+    // console.log(req);
+    const { airfield } = req.body;
 
+    const fromAirfield = await Airfield.findOne({
+      city: { $regex: new RegExp(`^${airfield.from}$`, 'i') },
+    });
+    const toAirfield = await Airfield.findOne({
+      city: { $regex: new RegExp(`^${airfield.to}$`, 'i') },
+    });
+
+    req.body.airfield.from = fromAirfield._id;
+    req.body.airfield.to = toAirfield._id;
+
+    const newFlight = await Flight.create(req.body);
     res.status(200).json({
       status: 'success',
       data: {

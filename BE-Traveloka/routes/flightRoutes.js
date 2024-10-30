@@ -8,9 +8,10 @@ router
   .get(flightController.getAllFlights)
   .post(flightController.createFlight);
 
+router.route('/dashboard').get(flightController.getFlight);
+
 router
   .route('/:id')
-  .get(flightController.getFlight)
   .delete(flightController.deleteFlight)
   .patch(flightController.updateFlight);
 

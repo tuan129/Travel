@@ -1,5 +1,5 @@
 //Hook
-import { useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
 //Styles
 import styles from './AddFlight.module.scss';
 // Component
@@ -7,7 +7,6 @@ import Button from '~/components/Button';
 import CityItems from '~/components/CityItems';
 import AirlineItems from '~/components/AirlineItems';
 import { Wrapper as PoperWrapper } from '~/components/Poper';
-import Context from '~/components/useContext/Context';
 // Library
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
@@ -16,127 +15,152 @@ import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 function AddFlight() {
     const navigate = useNavigate();
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [searchAirfieldKeyword, setSearchAirfieldKeyword] = useState('');
 
     // Sân bay
-    const [showAirfiledResults, setShowAirfiledResults] = useState(false);
-    const [searchResults, setSearchResults] = useState([]);
+    const [showAirfiled, setShowAirfiled] = useState(false);
+    const [searchAirfield, setSearchAirfield] = useState([]);
 
     //City
-    const [departureCity, setDepartureCity] = useState('');
-    const [arrivalCity, setArrivalCity] = useState('');
+    const [from, setFrom] = useState('');
+    const [to, setTo] = useState('');
 
     // Hãng hàng không
-    const [showAirlineResults, setShowAirlineResults] = useState(false);
-    const [airlineResults, setAirlineResults] = useState([]);
-
-    //Biến tạm
-    const { addFlight } = useContext(Context);
+    const [showAirline, setShowAirline] = useState(false);
+    const [searchAirline, setSearchAirline] = useState([]);
+    const [airlines, setAirlines] = useState('');
 
     // State để lấy các input fileld
-    const [flightNumber, setFlightNumber] = useState('');
-    const [departureTime, setDepartureTime] = useState('');
-    const [arrivalTime, setArrivalTime] = useState('');
+    const [flightCode, setFlightCode] = useState('');
+    const [departure, setDeparture] = useState('');
+    const [arrival, setArrival] = useState('');
     const [departureDate, setDepartureDate] = useState('');
-    const [airlines, setAirlines] = useState('');
-    // Vé
-    const [economyTickets, setEconomyTickets] = useState('');
-    const [premiumEconomyTickets, setPremiumEconomyTickets] = useState('');
-    const [businessTickets, setBusinessTickets] = useState('');
-    const [firstClassTickets, setFirstClassTickets] = useState('');
-    //Giá
-    const [economyPrice, setEconomyPrice] = useState('');
-    const [premiumEconomyPrice, setPremiumEconomyPrice] = useState('');
-    const [businessPrice, setBusinessPrice] = useState('');
-    const [firstClassPrice, setFirstClassPrice] = useState('');
 
-    const searchAirports = async () => {};
+    // phoThong
+    const [pricePhoThong, setPricePhoThong] = useState('');
+    const [ticketPhoThong, setTicketPhoThong] = useState('');
+    // phoThong dac biet
+    const [pricePhoThongDacBiet, setPricePhoThongDacBiet] = useState('');
+    const [ticketPhoThongDacBiet, setTicketVePhoThongDacBiet] = useState('');
+    // thuong gia
+    const [priceThuongGia, setPriceThuongGia] = useState('');
+    const [ticketThuongGia, setTicketThuongGia] = useState('');
+    // hang nhat
+    const [priceHangNhat, setPriceHangNhat] = useState('');
+    const [ticketHangNhat, setTicketHangNhat] = useState('');
 
-    const searchAirlines = async () => {};
+    useEffect(() => {
+        const search = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
+                const data = res.data;
+                setSearchAirfield(data.data.airfields);
+                setShowAirfiled(true);
+            } catch (err) {
+                console.error('Error fetching search results:', err);
+                setSearchAirfield([]);
+                setShowAirfiled(false);
+            }
+        };
+        if (searchKeyword.length > 0) {
+            search();
+        } else {
+            setShowAirfiled(false);
+        }
+    }, [searchKeyword]);
+
+    useEffect(() => {
+        const searchAirlines = async () => {
+            try {
+                const res = await axios.get(
+                    `http://localhost:5000/api/airline/search?keyword=${searchAirfieldKeyword}`,
+                );
+                const data = res.data;
+                setSearchAirline(data.data.airlines);
+                setShowAirline(true);
+            } catch (err) {
+                console.error('Error fetching search results:', err);
+                setSearchAirline([]);
+                setShowAirline(false);
+            }
+        };
+        if (searchAirfieldKeyword.length > 0) {
+            searchAirlines();
+        } else {
+            setShowAirline(false);
+        }
+    }, [searchAirfieldKeyword]);
 
     const handleInputChange = (e, type) => {
-        const query = e.target.value;
+        const keyword = e.target.value;
         if (type === 'departure') {
-            setDepartureCity(query);
-            if (query.length > 0) {
-                searchAirports(query);
-            } else {
-                setShowAirfiledResults(false);
-            }
+            setFrom(keyword);
+            setSearchKeyword(keyword);
         } else if (type === 'arrival') {
-            setArrivalCity(query);
-            if (query.length > 0) {
-                searchAirports(query);
-            } else {
-                setShowAirfiledResults(false);
-            }
+            setTo(keyword);
+            setSearchKeyword(keyword);
         } else if (type === 'airlines') {
-            setAirlines(query);
-            if (query.length > 0) {
-                searchAirlines(query);
-            } else {
-                setShowAirlineResults(false);
-            }
+            setAirlines(keyword);
+            setSearchAirfieldKeyword(keyword);
         }
     };
 
-    const handleSelect = (item, type) => {
+    const handleSelect = (airfields, type) => {
         if (type === 'departure') {
-            setDepartureCity(`${item.name}`);
+            setFrom(`${airfields.city}`);
         } else if (type === 'arrival') {
-            setArrivalCity(`${item.name}`);
+            setTo(`${airfields.city}`);
         } else if (type === 'airlines') {
-            setAirlines(`${item.fullName}`);
+            setAirlines(`${airfields.nameAirline}`);
         }
-        setShowAirfiledResults(false);
-        setShowAirlineResults(false);
+        setShowAirfiled(false);
+        setShowAirline(false);
     };
 
     const handleAddFlight = async () => {
-        const flightData = {
-            flightNumber,
-            airlines,
-            departureCity,
-            arrivalCity,
-            departureTime,
-            arrivalTime,
-            departureDate,
-            tickets: {
-                economy: economyTickets,
-                premiumEconomy: premiumEconomyTickets,
-                business: businessTickets,
-                firstClass: firstClassTickets,
-            },
-            prices: {
-                economy: economyPrice,
-                premiumEconomy: premiumEconomyPrice,
-                business: businessPrice,
-                firstClass: firstClassPrice,
-            },
-        };
-
         try {
-            // await axios.post('http://localhost:3001/api/flights', flightData);
-            setFlightNumber('');
-            setAirlines('');
-            setDepartureCity('');
-            setArrivalCity('');
-            setDepartureTime('');
-            setArrivalTime('');
-            setDepartureDate('');
-            setEconomyTickets('');
-            setPremiumEconomyTickets('');
-            setBusinessTickets('');
-            setFirstClassTickets('');
-            setEconomyPrice('');
-            setPremiumEconomyPrice('');
-            setBusinessPrice('');
-            setFirstClassPrice('');
-
-            addFlight(flightData);
-            navigate('/listfilght');
+            if (!from || !to) {
+                alert('Vui lòng chọn sân bay khởi hành và đến.');
+                return;
+            }
+            const departureTime = new Date(`${departureDate}T${departure}:00`);
+            const arrivalTime = new Date(`${departureDate}T${arrival}:00`);
+            await axios.post('http://localhost:5000/api/flight', {
+                flightCode,
+                airlines,
+                airfield: {
+                    from,
+                    to,
+                },
+                time: {
+                    departure: departureTime,
+                    arrival: arrivalTime,
+                },
+                date: [departureDate],
+                tickets: {
+                    phoThong: {
+                        price: pricePhoThong,
+                        soLuongVe: ticketPhoThong,
+                    },
+                    phoThongDacBiet: {
+                        price: pricePhoThongDacBiet,
+                        soLuongVe: ticketPhoThongDacBiet,
+                    },
+                    thuongGia: {
+                        price: priceThuongGia,
+                        soLuongVe: ticketThuongGia,
+                    },
+                    hangNhat: {
+                        price: priceHangNhat,
+                        soLuongVe: ticketHangNhat,
+                    },
+                },
+            });
             alert('Flight added successfully!');
-        } catch (error) {
-            console.error('Error adding flight:', error);
+            navigate('/listfilght');
+        } catch (err) {
+            console.error('Error adding flight:', err);
             alert('Failed to add flight. Please try again.');
         }
     };
@@ -152,8 +176,8 @@ function AddFlight() {
                             <input
                                 type="text"
                                 placeholder="Flight Number"
-                                value={flightNumber}
-                                onChange={(e) => setFlightNumber(e.target.value)}
+                                value={flightCode}
+                                onChange={(e) => setFlightCode(e.target.value)}
                             />
                         </label>
                         <div>
@@ -162,20 +186,21 @@ function AddFlight() {
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
-                                    visible={showAirlineResults && airlines.length > 0}
                                     render={(attrs) => (
                                         <div className={cx('search-start')} tabIndex="-1" {...attrs}>
                                             <PoperWrapper>
                                                 <h3>Hãng hàng không</h3>
-                                                <div className={cx('airline-items-list')}>
-                                                    {airlineResults.map((airline) => (
-                                                        <AirlineItems
-                                                            key={airline._id}
-                                                            data={airline}
-                                                            onClick={() => handleSelect(airline, 'airlines')}
-                                                        />
-                                                    ))}
-                                                </div>
+                                                {showAirline && (
+                                                    <div className={cx('airline-items-list')}>
+                                                        {searchAirline.map((data) => (
+                                                            <AirlineItems
+                                                                key={data._id}
+                                                                data={data}
+                                                                onClick={() => handleSelect(data, 'airlines')}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </PoperWrapper>
                                         </div>
                                     )}
@@ -184,7 +209,7 @@ function AddFlight() {
                                         type="text"
                                         placeholder="Airlines"
                                         value={airlines}
-                                        onFocus={() => setShowAirlineResults(true)}
+                                        onFocus={() => setShowAirline(true)}
                                         onChange={(e) => handleInputChange(e, 'airlines')}
                                     />
                                 </Tippy>
@@ -196,20 +221,21 @@ function AddFlight() {
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
-                                    visible={showAirfiledResults && departureCity.length > 0}
                                     render={(attrs) => (
                                         <div className={cx('search-start')} tabIndex="-1" {...attrs}>
                                             <PoperWrapper>
                                                 <h3>Các sân bay</h3>
-                                                <div className={cx('city-items-list')}>
-                                                    {searchResults.map((airport) => (
-                                                        <CityItems
-                                                            key={airport.id}
-                                                            data={airport}
-                                                            onClick={() => handleSelect(airport, 'departure')}
-                                                        />
-                                                    ))}
-                                                </div>
+                                                {showAirfiled && (
+                                                    <div className={cx('city-items-list')}>
+                                                        {searchAirfield.map((data) => (
+                                                            <CityItems
+                                                                key={data.id}
+                                                                data={data}
+                                                                onClick={() => handleSelect(data, 'departure')}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </PoperWrapper>
                                         </div>
                                     )}
@@ -217,8 +243,8 @@ function AddFlight() {
                                     <input
                                         type="text"
                                         placeholder="Departure City"
-                                        value={departureCity}
-                                        onFocus={() => setShowAirfiledResults(true)}
+                                        value={from}
+                                        onFocus={() => setShowAirfiled(true)}
                                         onChange={(e) => handleInputChange(e, 'departure')}
                                     />
                                 </Tippy>
@@ -230,8 +256,8 @@ function AddFlight() {
                             <input
                                 type="time"
                                 placeholder="Departure Time"
-                                value={departureTime}
-                                onChange={(e) => setDepartureTime(e.target.value)}
+                                value={departure}
+                                onChange={(e) => setDeparture(e.target.value)}
                             />
                         </label>
                         <label className={cx('amount-ticket')}>
@@ -240,7 +266,7 @@ function AddFlight() {
                                 <div className={cx('field')}>
                                     <label
                                         className={cx('field-label', {
-                                            'show-field-label': economyTickets.trim() !== '',
+                                            'show-field-label': ticketPhoThong.trim() !== '',
                                         })}
                                         htmlFor="economy-tickets"
                                     >
@@ -251,14 +277,14 @@ function AddFlight() {
                                         type="text"
                                         placeholder="Phổ thông"
                                         className={cx('field-input')}
-                                        value={economyTickets}
-                                        onChange={(e) => setEconomyTickets(e.target.value)}
+                                        value={ticketPhoThong}
+                                        onChange={(e) => setTicketPhoThong(e.target.value)}
                                     />
                                 </div>
                                 <div className={cx('field')}>
                                     <label
                                         className={cx('field-label', {
-                                            'show-field-label': premiumEconomyTickets.trim() !== '',
+                                            'show-field-label': ticketPhoThongDacBiet.trim() !== '',
                                         })}
                                         htmlFor="premium-economy-tickets"
                                     >
@@ -269,14 +295,14 @@ function AddFlight() {
                                         type="text"
                                         placeholder="Phổ thông đặc biệt"
                                         className={cx('field-input')}
-                                        value={premiumEconomyTickets}
-                                        onChange={(e) => setPremiumEconomyTickets(e.target.value)}
+                                        value={ticketPhoThongDacBiet}
+                                        onChange={(e) => setTicketVePhoThongDacBiet(e.target.value)}
                                     />
                                 </div>
                                 <div className={cx('field')}>
                                     <label
                                         className={cx('field-label', {
-                                            'show-field-label': businessTickets.trim() !== '',
+                                            'show-field-label': ticketThuongGia.trim() !== '',
                                         })}
                                         htmlFor="business-tickets"
                                     >
@@ -287,14 +313,14 @@ function AddFlight() {
                                         type="text"
                                         placeholder="Thương gia"
                                         className={cx('field-input')}
-                                        value={businessTickets}
-                                        onChange={(e) => setBusinessTickets(e.target.value)}
+                                        value={ticketThuongGia}
+                                        onChange={(e) => setTicketThuongGia(e.target.value)}
                                     />
                                 </div>
                                 <div className={cx('field')}>
                                     <label
                                         className={cx('field-label', {
-                                            'show-field-label': firstClassTickets.trim() !== '',
+                                            'show-field-label': ticketHangNhat.trim() !== '',
                                         })}
                                         htmlFor="first-class-tickets"
                                     >
@@ -305,8 +331,8 @@ function AddFlight() {
                                         type="text"
                                         placeholder="Hạng nhất"
                                         className={cx('field-input')}
-                                        value={firstClassTickets}
-                                        onChange={(e) => setFirstClassTickets(e.target.value)}
+                                        value={ticketHangNhat}
+                                        onChange={(e) => setTicketHangNhat(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -328,20 +354,21 @@ function AddFlight() {
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
-                                    visible={showAirfiledResults && arrivalCity.length > 0}
                                     render={(attrs) => (
                                         <div className={cx('search-start')} tabIndex="-1" {...attrs}>
                                             <PoperWrapper>
                                                 <h3>Các sân bay</h3>
-                                                <div className={cx('city-items-list')}>
-                                                    {searchResults.map((airport) => (
-                                                        <CityItems
-                                                            key={airport.id}
-                                                            data={airport}
-                                                            onClick={() => handleSelect(airport, 'arrival')}
-                                                        />
-                                                    ))}
-                                                </div>
+                                                {showAirfiled && (
+                                                    <div className={cx('city-items-list')}>
+                                                        {searchAirfield.map((airport) => (
+                                                            <CityItems
+                                                                key={airport.id}
+                                                                data={airport}
+                                                                onClick={() => handleSelect(airport, 'arrival')}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </PoperWrapper>
                                         </div>
                                     )}
@@ -349,8 +376,8 @@ function AddFlight() {
                                     <input
                                         type="text"
                                         placeholder="Arrival City"
-                                        value={arrivalCity}
-                                        onFocus={() => setShowAirfiledResults(true)}
+                                        value={to}
+                                        onFocus={() => setShowAirfiled(true)}
                                         onChange={(e) => handleInputChange(e, 'arrival')}
                                     />
                                 </Tippy>
@@ -361,8 +388,8 @@ function AddFlight() {
                             <input
                                 type="time"
                                 placeholder="Arrival Time"
-                                value={arrivalTime}
-                                onChange={(e) => setArrivalTime(e.target.value)}
+                                value={arrival}
+                                onChange={(e) => setArrival(e.target.value)}
                             />
                         </label>
                         <label className={cx('price-ticket')}>
@@ -371,7 +398,7 @@ function AddFlight() {
                                 <div className={cx('field')}>
                                     <label
                                         className={cx('field-label', {
-                                            'show-field-label': economyPrice.trim() !== '',
+                                            'show-field-label': pricePhoThong.trim() !== '',
                                         })}
                                         htmlFor="economy-price"
                                     >
@@ -382,14 +409,14 @@ function AddFlight() {
                                         className={cx('field-input')}
                                         type="text"
                                         placeholder="Phổ thông"
-                                        value={economyPrice}
-                                        onChange={(e) => setEconomyPrice(e.target.value)}
+                                        value={pricePhoThong}
+                                        onChange={(e) => setPricePhoThong(e.target.value)}
                                     />
                                 </div>
                                 <div className={cx('field')}>
                                     <label
                                         className={cx('field-label', {
-                                            'show-field-label': premiumEconomyPrice.trim() !== '',
+                                            'show-field-label': pricePhoThongDacBiet.trim() !== '',
                                         })}
                                         htmlFor="premium-economy-price"
                                     >
@@ -400,14 +427,14 @@ function AddFlight() {
                                         type="text"
                                         className={cx('field-input')}
                                         placeholder="Phổ thông đặc biệt"
-                                        value={premiumEconomyPrice}
-                                        onChange={(e) => setPremiumEconomyPrice(e.target.value)}
+                                        value={pricePhoThongDacBiet}
+                                        onChange={(e) => setPricePhoThongDacBiet(e.target.value)}
                                     />
                                 </div>
                                 <div className={cx('field')}>
                                     <label
                                         className={cx('field-label', {
-                                            'show-field-label': businessPrice.trim() !== '',
+                                            'show-field-label': priceThuongGia.trim() !== '',
                                         })}
                                         htmlFor="business-price"
                                     >
@@ -418,14 +445,14 @@ function AddFlight() {
                                         id="business-price"
                                         type="text"
                                         placeholder="Thương gia"
-                                        value={businessPrice}
-                                        onChange={(e) => setBusinessPrice(e.target.value)}
+                                        value={priceThuongGia}
+                                        onChange={(e) => setPriceThuongGia(e.target.value)}
                                     />
                                 </div>
                                 <div className={cx('field')}>
                                     <label
                                         className={cx('field-label', {
-                                            'show-field-label': firstClassPrice.trim() !== '',
+                                            'show-field-label': priceHangNhat.trim() !== '',
                                         })}
                                         htmlFor="first-class-price"
                                     >
@@ -436,8 +463,8 @@ function AddFlight() {
                                         id="first-class-price"
                                         type="text"
                                         placeholder="Hạng nhất"
-                                        value={firstClassPrice}
-                                        onChange={(e) => setFirstClassPrice(e.target.value)}
+                                        value={priceHangNhat}
+                                        onChange={(e) => setPriceHangNhat(e.target.value)}
                                     />
                                 </div>
                             </div>

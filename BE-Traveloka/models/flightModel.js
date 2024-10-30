@@ -4,6 +4,10 @@ const flightSchema = new mongoose.Schema({
   flightCode: {
     type: String,
     required: [true, 'mã chuyến bay phải có giá trị'],
+    unique: true,
+    match: /^[A-Z]{2}\d{4}$/,
+    message:
+      'mã chuyến bay phải bắt đầu 2 chữ cái in hoa, và sau đó là 4 chữ số',
   },
   airlines: {
     type: String,

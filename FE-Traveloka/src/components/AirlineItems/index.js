@@ -12,11 +12,7 @@ function AirlineItems({ data, onClick }) {
             <div className={cx('info')}>
                 <FontAwesomeIcon className={cx('icon')} icon={faPlane} />
                 <div className={cx('info-airline')}>
-                    <div className={cx('name-airline')}>
-                        <p>{data.nameAirline}</p>
-                        <span className={cx('code-airline')}>{data.code}</span>
-                    </div>
-                    <p className={cx('short-name')}>{data.name}</p>
+                    <p>{data.nameAirline}</p>
                 </div>
             </div>
         </div>

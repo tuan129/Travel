@@ -49,29 +49,29 @@ function InfoCustomer() {
     };
 
     const handleNextClick = () => {
-        const contactInfoValid = Object.values(contactInfo).every((field) => field !== '');
-        const customerInfoValid = customerInfo.every((customer) =>
-            Object.values(customer).every((field) => field !== ''),
-        );
+        // const contactInfoValid = Object.values(contactInfo).every((field) => field !== '');
+        // const customerInfoValid = customerInfo.every((customer) =>
+        //     Object.values(customer).every((field) => field !== ''),
+        // );
 
-        if (contactInfoValid && customerInfoValid) {
-            navigate('/payment', {
-                state: {
-                    flight,
-                    returnFlight: returnFlight ? returnFlight : null,
-                    adultCount,
-                    childCount,
-                    infantCount,
-                    contactInfo,
-                    customerInfo,
-                    totalCustomer,
-                    seatMapping,
-                },
-            });
-        } else {
-            displayError('Vui lòng điền đầy đủ thông tin.');
-            return;
-        }
+        // if (contactInfoValid && customerInfoValid) {
+        navigate('/payment', {
+            state: {
+                flight,
+                returnFlight: returnFlight ? returnFlight : null,
+                adultCount,
+                childCount,
+                infantCount,
+                contactInfo,
+                customerInfo,
+                totalCustomer,
+                seatMapping,
+            },
+        });
+        // } else {
+        //     displayError('Vui lòng điền đầy đủ thông tin.');
+        //     return;
+        // }
     };
 
     const renderPassengerForms = () => {
