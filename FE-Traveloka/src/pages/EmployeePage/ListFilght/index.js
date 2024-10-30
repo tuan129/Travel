@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 
 function ListFlight() {
     const [flights, setFlights] = useState([]);
-    const [editingFlight, setEditingFlight] = useState(null);
+    const [idFlight, setIdFlight] = useState(null);
     const [editData, setEditData] = useState({});
     const [showAirfiled, setShowAirfiled] = useState(false);
     const [searchAirfield, setSearchAirfield] = useState([]);
@@ -43,7 +43,7 @@ function ListFlight() {
     };
 
     const handleEdit = (flight) => {
-        setEditingFlight(flight._id);
+        setIdFlight(flight._id);
         setEditData(flight);
     };
 
@@ -80,8 +80,8 @@ function ListFlight() {
                     },
                 },
             };
-            await axios.put(`http://localhost:5000/api/flight/${editingFlight}`, dataUpdate);
-            setEditingFlight(null);
+            await axios.put(`http://localhost:5000/api/flight/${idFlight}`, dataUpdate);
+            setIdFlight(null);
             console.log(dataUpdate);
         } catch (err) {
             console.error('Error saving flight:', err);
@@ -90,7 +90,7 @@ function ListFlight() {
     };
 
     const handleCancel = () => {
-        setEditingFlight(null);
+        setIdFlight(null);
     };
 
     useEffect(() => {
@@ -218,7 +218,7 @@ function ListFlight() {
                     <ul className={cx('list-flight-items')}>
                         {flights.map((flight) => (
                             <li key={flight._id} className={cx('flight-item')}>
-                                {editingFlight === flight._id ? (
+                                {idFlight === flight._id ? (
                                     <div className={cx('flight-info-edit')}>
                                         <div className={cx('info-airline-edit')}>
                                             <label>
