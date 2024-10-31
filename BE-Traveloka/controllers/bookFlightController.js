@@ -74,8 +74,4 @@ const createBooking = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 module.exports = { createBooking, getBookings, getAllBooking };
-=======
-module.exports = { createBooking, getBookings, getAllBooking };
->>>>>>> 2a75d80 (Edit form Addflights)

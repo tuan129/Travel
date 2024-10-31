@@ -18,11 +18,8 @@ function InfoCustomer() {
             setError('');
         }, 3000);
     };
-<<<<<<< HEAD
-    // quản lý trạng thái thông tin liên hệ
-=======
+
     //Quản lý trạng thái thông tin liên hệ
->>>>>>> 2a75d80 (Edit form Addflights)
     const [contactInfo, setContactInfo] = useState({
         fullName: '',
         phone: '',
@@ -57,10 +54,6 @@ function InfoCustomer() {
         // const customerInfoValid = customerInfo.every((customer) =>
         //     Object.values(customer).every((field) => field !== ''),
         // );
-<<<<<<< HEAD
-
-=======
->>>>>>> 2a75d80 (Edit form Addflights)
         // if (contactInfoValid && customerInfoValid) {
         navigate('/payment', {
             state: {

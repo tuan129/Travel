@@ -20,15 +20,9 @@ function HeaderEmployee() {
                     <li>
                         <a href="/">Hỗ Trợ</a>
                     </li>
-<<<<<<< HEAD
-                    <li>
-                        <a href="/">Hợp Tác Với Chúng Tôi</a>
-                    </li>
-=======
                     {/* <li>
                         <a href="/">Hợp Tác Với Chúng Tôi</a>
                     </li> */}
->>>>>>> 2a75d80 (Edit form Addflights)
                 </ul>
             </div>
         </header>

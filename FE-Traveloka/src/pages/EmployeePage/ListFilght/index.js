@@ -20,17 +20,6 @@ function ListFlight() {
     const [showAirfiled, setShowAirfiled] = useState(false);
     const [searchAirfield, setSearchAirfield] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
-<<<<<<< HEAD
-
-    const formatDate = (isoString) => {
-        return format(new Date(isoString), 'dd/MM/yyyy');
-    };
-
-    const formatTime = (isoString) => {
-        return format(new Date(isoString), 'HH:mm');
-    };
-=======
->>>>>>> 2a75d80 (Edit form Addflights)
 
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
@@ -40,11 +29,7 @@ function ListFlight() {
     };
     const handleDelete = async (flightNumber) => {
         try {
-<<<<<<< HEAD
-            await axios.delete(`http://localhost:5000/api/flight/${flightNumber}`);
-=======
             await axios.delete(`http://localhost:4000/api/flight/${flightNumber}`);
->>>>>>> 2a75d80 (Edit form Addflights)
             setFlights((prevFlights) => prevFlights.filter((flight) => flight.flightNumber !== flightNumber));
         } catch (error) {
             console.error('Error deleting flight:', error);
@@ -90,11 +75,8 @@ function ListFlight() {
                     },
                 },
             };
-<<<<<<< HEAD
-            await axios.put(`http://localhost:5000/api/flight/${idFlight}`, dataUpdate);
-=======
+
             await axios.put(`http://localhost:4000/api/flight/${idFlight}`, dataUpdate);
->>>>>>> 2a75d80 (Edit form Addflights)
             setIdFlight(null);
             console.log(dataUpdate);
         } catch (err) {
@@ -110,11 +92,7 @@ function ListFlight() {
     useEffect(() => {
         const fetchFlights = async () => {
             try {
-<<<<<<< HEAD
-                const res = await axios.get('http://localhost:5000/api/flight/dashboard');
-=======
                 const res = await axios.get('http://localhost:4000/api/flight/dashboard');
->>>>>>> 2a75d80 (Edit form Addflights)
                 setFlights(res.data.data.flight);
             } catch (err) {
                 console.error('Error fetching flights:', err);
@@ -127,11 +105,7 @@ function ListFlight() {
     useEffect(() => {
         const search = async () => {
             try {
-<<<<<<< HEAD
-                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
-=======
                 const res = await axios.get(`http://localhost:4000/api/airfield/search?keyword=${searchKeyword}`);
->>>>>>> 2a75d80 (Edit form Addflights)
                 const data = res.data;
                 setSearchAirfield(data.data.airfields);
                 setShowAirfiled(true);

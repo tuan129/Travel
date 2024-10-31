@@ -2,27 +2,14 @@ import classNames from 'classnames/bind';
 import styles from './Navbar.module.scss';
 import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
-
-const cx = classNames.bind(styles);
-
-function Navbar() {
-    const navigate = useNavigate();
-
-=======
 const cx = classNames.bind(styles);
 function Navbar() {
     const navigate = useNavigate();
->>>>>>> 2a75d80 (Edit form Addflights)
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         navigate('/login');
     };
-<<<<<<< HEAD
-
-=======
->>>>>>> 2a75d80 (Edit form Addflights)
     return (
         <div className={cx('wrapper')}>
             <div className={cx('nav-bar')}>
@@ -53,9 +40,4 @@ function Navbar() {
         </div>
     );
 }
-<<<<<<< HEAD
-
 export default Navbar;
-=======
-export default Navbar;
->>>>>>> 2a75d80 (Edit form Addflights)

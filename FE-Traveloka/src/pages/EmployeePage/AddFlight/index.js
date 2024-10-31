@@ -53,11 +53,7 @@ function AddFlight() {
     useEffect(() => {
         const search = async () => {
             try {
-<<<<<<< HEAD
-                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
-=======
                 const res = await axios.get(`http://localhost:4000/api/airfield/search?keyword=${searchKeyword}`);
->>>>>>> 2a75d80 (Edit form Addflights)
                 const data = res.data;
                 setSearchAirfield(data.data.airfields);
                 setShowAirfiled(true);
@@ -78,11 +74,7 @@ function AddFlight() {
         const searchAirlines = async () => {
             try {
                 const res = await axios.get(
-<<<<<<< HEAD
-                    `http://localhost:5000/api/airline/search?keyword=${searchAirfieldKeyword}`,
-=======
                     `http://localhost:4000/api/airline/search?keyword=${searchAirfieldKeyword}`,
->>>>>>> 2a75d80 (Edit form Addflights)
                 );
                 const data = res.data;
                 setSearchAirline(data.data.airlines);
@@ -134,11 +126,7 @@ function AddFlight() {
             }
             const departureTime = new Date(`${departureDate}T${departure}:00`);
             const arrivalTime = new Date(`${departureDate}T${arrival}:00`);
-<<<<<<< HEAD
-            await axios.post('http://localhost:5000/api/flight', {
-=======
             await axios.post('http://localhost:4000/api/flight', {
->>>>>>> 2a75d80 (Edit form Addflights)
                 flightCode,
                 airlines,
                 airfield: {
