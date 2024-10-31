@@ -38,13 +38,10 @@
     span {
         font-size: 20x;
         color: rgb(104, 113, 118);
-<<<<<<< HEAD
         margin-right: 12px;
         line-height: 42px;
-=======
         margin-right: 15px;
         line-height: 45px;
->>>>>>> 2a75d80 (Edit form Addflights)
     }
 
     input {
@@ -77,13 +74,10 @@
 }
 
 .btn-add-flight {
-<<<<<<< HEAD
     min-width: 150px;
     padding: 8px 12px;
-=======
     min-width: 200px;
     padding: 12px 12px;
->>>>>>> 2a75d80 (Edit form Addflights)
     font-size: 20px;
     align-self: center;
 }
@@ -92,16 +86,6 @@
     min-width: 260px;
 }
 
-<<<<<<< HEAD
-
-.field {
-	width: 100%;
-	float: left;
-	padding: 0.45em;
-	box-sizing: border-box;
-	position: relative;
-}
-=======
 .field {
     width: 100%;
     float: left;
@@ -110,7 +94,14 @@
     position: relative;
 }
 
->>>>>>> 2a75d80 (Edit form Addflights)
+.field {
+    width: 100%;
+    float: left;
+    padding: 0.45em;
+    box-sizing: border-box;
+    position: relative;
+}
+
 .field-label {
     font-size: 0.85714em;
     font-weight: normal;
@@ -144,10 +135,6 @@
     opacity: 1 !important;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2a75d80 (Edit form Addflights)
 .field-input {
     box-shadow: 0 0 0 1px #d9d9d9;
     transition: all 0.2s ease-out;
@@ -162,12 +149,4 @@
     border: none;
     line-height: 24px;
     font-size: 16px;
-<<<<<<< HEAD
 }
-
-
-
-
-=======
-}
->>>>>>> 2a75d80 (Edit form Addflights)

@@ -1,30 +1,16 @@
 import { useEffect, useState } from 'react';
-<<<<<<< HEAD
-
-// component
-=======
 //Component
->>>>>>> 2a75d80 (Edit form Addflights)
 import styles from './ListFilght.module.scss';
 import Button from '~/components/Button';
 import { Wrapper as PoperWrapper } from '~/components/Poper';
 import CityItems from '~/components/CityItems';
-<<<<<<< HEAD
-
-// library
-=======
 //Library
->>>>>>> 2a75d80 (Edit form Addflights)
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { format } from 'date-fns';
-<<<<<<< HEAD
-
-=======
->>>>>>> 2a75d80 (Edit form Addflights)
 const cx = classNames.bind(styles);
 
 function ListFlight() {
