@@ -67,11 +67,27 @@ const register = async (req, res) => {
           });
         });
     } else {
-      return res.status(400).json({ message: 'Account is exist!!!' });
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Account is exist!!!',
+      });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Error server' });
+    res.status(500).json({ status: 'fail', message: err.message });
   }
 };
 
-module.exports = { login, register };
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await Account.find(req.params);
+    res.json({
+      status: 'success',
+      results: users.length,
+      data: { users },
+    });
+  } catch (err) {
+    res.status(404).json({ status: 'fail', message: err.message });
+  }
+};
+
+module.exports = { login, register, getAllUsers };

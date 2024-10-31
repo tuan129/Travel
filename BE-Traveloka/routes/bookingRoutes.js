@@ -3,7 +3,10 @@ const bookingController = require('../controllers/bookFlightController');
 
 const router = express.Router();
 
-router.route('/:id').get(bookingController.getAllBookings);
-router.route('/').post(bookingController.createBooking);
+router
+  .route('/')
+  .post(bookingController.createBooking)
+  .get(bookingController.getAllBooking);
+router.route('/:id').get(bookingController.getBookings);
 
 module.exports = router;

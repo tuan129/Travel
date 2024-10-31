@@ -1,6 +1,26 @@
 const Booking = require('../models/bookingModel');
 
-const getAllBookings = async (req, res) => {
+const getAllBooking = async (req, res) => {
+  try {
+    const booking = await Booking.find(req.params)
+      .populate('user', 'fullname email')
+      .populate('flight');
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        booking,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+const getBookings = async (req, res) => {
   try {
     const userId = req.user ? req.user._id : null;
 
@@ -54,4 +74,4 @@ const createBooking = async (req, res) => {
   }
 };
 
-module.exports = { createBooking, getAllBookings };
+module.exports = { createBooking, getBookings, getAllBooking };

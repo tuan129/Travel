@@ -83,6 +83,6 @@ const flightSchema = new mongoose.Schema({
   },
 });
 
-const Flight = mongoose.model('Flight', flightSchema);
+const Flight = mongoose.model('flight', flightSchema);
 
 module.exports = Flight;

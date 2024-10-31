@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const bookingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'users',
+    ref: 'user',
     required: [true, 'Người dùng phải tồn tại'],
   },
   flight: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Flight',
+    ref: 'flight',
     required: [true, 'Phải có một chuyến bay được chọn'],
   },
   infoContact: {
