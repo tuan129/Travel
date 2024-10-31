@@ -1,13 +1,10 @@
 //Hook
 import { useEffect, useState, useContext } from 'react';
-
 //Component
 import Button from '~/components/Button';
 import Context from '~/components/useContext/Context';
-
 // Styles
 import styles from './Viewcustomer.module.scss';
-
 // Library
 import classNames from 'classnames/bind';
 import axios from 'axios';
@@ -22,7 +19,7 @@ function Viewcustomer() {
     useEffect(() => {
         // Fetch flights
         axios
-            .post('http://localhost:3001/api/flights')
+            .post('http://localhost:3000/api/flights')
             .then((response) => {
                 setLocalFlights(response.data);
                 setFlights(response.data);
@@ -33,7 +30,7 @@ function Viewcustomer() {
 
         // Fetch customers
         axios
-            .post('http://localhost:3001/api/customers')
+            .post('http://localhost:3000/api/customers')
             .then((response) => {
                 setLocalCustomers(response.data);
                 setCustomers(response.data);

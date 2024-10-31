@@ -35,7 +35,7 @@ function Register() {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/users/register', {
+            const response = await axios.post('http://localhost:4000/api/users/register', {
                 fullname,
                 email,
                 password,
@@ -56,7 +56,7 @@ function Register() {
                     <div className={cx('account')}>
                         <div className={cx('input-form')}>
                             <label>
-                                <span>Họ và tên: </span>
+                                <span>Họ tên: </span>
                                 <input
                                     className={cx('name-account')}
                                     type="text"
@@ -67,7 +67,7 @@ function Register() {
                         </div>
                         <div className={cx('input-form')}>
                             <label>
-                                <span>Email:</span>
+                                <span>Email: </span>
                                 <input
                                     className={cx('name-login')}
                                     type="text"
@@ -91,7 +91,7 @@ function Register() {
                         </div>
                         <div className={cx('input-form')}>
                             <label>
-                                <span>Re-Pass:</span>
+                                <span>Re-Pass: </span>
                                 <input
                                     className={cx('re-pass')}
                                     type="password"
@@ -111,7 +111,7 @@ function Register() {
                     <span>
                         have an account?{' '}
                         <Button text to="/login">
-                            Login
+                            LOGIN
                         </Button>
                     </span>
                 </div>

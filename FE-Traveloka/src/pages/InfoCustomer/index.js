@@ -18,13 +18,17 @@ function InfoCustomer() {
             setError('');
         }, 3000);
     };
+<<<<<<< HEAD
     // quản lý trạng thái thông tin liên hệ
+=======
+    //Quản lý trạng thái thông tin liên hệ
+>>>>>>> 2a75d80 (Edit form Addflights)
     const [contactInfo, setContactInfo] = useState({
         fullName: '',
         phone: '',
         email: '',
     });
-    // Quản lý trạng thái thông tin khách hàng
+    //Quản lý trạng thái thông tin khách hàng
     const [customerInfo, setCustomerInfo] = useState(
         Array.from({ length: totalCustomer }, () => ({
             fullName: '',
@@ -53,7 +57,10 @@ function InfoCustomer() {
         // const customerInfoValid = customerInfo.every((customer) =>
         //     Object.values(customer).every((field) => field !== ''),
         // );
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2a75d80 (Edit form Addflights)
         // if (contactInfoValid && customerInfoValid) {
         navigate('/payment', {
             state: {
@@ -90,7 +97,7 @@ function InfoCustomer() {
                                 value={customerInfo[i]?.fullName}
                                 onChange={(e) => handlePassengerChange(i, e)}
                             />
-                            <p>như trên CMND (không dấu)</p>
+                            <p>như trên CCCD (không dấu)</p>
                         </div>
                         <div className={cx('email')}>
                             <p>Quốc tịch</p>
@@ -128,7 +135,7 @@ function InfoCustomer() {
                                 value={customerInfo[adultCount + i]?.fullName}
                                 onChange={(e) => handlePassengerChange(adultCount + i, e)}
                             />
-                            <p>như trên CMND (không dấu)</p>
+                            <p>như trên CCCD (không dấu)</p>
                         </div>
                         <div className={cx('email')}>
                             <p>Quốc tịch</p>
@@ -166,7 +173,7 @@ function InfoCustomer() {
                                 value={customerInfo[adultCount + childCount + i]?.fullName}
                                 onChange={(e) => handlePassengerChange(adultCount + childCount + i, e)}
                             />
-                            <p>như trên CMND (không dấu)</p>
+                            <p>như trên CCCD (không dấu)</p>
                         </div>
                         <div className={cx('email')}>
                             <p>Quốc tịch</p>
@@ -210,7 +217,7 @@ function InfoCustomer() {
                                         value={contactInfo.fullName}
                                         onChange={handleContactChange}
                                     />
-                                    <p>như trên CMND (không dấu)</p>
+                                    <p>như trên CCCD (không dấu)</p>
                                 </div>
                                 <div className={cx('phone')}>
                                     <p>Số điện thoại</p>
@@ -240,7 +247,7 @@ function InfoCustomer() {
                     </div>
                     {error && <span className={cx('error')}>{error}</span>}
                     <Button primary className={cx('next')} onClick={handleNextClick}>
-                        Tiếp tục
+                        TIẾP TỤC
                     </Button>
                 </div>
             </div>

@@ -63,7 +63,7 @@ function Header() {
                 </ul>
             </div>
             <div className={cx('title-page')}>
-                <a href="/">Vé máy bay</a>
+                <a href="/">VÉ MÁY BAY</a>
             </div>
         </header>
     );

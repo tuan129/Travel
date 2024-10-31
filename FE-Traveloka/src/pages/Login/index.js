@@ -21,7 +21,7 @@ function Login() {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/users/login', {
+            const response = await axios.post('http://localhost:4000/api/users/login', {
                 email,
                 password,
             });
@@ -51,11 +51,11 @@ function Login() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('login')}>
-                <h2>Login</h2>
+                <h2>LOGIN</h2>
                 <div className={cx('input')}>
                     <div className={cx('input-form')}>
                         <label>
-                            <span>Email:</span>
+                            <span>Email: </span>
                             <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
                         </label>
                     </div>
@@ -67,7 +67,7 @@ function Login() {
                     </div>
                     {error && <p className={cx('error')}>{error}</p>}
                     <Button primary onClick={handleLogin}>
-                        Login
+                        LOGIN
                     </Button>
                 </div>
                 <div className={cx('login-orthers')}>

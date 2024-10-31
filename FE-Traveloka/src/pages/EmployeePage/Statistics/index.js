@@ -26,7 +26,7 @@ function Statistics() {
 
     useEffect(() => {
         axios
-            .post('http://localhost:3001/api/revenue')
+            .post('http://localhost:3000/api/revenue')
             .then((response) => {
                 const groupedRevenue = groupRevenueByMonth(response.data);
                 setMonthlyRevenue(groupedRevenue);

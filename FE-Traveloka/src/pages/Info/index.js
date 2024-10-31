@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCircleUser, faTableList } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets/images';
+
 const cx = classNames.bind(styles);
 function Info() {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -13,8 +14,13 @@ function Info() {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
+<<<<<<< HEAD
                 // const response = await axios.get('API_ENDPOINT_HERE');
                 // setBookings(response.data);
+=======
+                //const response = await axios.get('API_ENDPOINT_HERE');
+                //setBookings(response.data);
+>>>>>>> 2a75d80 (Edit form Addflights)
             } catch (err) {
                 console.error(err);
             }
@@ -28,9 +34,13 @@ function Info() {
                     <div className={cx('container')}>
                         <div className={cx('header-left')}>
                             <FontAwesomeIcon className={cx('icon')} icon={faCircleUser} />
+<<<<<<< HEAD
                             <h1 className={cx('name-user')}>
                                 <span className={cx('wellcome')}>Hello</span> {user.fullname}
                             </h1>
+=======
+                            <h1 className={cx('name-user')}>{user.fullname}</h1>
+>>>>>>> 2a75d80 (Edit form Addflights)
                         </div>
                         <div className={cx('content-left')}>
                             <div className={cx('my-booking')}>

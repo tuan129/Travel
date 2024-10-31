@@ -90,4 +90,8 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 module.exports = { login, register, getAllUsers };
+=======
+module.exports = { login, register, getAllUsers };
+>>>>>>> 2a75d80 (Edit form Addflights)
