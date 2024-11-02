@@ -217,7 +217,7 @@ function AddFlight() {
                         </div>
                         <div>
                             <label>
-                                <span> Sân bay khởi hành</span>
+                                <span> Sân bay cất </span>
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
@@ -252,7 +252,7 @@ function AddFlight() {
                         </div>
 
                         <label>
-                            <span> Thời gian cất cánh</span>
+                            <span> Thời gian cất </span>
                             <input
                                 type="time"
                                 placeholder="Departure Time"
@@ -350,7 +350,7 @@ function AddFlight() {
                         </label>
                         <div>
                             <label>
-                                <span> Sân bay đến</span>
+                                <span> Sân bay hạ </span>
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
@@ -384,7 +384,7 @@ function AddFlight() {
                             </label>
                         </div>
                         <label>
-                            <span> Thời gian đến</span>
+                            <span> Thời gian hạ </span>
                             <input
                                 type="time"
                                 placeholder="Arrival Time"
