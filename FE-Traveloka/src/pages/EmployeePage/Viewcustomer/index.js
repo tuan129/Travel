@@ -43,7 +43,7 @@ function Viewcustomer() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h1>Danh sách Khách hàng:</h1>
+                <h1>DANH SÁCH KHÁCH HÀNG</h1>
                 <div className={cx('list-customer')}>
                     {flights.map((flight) => (
                         <div key={flight.flightNumber} className={cx('customer-of-airline')}>

@@ -61,7 +61,7 @@ function Statistics() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h1>Doanh Thu</h1>
+                <h1>DOANH THU</h1>
                 <div className={cx('chart-layout')}>
                     {isLoading
                         ? monthNames.map((month, index) => (
