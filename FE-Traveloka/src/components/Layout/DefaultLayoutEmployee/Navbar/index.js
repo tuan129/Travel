@@ -21,7 +21,7 @@ function Navbar() {
                         Thêm chuyến bay
                     </Button>
                     <Button outline to="/viewcustomer" className={cx('btn-nav-bar')}>
-                        Xem thông tin khách hàng
+                        Thông tin khách hàng
                     </Button>
                     <Button outline to="/statistics" className={cx('btn-nav-bar')}>
                         Thống kê doanh thu
@@ -30,10 +30,10 @@ function Navbar() {
                         Hãng hàng không
                     </Button>
                     <Button outline to="/addairfield" className={cx('btn-nav-bar')}>
-                        Các sân bay
+                        Sân bay
                     </Button>
                     <Button primary className={cx('btn-nav-bar')} onClick={handleLogout}>
-                        Đăng xuất
+                        ĐĂNG XUẤT
                     </Button>
                 </div>
             </div>
