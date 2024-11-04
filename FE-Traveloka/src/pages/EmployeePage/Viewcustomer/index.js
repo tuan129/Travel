@@ -1,5 +1,10 @@
 //Hook
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+
+//Component
+import Button from '~/components/Button';
+import Context from '~/components/useContext/Context';
+
 // Styles
 import styles from './Viewcustomer.module.scss';
 // Library
@@ -12,33 +17,33 @@ function Viewcustomer() {
     const [customers, setLocalCustomers] = useState([]);
 
     useEffect(() => {
-        const getBooking = async () => {
-            try {
-                const res = await axios.get('http://localhost:5000/api/booking/');
-                const groupedFlights = res.data.data.booking.reduce((acc, booking) => {
-                    const flightId = booking.flight._id;
-                    if (!acc[flightId]) {
-                        acc[flightId] = {
-                            flight: booking.flight,
-                            customers: [],
-                        };
-                    }
-                    acc[flightId].customers.push(booking);
-                    return acc;
-                }, {});
+        // Fetch flights
+        axios
+            .post('http://localhost:3001/api/flights')
+            .then((response) => {
+                setLocalFlights(response.data);
+                setFlights(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching flights:', error);
+            });
 
-                setFlights(Object.values(groupedFlights));
-            } catch (err) {
-                console.error('Error fetching flights:', err);
-            }
-        };
-        getBooking();
-    }, []);
+        // Fetch customers
+        axios
+            .post('http://localhost:3001/api/customers')
+            .then((response) => {
+                setLocalCustomers(response.data);
+                setCustomers(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching customers:', error);
+            });
+    }, [setFlights, setCustomers]);
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h1>Danh sách Khách hàng</h1>
+                <h1>Danh sách Khách hàng:</h1>
                 <div className={cx('list-customer')}>
                     {flights.map((flightData) => (
                         <div key={flightData.flight._id} className={cx('customer-of-airline')}>

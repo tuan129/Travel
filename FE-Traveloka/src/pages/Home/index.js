@@ -184,7 +184,7 @@ function Home() {
     useEffect(() => {
         const searchResults = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
+                const res = await axios.get(`http://localhost:4000/api/airfield/search?keyword=${searchKeyword}`);
                 const data = res.data;
                 setSearchResults(data.data.airfields);
                 setShowSearchResults(true);
@@ -208,7 +208,7 @@ function Home() {
             return;
         }
         try {
-            const res = await axios.get('http://localhost:5000/api/flight', {
+            const res = await axios.get('http://localhost:4000/api/flight', {
                 params: {
                     //Đi từ đâu
                     from,

@@ -2,18 +2,14 @@ import classNames from 'classnames/bind';
 import styles from './Navbar.module.scss';
 import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
-
 const cx = classNames.bind(styles);
-
 function Navbar() {
     const navigate = useNavigate();
-
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         navigate('/login');
     };
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('nav-bar')}>
@@ -25,7 +21,7 @@ function Navbar() {
                         Thêm chuyến bay
                     </Button>
                     <Button outline to="/viewcustomer" className={cx('btn-nav-bar')}>
-                        Xem thông tin khách hàng
+                        Thông tin khách hàng
                     </Button>
                     <Button outline to="/statistics" className={cx('btn-nav-bar')}>
                         Thống kê doanh thu
@@ -34,15 +30,14 @@ function Navbar() {
                         Hãng hàng không
                     </Button>
                     <Button outline to="/addairfield" className={cx('btn-nav-bar')}>
-                        Các sân bay
+                        Sân bay
                     </Button>
                     <Button primary className={cx('btn-nav-bar')} onClick={handleLogout}>
-                        Đăng xuất
+                        ĐĂNG XUẤT
                     </Button>
                 </div>
             </div>
         </div>
     );
 }
-
 export default Navbar;

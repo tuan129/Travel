@@ -1,19 +1,16 @@
 import { useEffect, useState } from 'react';
-
-// component
+//Component
 import styles from './ListFilght.module.scss';
 import Button from '~/components/Button';
 import { Wrapper as PoperWrapper } from '~/components/Poper';
 import CityItems from '~/components/CityItems';
-
-// library
+//Library
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { format } from 'date-fns';
-
 const cx = classNames.bind(styles);
 
 function ListFlight() {
@@ -27,14 +24,12 @@ function ListFlight() {
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
     };
-
     const formatTime = (isoString) => {
         return format(new Date(isoString), 'HH:mm');
     };
-
     const handleDelete = async (flightNumber) => {
         try {
-            await axios.delete(`http://localhost:5000/api/flight/${flightNumber}`);
+            await axios.delete(`http://localhost:4000/api/flight/${flightNumber}`);
             setFlights((prevFlights) => prevFlights.filter((flight) => flight.flightNumber !== flightNumber));
         } catch (error) {
             console.error('Error deleting flight:', error);
@@ -80,7 +75,8 @@ function ListFlight() {
                     },
                 },
             };
-            await axios.put(`http://localhost:5000/api/flight/${idFlight}`, dataUpdate);
+
+            await axios.put(`http://localhost:4000/api/flight/${idFlight}`, dataUpdate);
             setIdFlight(null);
             console.log(dataUpdate);
         } catch (err) {
@@ -96,7 +92,7 @@ function ListFlight() {
     useEffect(() => {
         const fetchFlights = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/flight/dashboard');
+                const res = await axios.get('http://localhost:4000/api/flight/dashboard');
                 setFlights(res.data.data.flight);
             } catch (err) {
                 console.error('Error fetching flights:', err);
@@ -109,7 +105,7 @@ function ListFlight() {
     useEffect(() => {
         const search = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
+                const res = await axios.get(`http://localhost:4000/api/airfield/search?keyword=${searchKeyword}`);
                 const data = res.data;
                 setSearchAirfield(data.data.airfields);
                 setShowAirfiled(true);
@@ -214,7 +210,7 @@ function ListFlight() {
     return (
         <div className={cx('wrapper-list-flight')}>
             <div className={cx('content')}>
-                <h1>Danh sách các chuyến bay:</h1>
+                <h1>DANH SÁCH</h1>
                 <div className={cx('list-flight')}>
                     <ul className={cx('list-flight-items')}>
                         {flights.map((flight) => (

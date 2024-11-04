@@ -53,7 +53,7 @@ function AddFlight() {
     useEffect(() => {
         const search = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/airfield/search?keyword=${searchKeyword}`);
+                const res = await axios.get(`http://localhost:4000/api/airfield/search?keyword=${searchKeyword}`);
                 const data = res.data;
                 setSearchAirfield(data.data.airfields);
                 setShowAirfiled(true);
@@ -74,7 +74,7 @@ function AddFlight() {
         const searchAirlines = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:5000/api/airline/search?keyword=${searchAirfieldKeyword}`,
+                    `http://localhost:4000/api/airline/search?keyword=${searchAirfieldKeyword}`,
                 );
                 const data = res.data;
                 setSearchAirline(data.data.airlines);
@@ -126,7 +126,7 @@ function AddFlight() {
             }
             const departureTime = new Date(`${departureDate}T${departure}:00`);
             const arrivalTime = new Date(`${departureDate}T${arrival}:00`);
-            await axios.post('http://localhost:5000/api/flight', {
+            await axios.post('http://localhost:4000/api/flight', {
                 flightCode,
                 airlines,
                 airfield: {
@@ -168,7 +168,7 @@ function AddFlight() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h1>Add Flight</h1>
+                <h1>ĐIỀN THÔNG TIN CHUYẾN BAY</h1>
                 <div className={cx('add-flight')}>
                     <div className={cx('flight-info')}>
                         <label>
@@ -217,7 +217,7 @@ function AddFlight() {
                         </div>
                         <div>
                             <label>
-                                <span> Sân bay khởi hành</span>
+                                <span> Sân bay cất </span>
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
@@ -252,7 +252,7 @@ function AddFlight() {
                         </div>
 
                         <label>
-                            <span> Thời gian cất cánh</span>
+                            <span> Thời gian cất </span>
                             <input
                                 type="time"
                                 placeholder="Departure Time"
@@ -350,7 +350,7 @@ function AddFlight() {
                         </label>
                         <div>
                             <label>
-                                <span> Sân bay đến</span>
+                                <span> Sân bay hạ </span>
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
@@ -384,7 +384,7 @@ function AddFlight() {
                             </label>
                         </div>
                         <label>
-                            <span> Thời gian đến</span>
+                            <span> Thời gian hạ </span>
                             <input
                                 type="time"
                                 placeholder="Arrival Time"
@@ -472,7 +472,7 @@ function AddFlight() {
                     </div>
                 </div>
                 <Button primary className={cx('btn-add-flight')} onClick={handleAddFlight}>
-                    Add
+                    THÊM
                 </Button>
             </div>
         </div>

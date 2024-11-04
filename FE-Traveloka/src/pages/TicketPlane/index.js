@@ -81,7 +81,7 @@ function TicketPlane() {
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <ul className={cx('list-tickets')}>
-                    <h1>Danh sách các chuyến bay</h1>
+                    <h1>Danh sách chuyến bay</h1>
                     {!isSelectingReturn &&
                         flights.map((flight, index) => (
                             <li key={index} className={cx('ticket-item')}>
@@ -171,7 +171,7 @@ function TicketPlane() {
                                             Thời gian cất cánh: {formatDateTime(returnFlight.time.departure)} - Thời
                                             gian hạ cánh: {formatDateTime(returnFlight.time.arrival)}
                                         </p>
-                                        <p>{returnFlight.tickets[seatMapping].price.toLocaleString()} VND/ Khách </p>
+                                        <p>{returnFlight.tickets[seatMapping].price.toLocaleString()} VNĐ/Khách </p>
                                     </div>
                                 )}
                             </li>

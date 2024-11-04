@@ -197,8 +197,8 @@ function Footer() {
             </div>
             <div className={cx('footer-nav')}>
                 <p>
-                    Công ty TNHH Traveloka Việt Nam. Mã số DN: 0313581779. Tòa nhà An Phú, 117-119 Lý Chính Thắng, P. 7,
-                    Q. 3, TPHCM
+                    Công ty TNHH Traveloka Việt Nam. Mã số DN: 0313581779. Tòa nhà An Phú, 117-119 Lý Chính Thắng, P.7,
+                    Q.3, TPHCM
                 </p>
                 <p>Copyright © 2024 Traveloka. All rights reserved</p>
             </div>

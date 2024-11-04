@@ -6,11 +6,17 @@
     .content {
         width: 100%;
         border: 2px solid var(--black);
-        border-radius: 5px;
+        border-radius: 30px;
         padding: 8px 16px;
 
         .list-customer {
             margin-top: 16px;
+        }
+
+        h1 {
+            color: rgb(104, 113, 118);
+            font-size: 30px;
+            font-weight: 800;
         }
     }
 }
