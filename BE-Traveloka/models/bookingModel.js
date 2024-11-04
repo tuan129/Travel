@@ -11,6 +11,11 @@ const bookingSchema = new mongoose.Schema({
     ref: 'flight',
     required: [true, 'Phải có một chuyến bay được chọn'],
   },
+  status: {
+    type: String,
+    enum: ['pending', 'checked-in', 'cancelled'],
+    default: 'pending',
+  },
   infoContact: {
     fullName: {
       type: String,

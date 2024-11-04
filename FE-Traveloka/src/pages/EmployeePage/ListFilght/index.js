@@ -126,6 +126,7 @@ function ListFlight() {
         }
     }, [searchKeyword]);
 
+    
     const handleChange = (e, type) => {
         const keyword = e.target.value;
         setSearchKeyword(keyword);

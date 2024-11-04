@@ -1,72 +1,58 @@
 //Hook
-import { useEffect, useState, useContext } from 'react';
-
-//Component
-import Button from '~/components/Button';
-import Context from '~/components/useContext/Context';
-
+import { useEffect, useState } from 'react';
 // Styles
 import styles from './Viewcustomer.module.scss';
-
 // Library
 import classNames from 'classnames/bind';
 import axios from 'axios';
-
 const cx = classNames.bind(styles);
 
 function Viewcustomer() {
-    const { setFlights, setCustomers } = useContext(Context);
-    const [flights, setLocalFlights] = useState([]);
+    const [flights, setFlights] = useState([]);
     const [customers, setLocalCustomers] = useState([]);
 
     useEffect(() => {
-        // Fetch flights
-        axios
-            .post('http://localhost:3001/api/flights')
-            .then((response) => {
-                setLocalFlights(response.data);
-                setFlights(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching flights:', error);
-            });
+        const getBooking = async () => {
+            try {
+                const res = await axios.get('http://localhost:5000/api/booking/');
+                const groupedFlights = res.data.data.booking.reduce((acc, booking) => {
+                    const flightId = booking.flight._id;
+                    if (!acc[flightId]) {
+                        acc[flightId] = {
+                            flight: booking.flight,
+                            customers: [],
+                        };
+                    }
+                    acc[flightId].customers.push(booking);
+                    return acc;
+                }, {});
 
-        // Fetch customers
-        axios
-            .post('http://localhost:3001/api/customers')
-            .then((response) => {
-                setLocalCustomers(response.data);
-                setCustomers(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching customers:', error);
-            });
-    }, [setFlights, setCustomers]);
+                setFlights(Object.values(groupedFlights));
+            } catch (err) {
+                console.error('Error fetching flights:', err);
+            }
+        };
+        getBooking();
+    }, []);
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h1>Danh sách Khách hàng:</h1>
+                <h1>Danh sách Khách hàng</h1>
                 <div className={cx('list-customer')}>
-                    {flights.map((flight) => (
-                        <div key={flight.flightNumber} className={cx('customer-of-airline')}>
-                            <h1 className={cx('flight-number')}>Mã chuyến bay: {flight.flightNumber}</h1>
+                    {flights.map((flightData) => (
+                        <div key={flightData.flight._id} className={cx('customer-of-airline')}>
+                            <h1 className={cx('flight-number')}>Mã chuyến bay: {flightData.flight.flightCode}</h1>
                             <ul className={cx('list-customer-item')}>
-                                {customers
-                                    .filter((customer) => customer.flightNumber === flight.flightNumber)
-                                    .map((customer) => (
-                                        <li key={customer.id} className={cx('customer-item')}>
-                                            <div className={cx('customer-info')}>
-                                                <p className={cx('name')}>Tên Khách hàng: {customer.name}</p>
-                                                <p className={cx('email')}>Email: {customer.email}</p>
-                                                <p className={cx('code-ticket')}>Mã vé: {customer.ticketCode}</p>
-                                                <p className={cx('reason')}>Lý do hủy vé: {customer.cancelReason}</p>
-                                            </div>
-                                            <Button className={cx('btn-delete')} primary>
-                                                Hủy vé
-                                            </Button>
-                                        </li>
-                                    ))}
+                                {flightData.customers.map((booking) => (
+                                    <li key={booking._id} className={cx('customer-item')}>
+                                        <div className={cx('customer-info')}>
+                                            <p className={cx('name')}>Tên Khách hàng: {booking.infoContact.fullName}</p>
+                                            <p className={cx('email')}>Email: {booking.infoContact.email}</p>
+                                            <p className={cx('code-ticket')}>Mã vé: {booking.flight._id}</p>
+                                        </div>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     ))}
