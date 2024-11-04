@@ -58,7 +58,6 @@ function Viewcustomer() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {console.log(flightData.customers)}
                                     {flightData.customers.map((booking) =>
                                         booking.infoCustomers.map((customer, index) => (
                                             <tr key={index}>
