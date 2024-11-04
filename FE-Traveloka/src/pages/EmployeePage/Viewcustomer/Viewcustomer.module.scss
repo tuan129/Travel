@@ -5,7 +5,7 @@
 
     .content {
         width: 100%;
-        border: 2px solid var(--black);
+        border: 1px solid var(--black);
         border-radius: 30px;
         padding: 8px 16px;
 
@@ -19,40 +19,32 @@
             font-weight: 800;
         }
     }
+
 }
 
-.list-customer-item {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
+.customer-of-airline{
+    margin-bottom: 16px;
 
-    .customer-of-airline {
-        width: 49%;
-
-        h1 {
-            text-indent: 15px;
-        }
+    .flight-number{
+        font-size: 24px !important;
+        color: var(--primary) !important;
     }
 
-    .customer-item {
-        margin: 12px 0;
-        border: 1px solid var(--primary);
-        border-radius: 5px;
-        display: flex;
-        justify-content: space-between;
-
-        .customer-info {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 20px;
-            padding: 8px 16px;
+    .customer-table{
+        margin-top: 12px;
+        border-collapse: collapse;
+        width: 100%;
+        th, td{
+            border: 1px solid #ccc; 
+            padding: 8px; 
+            text-align: center;
         }
-
-        .btn-delete {
-            min-height: 40px;
-            align-self: center;
-            margin-right: 12px;
-        }
+    }
+    
+    .table-heading{
+        background-color: var(--primary);
+        color: var(--white);
     }
 }
+
+

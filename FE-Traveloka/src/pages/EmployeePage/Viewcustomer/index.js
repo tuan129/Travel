@@ -1,10 +1,4 @@
-//Hook
-import { useEffect, useState, useContext } from 'react';
-
-//Component
-import Button from '~/components/Button';
-import Context from '~/components/useContext/Context';
-
+import { useEffect, useState } from 'react';
 // Styles
 import styles from './Viewcustomer.module.scss';
 // Library
@@ -14,51 +8,84 @@ const cx = classNames.bind(styles);
 
 function Viewcustomer() {
     const [flights, setFlights] = useState([]);
-    const [customers, setLocalCustomers] = useState([]);
 
     useEffect(() => {
-        // Fetch flights
-        axios
-            .post('http://localhost:3001/api/flights')
-            .then((response) => {
-                setLocalFlights(response.data);
-                setFlights(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching flights:', error);
-            });
+        const getBooking = async () => {
+            try {
+                const res = await axios.get('http://localhost:4000/api/booking');
+                const groupedFlights = res.data.data.booking.reduce((acc, booking) => {
+                    const flightId = booking.flight._id;
+                    if (!acc[flightId]) {
+                        acc[flightId] = {
+                            flight: booking.flight,
+                            customers: [],
+                        };
+                    }
+                    acc[flightId].customers.push(booking);
+                    return acc;
+                }, {});
 
-        // Fetch customers
-        axios
-            .post('http://localhost:3001/api/customers')
-            .then((response) => {
-                setLocalCustomers(response.data);
-                setCustomers(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching customers:', error);
-            });
-    }, [setFlights, setCustomers]);
+                setFlights(Object.values(groupedFlights));
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu chuyến bay:', err);
+            }
+        };
+        getBooking();
+    }, []);
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h1>Danh sách Khách hàng:</h1>
+                <h1>Danh sách Khách hàng</h1>
                 <div className={cx('list-customer')}>
                     {flights.map((flightData) => (
                         <div key={flightData.flight._id} className={cx('customer-of-airline')}>
-                            <h1 className={cx('flight-number')}>Mã chuyến bay: {flightData.flight.flightCode}</h1>
-                            <ul className={cx('list-customer-item')}>
-                                {flightData.customers.map((booking) => (
-                                    <li key={booking._id} className={cx('customer-item')}>
-                                        <div className={cx('customer-info')}>
-                                            <p className={cx('name')}>Tên Khách hàng: {booking.infoContact.fullName}</p>
-                                            <p className={cx('email')}>Email: {booking.infoContact.email}</p>
-                                            <p className={cx('code-ticket')}>Mã vé: {booking.flight._id}</p>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
+                            <h1 className={cx('flight-number')}>Mã chuyến bay {flightData.flight.flightCode}</h1>
+                            <table className={cx('customer-table')}>
+                                <thead>
+                                    <tr className={cx('table-heading')}>
+                                        <th colSpan={3}>Thông tin liên hệ</th>
+                                        <th colSpan={4}>Thông tin khách hàng</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Tên</th>
+                                        <th>SĐT</th>
+                                        <th>Email</th>
+                                        <th>Tên khách hàng</th>
+                                        <th>Số ghế</th>
+                                        <th>Quốc tịch</th>
+                                        <th>Loại</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {console.log(flightData.customers)}
+                                    {flightData.customers.map((booking) =>
+                                        booking.infoCustomers.map((customer, index) => (
+                                            <tr key={index}>
+                                                {index === 0 && (
+                                                    <td rowSpan={booking.infoCustomers.length}>
+                                                        {booking.infoContact.fullName}
+                                                    </td>
+                                                )}
+                                                {index === 0 && (
+                                                    <td rowSpan={booking.infoCustomers.length}>
+                                                        {booking.infoContact.phone}
+                                                    </td>
+                                                )}
+                                                {index === 0 && (
+                                                    <td rowSpan={booking.infoCustomers.length}>
+                                                        {booking.infoContact.email}
+                                                    </td>
+                                                )}
+                                                <td>{customer.fullName}</td>
+                                                <td>{customer.seatNumber}</td>
+                                                <td>{customer.nationality}</td>
+                                                <td>{customer.customerType}</td>
+                                            </tr>
+                                        )),
+                                    )}
+                                </tbody>
+                            </table>
                         </div>
                     ))}
                 </div>

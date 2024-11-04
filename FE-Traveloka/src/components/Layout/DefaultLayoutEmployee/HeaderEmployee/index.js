@@ -17,12 +17,12 @@ function HeaderEmployee() {
                         <img className={cx('percent')} src={images.percent} alt="khuyen_mai" />
                         <a href="/">Khuyến Mãi</a>
                     </li>
-                    {/* <li>
+                    <li>
                         <a href="/">Hỗ Trợ</a>
-                    </li> */}
-                    {/* <li>
+                    </li>
+                    <li>
                         <a href="/">Hợp Tác Với Chúng Tôi</a>
-                    </li> */}
+                    </li>
                 </ul>
             </div>
         </header>

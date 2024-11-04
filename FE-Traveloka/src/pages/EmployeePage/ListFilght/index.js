@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 //Component
 import styles from './ListFilght.module.scss';
 import Button from '~/components/Button';
@@ -20,6 +20,7 @@ function ListFlight() {
     const [showAirfiled, setShowAirfiled] = useState(false);
     const [searchAirfield, setSearchAirfield] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
+    const [error, setError] = useState('');
 
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
@@ -76,9 +77,9 @@ function ListFlight() {
                 },
             };
 
-            await axios.put(`http://localhost:4000/api/flight/${idFlight}`, dataUpdate);
+            await axios.patch(`http://localhost:4000/api/flight/${idFlight}`, dataUpdate);
             setIdFlight(null);
-            console.log(dataUpdate);
+            window.location.reload();
         } catch (err) {
             console.error('Error saving flight:', err);
             alert('Failed to save flight. Please try again.');
@@ -110,7 +111,7 @@ function ListFlight() {
                 setSearchAirfield(data.data.airfields);
                 setShowAirfiled(true);
             } catch (err) {
-                console.error('Error fetching search results:', err);
+                console.log('Error fetching search results:', err);
                 setSearchAirfield([]);
                 setShowAirfiled(false);
             }
@@ -122,7 +123,6 @@ function ListFlight() {
         }
     }, [searchKeyword]);
 
-    
     const handleChange = (e, type) => {
         const keyword = e.target.value;
         setSearchKeyword(keyword);
@@ -177,35 +177,36 @@ function ListFlight() {
         }
         setShowAirfiled(false);
     };
-
-    const handleInputChange = (newData, field) => {
-        if (field.includes('.')) {
-            const [parentField, subField] = field.split('.');
-            if (parentField === 'time') {
-                const { value } = newData.target;
-                const [hours, minutes] = value.split(':');
-                const departureDate = editData.date;
-                const timeValue = new Date(`${departureDate}T${hours}:${minutes}:00`);
-                setEditData((prevData) => ({
-                    ...prevData,
-                    [parentField]: {
-                        ...prevData[parentField],
-                        [subField]: timeValue.toISOString(),
-                    },
-                }));
+    const handleInputChange = useCallback(
+        (newData, field) => {
+            if (field.includes('.')) {
+                const [parentField, subField] = field.split('.');
+                if (parentField === 'time') {
+                    const { value } = newData.target;
+                    const [hours, minutes] = value.split(':');
+                    const timeValue = new Date(`${editData?.date}T${hours}:${minutes}:00`);
+                    setEditData((prevData) => ({
+                        ...prevData,
+                        [parentField]: {
+                            ...prevData[parentField],
+                            [subField]: timeValue.toISOString(),
+                        },
+                    }));
+                } else {
+                    setEditData((prevData) => ({
+                        ...prevData,
+                        [parentField]: {
+                            ...prevData[parentField],
+                            [subField]: newData.target.value,
+                        },
+                    }));
+                }
             } else {
-                setEditData((prevData) => ({
-                    ...prevData,
-                    [parentField]: {
-                        ...prevData[parentField],
-                        [subField]: newData.target.value,
-                    },
-                }));
+                setEditData((prevData) => ({ ...prevData, [field]: newData.target.value }));
             }
-        } else {
-            setEditData((prevData) => ({ ...prevData, [field]: newData.target.value }));
-        }
-    };
+        },
+        [editData?.date],
+    );
 
     return (
         <div className={cx('wrapper-list-flight')}>
@@ -319,14 +320,14 @@ function ListFlight() {
                                             Time
                                             <input
                                                 type="time"
-                                                value={editData.time.departure}
+                                                value={formatTime(editData.time.departure)}
                                                 onChange={(e) => handleInputChange(e, 'time.departure')}
                                                 className={cx('input-edit')}
                                             />
                                             - To -
                                             <input
                                                 type="time"
-                                                value={editData.time.arrival}
+                                                value={formatTime(editData.time.arrival)}
                                                 onChange={(e) => handleInputChange(e, 'time.arrival')}
                                                 className={cx('input-edit')}
                                             />
