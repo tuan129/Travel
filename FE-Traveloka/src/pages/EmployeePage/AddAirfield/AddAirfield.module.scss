@@ -21,13 +21,13 @@
 
 .add-airfield {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     margin-top: 40px;
 }
 
 .airfield-info {
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
 }
 
 .airfield-info label {
@@ -61,8 +61,6 @@
     border: none;
     border-radius: 15px;
     border-radius: 5px;
-    margin-top: 350px;
-    margin-right: 350px;
     cursor: pointer;
 }
 
