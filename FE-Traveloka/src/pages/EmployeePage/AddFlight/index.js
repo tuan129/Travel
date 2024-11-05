@@ -172,7 +172,7 @@ function AddFlight() {
                 <div className={cx('add-flight')}>
                     <div className={cx('flight-info')}>
                         <label>
-                            <span> Mã chuyến bay</span>
+                            <span>Mã chuyến bay</span>
                             <input
                                 type="text"
                                 placeholder="Flight Number"
@@ -182,7 +182,7 @@ function AddFlight() {
                         </label>
                         <div>
                             <label>
-                                <span> Hãng hàng không</span>
+                                <span>Hãng hàng không</span>
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
@@ -217,7 +217,7 @@ function AddFlight() {
                         </div>
                         <div>
                             <label>
-                                <span> Sân bay cất </span>
+                                <span> Sân bay cất cánh</span>
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
@@ -252,7 +252,7 @@ function AddFlight() {
                         </div>
 
                         <label>
-                            <span> Thời gian cất </span>
+                            <span> Thời gian cất cánh</span>
                             <input
                                 type="time"
                                 placeholder="Departure Time"
@@ -260,87 +260,89 @@ function AddFlight() {
                                 onChange={(e) => setDeparture(e.target.value)}
                             />
                         </label>
-                        <label className={cx('amount-ticket')}>
-                            <span> Số lượng vé</span>
-                            <div className={cx('level-ticket')}>
-                                <div className={cx('field')}>
-                                    <label
-                                        className={cx('field-label', {
-                                            'show-field-label': ticketPhoThong.trim() !== '',
-                                        })}
-                                        htmlFor="economy-tickets"
-                                    >
-                                        Phổ thông
-                                    </label>
-                                    <input
-                                        id="economy-tickets"
-                                        type="text"
-                                        placeholder="Phổ thông"
-                                        className={cx('field-input')}
-                                        value={ticketPhoThong}
-                                        onChange={(e) => setTicketPhoThong(e.target.value)}
-                                    />
+                        <div>
+                            <label className={cx('amount-ticket')}>
+                                <span> Số lượng vé</span>
+                                <div className={cx('level-ticket')}>
+                                    <div className={cx('field')}>
+                                        <label
+                                            className={cx('field-label', {
+                                                'show-field-label': ticketPhoThong.trim() !== '',
+                                            })}
+                                            htmlFor="economy-tickets"
+                                        >
+                                            Phổ thông
+                                        </label>
+                                        <input
+                                            id="economy-tickets"
+                                            type="text"
+                                            placeholder="Phổ thông"
+                                            className={cx('field-input')}
+                                            value={ticketPhoThong}
+                                            onChange={(e) => setTicketPhoThong(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className={cx('field')}>
+                                        <label
+                                            className={cx('field-label', {
+                                                'show-field-label': ticketPhoThongDacBiet.trim() !== '',
+                                            })}
+                                            htmlFor="premium-economy-tickets"
+                                        >
+                                            Phổ thông đặc biệt
+                                        </label>
+                                        <input
+                                            id="premium-economy-tickets"
+                                            type="text"
+                                            placeholder="Phổ thông đặc biệt"
+                                            className={cx('field-input')}
+                                            value={ticketPhoThongDacBiet}
+                                            onChange={(e) => setTicketVePhoThongDacBiet(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className={cx('field')}>
+                                        <label
+                                            className={cx('field-label', {
+                                                'show-field-label': ticketThuongGia.trim() !== '',
+                                            })}
+                                            htmlFor="business-tickets"
+                                        >
+                                            Thương gia
+                                        </label>
+                                        <input
+                                            id="business-tickets"
+                                            type="text"
+                                            placeholder="Thương gia"
+                                            className={cx('field-input')}
+                                            value={ticketThuongGia}
+                                            onChange={(e) => setTicketThuongGia(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className={cx('field')}>
+                                        <label
+                                            className={cx('field-label', {
+                                                'show-field-label': ticketHangNhat.trim() !== '',
+                                            })}
+                                            htmlFor="first-class-tickets"
+                                        >
+                                            Hạng nhất
+                                        </label>
+                                        <input
+                                            id="first-class-tickets"
+                                            type="text"
+                                            placeholder="Hạng nhất"
+                                            className={cx('field-input')}
+                                            value={ticketHangNhat}
+                                            onChange={(e) => setTicketHangNhat(e.target.value)}
+                                        />
+                                    </div>
                                 </div>
-                                <div className={cx('field')}>
-                                    <label
-                                        className={cx('field-label', {
-                                            'show-field-label': ticketPhoThongDacBiet.trim() !== '',
-                                        })}
-                                        htmlFor="premium-economy-tickets"
-                                    >
-                                        Phổ thông đặc biệt
-                                    </label>
-                                    <input
-                                        id="premium-economy-tickets"
-                                        type="text"
-                                        placeholder="Phổ thông đặc biệt"
-                                        className={cx('field-input')}
-                                        value={ticketPhoThongDacBiet}
-                                        onChange={(e) => setTicketVePhoThongDacBiet(e.target.value)}
-                                    />
-                                </div>
-                                <div className={cx('field')}>
-                                    <label
-                                        className={cx('field-label', {
-                                            'show-field-label': ticketThuongGia.trim() !== '',
-                                        })}
-                                        htmlFor="business-tickets"
-                                    >
-                                        Thương gia
-                                    </label>
-                                    <input
-                                        id="business-tickets"
-                                        type="text"
-                                        placeholder="Thương gia"
-                                        className={cx('field-input')}
-                                        value={ticketThuongGia}
-                                        onChange={(e) => setTicketThuongGia(e.target.value)}
-                                    />
-                                </div>
-                                <div className={cx('field')}>
-                                    <label
-                                        className={cx('field-label', {
-                                            'show-field-label': ticketHangNhat.trim() !== '',
-                                        })}
-                                        htmlFor="first-class-tickets"
-                                    >
-                                        Hạng nhất
-                                    </label>
-                                    <input
-                                        id="first-class-tickets"
-                                        type="text"
-                                        placeholder="Hạng nhất"
-                                        className={cx('field-input')}
-                                        value={ticketHangNhat}
-                                        onChange={(e) => setTicketHangNhat(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                        </label>
+                            </label>
+                        </div>
                     </div>
                     <div className={cx('flight-info')}>
                         <label>
-                            <span> Ngày khởi hành</span>
+                            <span>Ngày khởi hành</span>
                             <input
                                 type="date"
                                 placeholder="Departure Date"
@@ -350,7 +352,7 @@ function AddFlight() {
                         </label>
                         <div>
                             <label>
-                                <span> Sân bay hạ </span>
+                                <span> Sân bay hạ cánh</span>
                                 <Tippy
                                     placement="bottom-start"
                                     interactive
@@ -384,7 +386,7 @@ function AddFlight() {
                             </label>
                         </div>
                         <label>
-                            <span> Thời gian hạ </span>
+                            <span>Thời gian hạ cánh</span>
                             <input
                                 type="time"
                                 placeholder="Arrival Time"
