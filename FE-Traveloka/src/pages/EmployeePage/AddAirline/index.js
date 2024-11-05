@@ -5,11 +5,11 @@ import styles from './Airline.module.scss';
 // Component
 import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
-import AirlineItems from '~/components/AirlineItems';
-import { Wrapper as PoperWrapper } from '~/components/Poper';
+//import AirlineItems from '~/components/AirlineItems';
+//import { Wrapper as PoperWrapper } from '~/components/Poper';
 // Library
 import classNames from 'classnames/bind';
-import Tippy from '@tippyjs/react/headless';
+//import Tippy from '@tippyjs/react/headless';
 import axios from 'axios';
 
 const cx = classNames.bind(styles);
@@ -17,24 +17,20 @@ const cx = classNames.bind(styles);
 function AddAirline() {
     const navigate = useNavigate();
     const [airlineName, setAirlineName] = useState('');
-    const [airlineCode, setAirlineCode] = useState('');
-    const [country, setCountry] = useState('');
 
     const handleAddAirline = async () => {
         try {
-            if (!airlineName || !airlineCode || !country) {
+            if (!airlineName) {
                 alert('Vui lòng điền đầy đủ thông tin hãng hàng không.');
                 return;
             }
 
             await axios.post('http://localhost:4000/api/airline', {
                 nameAirline: airlineName,
-                codeAirline: airlineCode,
-                country: country,
             });
 
             alert('Hãng hàng không đã được thêm thành công!');
-            navigate('/listairline'); // Điều hướng đến danh sách hãng hàng không
+            navigate('/listairline'); //Điều hướng đến danh sách hãng hàng không
         } catch (err) {
             console.error('Error adding airline:', err);
             alert('Thêm hãng hàng không thất bại. Vui lòng thử lại.');
@@ -54,15 +50,6 @@ function AddAirline() {
                                 placeholder="Nhập tên hãng hàng không"
                                 value={airlineName}
                                 onChange={(e) => setAirlineName(e.target.value)}
-                            />
-                        </label>
-                        <label>
-                            <span>Mã Hãng hàng không</span>
-                            <input
-                                type="text"
-                                placeholder="Nhập mã hãng hàng không"
-                                value={airlineCode}
-                                onChange={(e) => setAirlineCode(e.target.value)}
                             />
                         </label>
                     </div>

@@ -17,11 +17,12 @@ function AddAirfield() {
     const navigate = useNavigate();
     const [airfieldName, setAirfieldName] = useState('');
     const [airfieldCode, setAirfieldCode] = useState('');
+    const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
 
     const handleAddAirfield = async () => {
         try {
-            if (!airfieldName || !airfieldCode || !country) {
+            if (!airfieldName || !airfieldCode || !country || !city) {
                 alert('Vui lòng điền đầy đủ thông tin sân bay.');
                 return;
             }
@@ -29,6 +30,7 @@ function AddAirfield() {
             await axios.post('http://localhost:4000/api/airfield', {
                 nameAirfield: airfieldName,
                 codeAirfield: airfieldCode,
+                city: city,
                 country: country,
             });
 
@@ -72,8 +74,8 @@ function AddAirfield() {
                                 <input
                                     type="text"
                                     placeholder="Nhập tên thành phố"
-                                    value={country}
-                                    onChange={(e) => setCountry(e.target.value)}
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
                                 />
                             </label>
                             <label>
