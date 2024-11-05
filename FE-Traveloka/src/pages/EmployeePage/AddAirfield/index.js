@@ -33,7 +33,7 @@ function AddAirfield() {
             });
 
             alert('Sân bay đã được thêm thành công!');
-            navigate('/listairfield'); // Điều hướng đến danh sách sân bay
+            navigate('/listairfield'); //Điều hướng đến danh sách sân bay
         } catch (err) {
             console.error('Error adding airfield:', err);
             alert('Thêm sân bay thất bại. Vui lòng thử lại.');
@@ -69,6 +69,15 @@ function AddAirfield() {
                             <input
                                 type="text"
                                 placeholder="Nhập tên thành phố"
+                                value={country}
+                                onChange={(e) => setCountry(e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            <span>Quốc gia</span>
+                            <input
+                                type="text"
+                                placeholder="Nhập quốc gia của hãng"
                                 value={country}
                                 onChange={(e) => setCountry(e.target.value)}
                             />
