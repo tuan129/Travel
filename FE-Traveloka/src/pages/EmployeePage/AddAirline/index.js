@@ -65,15 +65,6 @@ function AddAirline() {
                                 onChange={(e) => setAirlineCode(e.target.value)}
                             />
                         </label>
-                        <label>
-                            <span>Quốc gia</span>
-                            <input
-                                type="text"
-                                placeholder="Nhập quốc gia của hãng"
-                                value={country}
-                                onChange={(e) => setCountry(e.target.value)}
-                            />
-                        </label>
                     </div>
                     <Button primary className={cx('btn-add-airline')} onClick={handleAddAirline}>
                         THÊM
