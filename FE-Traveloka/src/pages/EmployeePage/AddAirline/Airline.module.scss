@@ -77,29 +77,29 @@
     position: relative;
 }
 
-.field-label {
-    font-size: 0.85714em;
-    font-weight: normal;
-    position: absolute;
-    top: 8px;
-    left: 6px;
-    width: 50%;
-    padding: 0 0.93333em;
-    z-index: 1;
-    user-select: none;
-    transform: translateY(3px);
-    pointer-events: none;
-    opacity: 0;
-    color: #999999;
-    transition: all 0.2s ease-out;
-    margin-top: 0.3em;
-    display: block;
-}
+// .field-label {
+//     font-size: 0.85714em;
+//     font-weight: normal;
+//     position: absolute;
+//     top: 8px;
+//     left: 6px;
+//     width: 50%;
+//     padding: 0 0.93333em;
+//     z-index: 1;
+//     user-select: none;
+//     transform: translateY(3px);
+//     pointer-events: none;
+//     opacity: 0;
+//     color: #999999;
+//     transition: all 0.2s ease-out;
+//     margin-top: 0.3em;
+//     display: block;
+// }
 
-.show-field-label {
-    transform: none;
-    opacity: 1 !important;
-}
+// .show-field-label {
+//     transform: none;
+//     opacity: 1 !important;
+// }
 
 .field-input {
     box-shadow: 0 0 0 1px #d9d9d9;
