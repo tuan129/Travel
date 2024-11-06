@@ -1,27 +1,47 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './info.module.scss';
-import Button from '~/components/Button';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCircleUser, faTableList } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets/images';
-
+import { format } from 'date-fns';
 const cx = classNames.bind(styles);
+
 function Info() {
     const user = JSON.parse(localStorage.getItem('user'));
     const [bookings, setBookings] = useState([]);
+
+    const seatClassMapping = (seatClass) => {
+        if (seatClass === 'Phổ thông') {
+            return 'phoThong';
+        } else if (seatClass === 'Phổ thông đặt biệt') {
+            return 'phoThongDacBiet';
+        } else if (seatClass === 'Thương gia') {
+            return 'thuongGia';
+        } else {
+            return 'hangNhat';
+        }
+    };
+
+    const formatDate = (isoString) => {
+        return format(new Date(isoString), 'dd/MM/yyyy');
+    };
+    const formatTime = (isoString) => {
+        return format(new Date(isoString), 'HH:mm');
+    };
+
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                //const response = await axios.get('API_ENDPOINT_HERE');
-                //setBookings(response.data);
+                const res = await axios.get(`http://localhost:4000/api/booking/${user._id}`);
+                setBookings(res.data.data.Bookings);
             } catch (err) {
                 console.error(err);
             }
         };
         fetchBookings();
-    }, []);
+    }, [user._id]);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -60,29 +80,38 @@ function Info() {
                                         <div className={cx('header-user-booking')}>
                                             <img className={cx('icon-plane')} src={images.plane} alt="plane" />
                                             <div className={cx('info-booking')}>
-                                                <p className={cx('airfield-from')}>{booking.airfield.from}</p>
+                                                <p className={cx('airfield-from')}>
+                                                    {booking.flight.airfield.from.nameAirfield} (
+                                                    {booking.flight.airfield.from.codeAirfield})
+                                                </p>
                                                 <FontAwesomeIcon className={cx('icon-arrow')} icon={faArrowRight} />
-                                                <p className={cx('airfield-to')}>{booking.airfield.to}</p>
+                                                <p className={cx('airfield-to')}>
+                                                    {booking.flight.airfield.to.nameAirfield} (
+                                                    {booking.flight.airfield.to.codeAirfield})
+                                                </p>
                                             </div>
                                         </div>
                                         <div className={cx('user-booking-content')}>
                                             <p className={cx('flight-code')}>
-                                                {booking.flightCode} -{' '}
-                                                <span className={cx('airlines')}>{booking.airlines}</span>
+                                                <span className={cx('airlines')}>{booking.flight.airlines}</span> (
+                                                {booking.flight.flightCode})
                                             </p>
 
                                             <p className={cx('time-departure')}>
-                                                {booking.departure.time} -{' '}
-                                                <span className={cx('date')}>{booking.date}</span>
+                                                <span className={cx('date')}>{formatDate(booking.flight.date)}</span> (
+                                                {formatTime(booking.flight.time.departure)})
                                             </p>
                                             <p className={cx('amount-tickets')}>
-                                                - Số lượng vé: {booking.totalTickets}
+                                                Khách hàng
+                                                {booking.infoCustomers.map((user) => (
+                                                    <p key={user._id} className={cx('customer')}>
+                                                        {user.fullName} - {user.seatNumber}
+                                                    </p>
+                                                ))}
                                             </p>
-                                            <p className={cx('tickets')}>
-                                                - Hạng vé: {booking.class} -{' '}
-                                                <span className={cx('price')}>{booking.ticketPrice}</span>
-                                            </p>
-                                            <p className={cx('count-chair')}>- Ghế ngồi: {booking.seatNumber}</p>
+                                            <p className={cx('tickets')}>Hạng vé {booking.seatClass}</p>
+                                            <p className={cx('price')}>Tổng tiền {booking.totalPrice} VNĐ</p>
+                                            <p className={cx('count-chair')}>Ghế ngồi {booking.seatClass}</p>
                                         </div>
                                     </div>
                                 ))

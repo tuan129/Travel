@@ -23,7 +23,7 @@ const getAllBooking = async (req, res) => {
 
 const getBookings = async (req, res) => {
   try {
-    const userId = req.user ? req.user._id : null;
+    const userId = req.params.id;
 
     if (!userId) {
       return res.status(401).json({
@@ -40,8 +40,15 @@ const getBookings = async (req, res) => {
 
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    const query = Booking.find(JSON.parse(queryStr)).populate('user flight');
-
+    const query = Booking.find(JSON.parse(queryStr))
+      .populate('user')
+      .populate({
+        path: 'flight',
+        populate: [
+          { path: 'airfield.from', model: 'Airfield' },
+          { path: 'airfield.to', model: 'Airfield' },
+        ],
+      });
     const Bookings = await query;
 
     res.status(200).json({
@@ -58,6 +65,7 @@ const getBookings = async (req, res) => {
     });
   }
 };
+
 const createBooking = async (req, res) => {
   try {
     const newBooking = await Booking.create(req.body);
