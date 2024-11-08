@@ -4,6 +4,8 @@ import styles from './Payment.module.scss';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import { format } from 'date-fns';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +20,8 @@ function Payment() {
     const formatTime = (isoString) => {
         return format(new Date(isoString), 'HH:mm');
     };
+
+    const totalAmount = flight.tickets[seatMapping].price * totalCustomer;
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -48,11 +52,36 @@ function Payment() {
                             <p>Số trẻ em: {childCount}</p>
                             <p>Số em bé: {infantCount}</p>
                         </li>
-                        <p className={cx('total')}>
-                            Tổng giá tiền: {(flight.tickets[seatMapping].price * totalCustomer).toLocaleString()} VND
-                        </p>
+                        <p className={cx('total')}>Tổng giá tiền: {totalAmount.toLocaleString()} VND</p>
                     </ul>
-                    <Button large>Thanh Toán</Button>
+                    <PayPalScriptProvider options={{ 'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID }}>
+                        <PayPalButtons
+                            className={cx('paypal-btn')}
+                            createOrder={(data, actions) => {
+                                return actions.order.create({
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                value: totalAmount,
+                                            },
+                                        },
+                                    ],
+                                });
+                            }}
+                            onApprove={async (data, actions) => {
+                                try {
+                                    const details = await actions.order.capture();
+                                    alert('Thanh toán thành công!');
+                                    console.log(details);
+                                } catch (err) {
+                                    console.log(err);
+                                }
+                            }}
+                            onError={(err) => {
+                                console.error('Error during PayPal payment:', err);
+                            }}
+                        />
+                    </PayPalScriptProvider>
                 </div>
             </div>
         </div>
