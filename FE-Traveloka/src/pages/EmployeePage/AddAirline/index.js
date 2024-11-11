@@ -5,11 +5,8 @@ import styles from './Airline.module.scss';
 // Component
 import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
-//import AirlineItems from '~/components/AirlineItems';
-//import { Wrapper as PoperWrapper } from '~/components/Poper';
 // Library
 import classNames from 'classnames/bind';
-//import Tippy from '@tippyjs/react/headless';
 import axios from 'axios';
 
 const cx = classNames.bind(styles);

@@ -28,7 +28,6 @@ function Button({
     };
 
     //delete event listener when button is disabled
-
     if (disabled) {
         Object.keys(props).forEach((key) => {
             if (key.startsWith('on') && typeof props[key] === 'function') {
