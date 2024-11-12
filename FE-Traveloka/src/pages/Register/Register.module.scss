@@ -13,11 +13,11 @@
     width: 50%;
     border: 1px solid var(--black);
     border-radius: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     .input {
         width: 80%;
         display: flex;
-        margin-top: 16px;
+        margin-top: 20px;
         justify-content: space-between;
     }
 
@@ -53,6 +53,7 @@
 }
 
 .login-orther {
+    font-size: 15px;
     margin: 8px 0 16px 0;
 }
 

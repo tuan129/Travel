@@ -56,13 +56,21 @@ function Login() {
                     <div className={cx('input-form')}>
                         <label>
                             <span>Email: </span>
-                            <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <input 
+                            type="text" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)}
+                            />
                         </label>
                     </div>
                     <div className={cx('input-form')}>
                         <label>
                             <span>Password: </span>
-                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input 
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            />
                         </label>
                     </div>
                     {error && <p className={cx('error')}>{error}</p>}

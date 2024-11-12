@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
-
 import styles from './Register.module.scss';
 import axios from 'axios';
 
@@ -51,12 +49,12 @@ function Register() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('register')}>
-                <h2>Register</h2>
+                <h2>REGISTER</h2>
                 <div className={cx('input')}>
                     <div className={cx('account')}>
                         <div className={cx('input-form')}>
                             <label>
-                                <span>Họ tên: </span>
+                                <span>Full name: </span>
                                 <input
                                     className={cx('name-account')}
                                     type="text"
@@ -109,7 +107,7 @@ function Register() {
 
                 <div className={cx('login-orther')}>
                     <span>
-                        have an account?{' '}
+                        Have an Account?{' '}
                         <Button text to="/login">
                             LOGIN
                         </Button>
