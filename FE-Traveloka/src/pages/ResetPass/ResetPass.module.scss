@@ -54,36 +54,7 @@
         margin-bottom: 12px;
         text-align: center;
     }
-
-    .reset-button {
-        margin-left: 200px;
-        width: 20%;
-        padding: 5px;
-        background-color: #2992DB;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        font-size: 13px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-
-        &:hover {
-            background-color: rgb(163, 217, 246);
-        }
-    }
-
     .back-to-login {
-        text-align: center;
-        font-style: roboto;
         margin-top: 16px;
-        font-size: 12px;
-        font-weight: 600;
-        color: #000000;
-        cursor: pointer;
-        text-decoration: underline;
-
-        &:hover {
-            color: #0056b3;
-        }
     }
 }

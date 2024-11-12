@@ -92,17 +92,14 @@ const getAllUsers = async (req, res) => {
 
 const changePassword = async (req, res) => {
   try {
-    const { email, currentPassword, newPassword } = req.body;
-    const user = await Account.findOne(email);
+    const { email, newPassword } = req.body;
+    const user = await Account.findOne({ email });
 
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
-
-    if (!isMatch) {
+    if (!user) {
       return res
-        .status(400)
-        .json({ status: 'fail', message: 'Mật khẩu hiện tại không đúng' });
+        .status(404)
+        .json({ status: 'fail', message: 'User not found' });
     }
-
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 

@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 function ResetPass() {
@@ -12,30 +13,37 @@ function ResetPass() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    const displayError = (err) => {
+        setError(err);
+        setTimeout(() => {
+            setError('');
+        }, 3000);
+    };
+
     const handleResetPass = async () => {
         if (!email || !newPassword || !confirmPassword) {
-            setError('Không được để trống.');
+            displayError('Không được để trống.');
             return;
         }
-        
+
         if (newPassword !== confirmPassword) {
-            setError('Mật khẩu không trùng khớp.');
+            displayError('Mật khẩu không trùng khớp.');
             return;
         }
         try {
-            const response = await axios.post('http://localhost:4000/api/users/reset-password', {
+            const response = await axios.post('http://localhost:4000/api/users/changepass', {
                 email,
-                password: newPassword,
+                newPassword,
             });
 
             if (response.status === 200) {
                 alert('Đặt lại mật khẩu thành công!');
                 navigate('/login');
             } else {
-                setError(response.data.message || 'Xảy ra lỗi khi đặt lại mật khẩu.');
+                displayError(response.data.message || 'Xảy ra lỗi khi đặt lại mật khẩu.');
             }
         } catch (error) {
-            setError('Vui lòng thử lại.');
+            displayError('Vui lòng thử lại.');
         }
     };
     return (
@@ -46,12 +54,7 @@ function ResetPass() {
                     <div className={cx('reset-input')}>
                         <label>
                             <span>Email:</span>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                //placeholder="Enter your email"
-                            />
+                            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                         </label>
                     </div>
                     <div className={cx('reset-input')}>
@@ -75,12 +78,12 @@ function ResetPass() {
                         </label>
                     </div>
                     {error && <p className={cx('error')}>{error}</p>}
-                    <button className={cx('reset-button')} onClick={handleResetPass}>
+                    <Button primary className={cx('reset-button')} onClick={handleResetPass}>
                         RESET
-                    </button>
-                    <div className={cx('back-to-login')} onClick={() => navigate('/login')}>
+                    </Button>
+                    <Button text className={cx('back-to-login')} onClick={() => navigate('/login')}>
                         Back to login
-                    </div>
+                    </Button>
                 </div>
             </div>
         </div>
