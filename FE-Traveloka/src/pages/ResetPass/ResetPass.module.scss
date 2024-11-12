@@ -45,10 +45,6 @@
             border-bottom: 1px solid var(--black);
             outline: none;
             transition: all 0.2s ease;
-
-            &:focus {
-                border-bottom: 1px solid #007bff;
-            }
         }
     }
 
@@ -60,7 +56,8 @@
     }
 
     .reset-button {
-        width: 25%;
+        margin-left: 175px;
+        width: 30%;
         padding: 5px;
         background-color: #2992DB;
         color: #fff;
@@ -76,7 +73,7 @@
     }
 
     .back-to-login {
-        
+        text-align: center;
         font-style: roboto;
         margin-top: 16px;
         font-size: 12px;
