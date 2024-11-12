@@ -675,10 +675,7 @@ function Error() {
                 <div className={cx('col-md-6', 'align-self-center')}>
                     <h1 className={cx('error404')}>404</h1>
                     <h2 className={cx('uh-no')}>UH OH! You're lost.</h2>
-                    <p>
-                        The page you are looking for does not exist. How you got here is a mystery. But you can click
-                        the button below to go back to the homepage.
-                    </p>
+                    <p>The page you are looking for does not exist. How you got here is a mystery.</p>
                     <button className={cx('btn', 'green')} onClick={handleReload}>
                         Try Again
                     </button>
