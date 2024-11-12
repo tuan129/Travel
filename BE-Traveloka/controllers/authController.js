@@ -90,4 +90,34 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { login, register, getAllUsers };
+const changePassword = async (req, res) => {
+  try {
+    const { email, currentPassword, newPassword } = req.body;
+    const user = await Account.findOne(email);
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ status: 'fail', message: 'Mật khẩu hiện tại không đúng' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ status: 'fail', message: err.message });
+  }
+};
+
+module.exports = { login, register, getAllUsers, changePassword };
