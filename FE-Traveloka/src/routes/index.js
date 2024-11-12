@@ -1,10 +1,12 @@
 import DefaultLayoutEmployee from '~/components/Layout/DefaultLayoutEmployee';
 //User
-import { Home, Login, Register, Info, TicketPlane, InfoCustomer, Payment } from '~/pages';
+import { Home, Login, Register, Info, TicketPlane, InfoCustomer, Payment, Error } from '~/pages';
 //Employments
 import { AddFlight, ListFilght, Statistics, Viewcustomer, AddAirline, AddAirfield } from '~/pages';
 
 const publicRoutes = [
+    //Error
+    { path: '/error', component: Error, layout: null },
     // User
     { path: '/', component: Home },
     { path: '/login', component: Login },
