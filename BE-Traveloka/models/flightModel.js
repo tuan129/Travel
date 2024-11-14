@@ -5,7 +5,7 @@ const flightSchema = new mongoose.Schema({
     type: String,
     required: [true, 'mã chuyến bay phải có giá trị'],
     unique: true,
-    match: /^[A-Z]{2}\d{4}$/,
+    match: /^[A-Z]{2}\d{3}$/,
     message:
       'mã chuyến bay phải bắt đầu 2 chữ cái in hoa, và sau đó là 4 chữ số',
   },
@@ -49,7 +49,13 @@ const flightSchema = new mongoose.Schema({
           'số lượng vé phổ thông của chuyến bay phải có giá trị',
         ],
       },
-      bookedSeats: [],
+      bookedSeats: [String],
+      soVeCon: {
+        type: Number,
+        default: function () {
+          return this.soLuongVe;
+        },
+      },
     },
     phoThongDacBiet: {
       price: {
@@ -59,6 +65,13 @@ const flightSchema = new mongoose.Schema({
       soLuongVe: {
         type: Number,
         default: 0,
+      },
+      bookedSeats: [String],
+      soVeCon: {
+        type: Number,
+        default: function () {
+          return this.soLuongVe;
+        },
       },
     },
     thuongGia: {
@@ -70,6 +83,13 @@ const flightSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
+      bookedSeats: [String],
+      soVeCon: {
+        type: Number,
+        default: function () {
+          return this.soLuongVe;
+        },
+      },
     },
     hangNhat: {
       price: {
@@ -79,6 +99,13 @@ const flightSchema = new mongoose.Schema({
       soLuongVe: {
         type: Number,
         default: 0,
+      },
+      bookedSeats: [String],
+      soVeCon: {
+        type: Number,
+        default: function () {
+          return this.soLuongVe;
+        },
       },
     },
   },

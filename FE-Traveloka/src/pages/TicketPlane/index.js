@@ -29,6 +29,7 @@ function TicketPlane() {
     const location = useLocation();
     const navigate = useNavigate();
     const { flights, returnFlights, seatClass, adultCount, childCount, infantCount, totalCustomer } = location.state;
+    console.log(flights);
     const seatMapping = seatClassMapping(seatClass);
     //Quản lý trạng xem chi tiết chuyến bay
     const [selectedFlight, setSelectedFlight] = useState(null);
