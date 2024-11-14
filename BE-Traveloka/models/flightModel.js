@@ -52,9 +52,6 @@ const flightSchema = new mongoose.Schema({
       bookedSeats: [String],
       soVeCon: {
         type: Number,
-        default: function () {
-          return this.soLuongVe;
-        },
       },
     },
     phoThongDacBiet: {
@@ -69,9 +66,6 @@ const flightSchema = new mongoose.Schema({
       bookedSeats: [String],
       soVeCon: {
         type: Number,
-        default: function () {
-          return this.soLuongVe;
-        },
       },
     },
     thuongGia: {
@@ -86,9 +80,6 @@ const flightSchema = new mongoose.Schema({
       bookedSeats: [String],
       soVeCon: {
         type: Number,
-        default: function () {
-          return this.soLuongVe;
-        },
       },
     },
     hangNhat: {
@@ -103,12 +94,26 @@ const flightSchema = new mongoose.Schema({
       bookedSeats: [String],
       soVeCon: {
         type: Number,
-        default: function () {
-          return this.soLuongVe;
-        },
       },
     },
   },
+});
+
+flightSchema.pre('save', function (next) {
+  if (this.tickets.phoThong && !this.tickets.phoThong.soVeCon) {
+    this.tickets.phoThong.soVeCon = this.tickets.phoThong.soLuongVe;
+  }
+  if (this.tickets.phoThongDacBiet && !this.tickets.phoThongDacBiet.soVeCon) {
+    this.tickets.phoThongDacBiet.soVeCon =
+      this.tickets.phoThongDacBiet.soLuongVe;
+  }
+  if (this.tickets.thuongGia && !this.tickets.thuongGia.soVeCon) {
+    this.tickets.thuongGia.soVeCon = this.tickets.thuongGia.soLuongVe;
+  }
+  if (this.tickets.hangNhat && !this.tickets.hangNhat.soVeCon) {
+    this.tickets.hangNhat.soVeCon = this.tickets.hangNhat.soLuongVe;
+  }
+  next();
 });
 
 const Flight = mongoose.model('flight', flightSchema);
