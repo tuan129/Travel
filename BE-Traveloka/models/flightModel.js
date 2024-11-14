@@ -49,6 +49,7 @@ const flightSchema = new mongoose.Schema({
           'số lượng vé phổ thông của chuyến bay phải có giá trị',
         ],
       },
+      bookedSeats: [],
     },
     phoThongDacBiet: {
       price: {

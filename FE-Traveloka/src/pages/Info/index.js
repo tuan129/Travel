@@ -13,14 +13,14 @@ function Info() {
     const [bookings, setBookings] = useState([]);
 
     const seatClassMapping = (seatClass) => {
-        if (seatClass === 'Phổ thông') {
-            return 'phoThong';
-        } else if (seatClass === 'Phổ thông đặt biệt') {
-            return 'phoThongDacBiet';
-        } else if (seatClass === 'Thương gia') {
-            return 'thuongGia';
+        if (seatClass === 'phoThong') {
+            return 'Phổ thông';
+        } else if (seatClass === 'phoThongDacBiet') {
+            return 'Phổ thông đặt biệt';
+        } else if (seatClass === 'thuongGia') {
+            return 'Thương gia';
         } else {
-            return 'hangNhat';
+            return 'Hạng nhất';
         }
     };
 
@@ -109,9 +109,10 @@ function Info() {
                                                     </p>
                                                 ))}
                                             </p>
-                                            <p className={cx('tickets')}>Hạng vé {booking.seatClass}</p>
+                                            <p className={cx('tickets')}>
+                                                Hạng vé: {seatClassMapping(booking.seatClass)}
+                                            </p>
                                             <p className={cx('price')}>Tổng tiền {booking.totalPrice} VNĐ</p>
-                                            <p className={cx('count-chair')}>Ghế ngồi {booking.seatClass}</p>
                                         </div>
                                     </div>
                                 ))

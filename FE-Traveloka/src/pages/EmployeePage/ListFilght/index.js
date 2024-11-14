@@ -20,7 +20,6 @@ function ListFlight() {
     const [showAirfiled, setShowAirfiled] = useState(false);
     const [searchAirfield, setSearchAirfield] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
-    const [error, setError] = useState('');
 
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
@@ -77,9 +76,10 @@ function ListFlight() {
                 },
             };
 
-            await axios.patch(`http://localhost:4000/api/flight/${idFlight}`, dataUpdate);
-            setIdFlight(null);
-            window.location.reload();
+            // await axios.patch(`http://localhost:4000/api/flight/${idFlight}`, dataUpdate);
+            console.log(dataUpdate);
+            // setIdFlight(null);
+            // window.location.reload();
         } catch (err) {
             console.error('Error saving flight:', err);
             alert('Failed to save flight. Please try again.');

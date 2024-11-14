@@ -1,8 +1,7 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './Payment.module.scss';
 import classNames from 'classnames/bind';
-import Button from '~/components/Button';
 import { format } from 'date-fns';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import axios from 'axios';
@@ -10,8 +9,31 @@ import axios from 'axios';
 const cx = classNames.bind(styles);
 
 function Payment() {
+    const navigate = useNavigate();
     const location = useLocation();
-    const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, seatMapping } = location.state;
+    const seatClassMapping = (seatClass) => {
+        if (seatClass === 'phoThong') {
+            return 'Phổ thông';
+        } else if (seatClass === 'phoThongDacBiet') {
+            return 'Phổ thông đặt biệt';
+        } else if (seatClass === 'thuongGia') {
+            return 'Thương gia';
+        } else {
+            return 'Hạng nhất';
+        }
+    };
+    const {
+        flight,
+        returnFlight,
+        adultCount,
+        childCount,
+        infantCount,
+        totalCustomer,
+        seatMapping,
+        contactInfo,
+        customerInfo,
+    } = location.state;
+    console.log(flight);
 
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
@@ -21,7 +43,21 @@ function Payment() {
         return format(new Date(isoString), 'HH:mm');
     };
 
-    const totalAmount = flight.tickets[seatMapping].price * totalCustomer;
+    const user = localStorage.getItem('user');
+    const users = JSON.parse(user);
+
+    useEffect(() => {
+        if (!user) {
+            alert('Vui lòng đăng nhập');
+            navigate('/login');
+        }
+    }, []);
+    console.log(users._id);
+
+    const flightPrice = flight.tickets[seatMapping].price;
+    const returnTicketPrice = returnFlight?.tickets[seatMapping]?.price || 0;
+
+    const totalAmount = (flightPrice + returnTicketPrice) * totalCustomer;
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -42,10 +78,8 @@ function Payment() {
                             Thời gian cất cánh: {formatTime(flight.time.departure)} - Thời gian hạ cánh:{' '}
                             {formatTime(flight.time.arrival)}
                         </li>
-                        <li className={cx('price')}>Hạng ghế: {flight?.price ? flight.price.toLocaleString() : ''}</li>
-                        <li className={cx('price')}>
-                            Giá vé: {flight.tickets[seatMapping].price.toLocaleString()} VND
-                        </li>
+                        <li className={cx('price')}>Hạng ghế: {seatClassMapping(seatMapping)}</li>
+                        <li className={cx('price')}>Giá vé: {flightPrice.toLocaleString()} VND</li>
                         <li className={cx('amount-cus')}>
                             Số lượng người:
                             <p>Số người lớn: {adultCount}</p>
@@ -70,9 +104,33 @@ function Payment() {
                             }}
                             onApprove={async (data, actions) => {
                                 try {
-                                    const details = await actions.order.capture();
-                                    alert('Thanh toán thành công!');
-                                    console.log(details);
+                                    const res = await actions.order.capture();
+                                    if (res.status === 'COMPLETED') {
+                                        const newBookings = {
+                                            user: users._id,
+                                            flight: flight._id,
+                                            status: 'checked-in',
+                                            infoContact: contactInfo,
+                                            infoCustomers: customerInfo,
+                                            seatClass: seatMapping,
+                                            totalPrice: flightPrice * totalCustomer,
+                                        };
+                                        await axios.post('http://localhost:4000/api/booking', newBookings);
+                                        if (returnFlight) {
+                                            const newBookings = {
+                                                user: users._id,
+                                                flight: returnFlight._id,
+                                                status: 'checked-in',
+                                                infoContact: contactInfo,
+                                                infoCustomers: customerInfo,
+                                                seatClass: seatMapping,
+                                                totalPrice: returnTicketPrice * totalCustomer,
+                                            };
+                                            await axios.post('http://localhost:4000/api/booking', newBookings);
+                                        }
+                                        alert('Thanh toán thành công!');
+                                    }
+                                    console.log(res);
                                 } catch (err) {
                                     console.log(err);
                                 }
