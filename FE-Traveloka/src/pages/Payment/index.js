@@ -22,17 +22,9 @@ function Payment() {
             return 'Hạng nhất';
         }
     };
-    const {
-        flight,
-        returnFlight,
-        adultCount,
-        childCount,
-        infantCount,
-        totalCustomer,
-        seatMapping,
-        contactInfo,
-        customerInfo,
-    } = location.state;
+    const seatMapping = location.state.seatClass;
+    const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, contactInfo, customerInfo } =
+        location.state;
     console.log(flight);
 
     const formatDate = (isoString) => {

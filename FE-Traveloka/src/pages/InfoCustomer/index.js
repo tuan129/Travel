@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 function InfoCustomer() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, seatMapping } = location.state;
+    const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, seat } = location.state;
 
     const [error, setError] = useState('');
     const displayError = (message) => {
@@ -19,27 +19,31 @@ function InfoCustomer() {
         }, 3000);
     };
 
-    //Quản lý trạng thái thông tin liên hệ
+    // Quản lý trạng thái thông tin liên hệ
     const [contactInfo, setContactInfo] = useState({
         fullName: '',
         phone: '',
         email: '',
     });
-    //Quản lý trạng thái thông tin khách hàng
+
+    // Quản lý trạng thái thông tin khách hàng
     const [customerInfo, setCustomerInfo] = useState(
         Array.from({ length: totalCustomer }, () => ({
             fullName: '',
             nationality: '',
             birthDay: '',
             customerType: '',
+            seatNumber: '',
         })),
     );
+
     // Lưu trữ trạng thái thông tin liên hệ
     const handleContactChange = (e) => {
         const { name, value } = e.target;
         setContactInfo((prev) => ({ ...prev, [name]: value }));
     };
-    // Lưu trữ trạng thái thông tin khách hàng
+
+    // Lưu trữ trạng thái thông tin hành khách
     const handlePassengerChange = (index, e) => {
         const { name, value } = e.target;
         setCustomerInfo((prev) => {
@@ -50,6 +54,16 @@ function InfoCustomer() {
     };
 
     const handleNextClick = () => {
+        if (!contactInfo.fullName || !contactInfo.phone || !contactInfo.email) {
+            displayError('Vui lòng điền đầy đủ thông tin liên hệ.');
+            return;
+        }
+
+        if (customerInfo.some((info) => !info.fullName || !info.nationality || !info.birthDay)) {
+            displayError('Vui lòng điền đầy đủ thông tin hành khách.');
+            return;
+        }
+
         navigate('/payment', {
             state: {
                 flight,
@@ -60,26 +74,27 @@ function InfoCustomer() {
                 contactInfo,
                 customerInfo,
                 totalCustomer,
-                seatMapping,
+                seatClass: seat,
             },
         });
     };
 
-    const renderPassengerForms = () => {
+    const renderPassengerForms = (count, type, startIndex) => {
         const forms = [];
-
-        for (let i = 0; i < adultCount; i++) {
+        for (let i = 0; i < count; i++) {
             forms.push(
-                <ul className={cx('info-family-member')} key={`adult-${i}`}>
-                    <h2>Người lớn {i + 1}</h2>
+                <ul className={cx('info-family-member')} key={`${type}-${i}`}>
+                    <h2>
+                        {type} {i + 1}
+                    </h2>
                     <div className={cx('thong-tin-nguoi-nhan')}>
                         <div className={cx('name')}>
                             <p>Họ và tên</p>
                             <input
                                 type="text"
                                 name="fullName"
-                                value={customerInfo[i]?.fullName}
-                                onChange={(e) => handlePassengerChange(i, e)}
+                                value={customerInfo[startIndex + i]?.fullName}
+                                onChange={(e) => handlePassengerChange(startIndex + i, e)}
                             />
                             <p>như trên CCCD (không dấu)</p>
                         </div>
@@ -88,8 +103,8 @@ function InfoCustomer() {
                             <input
                                 type="text"
                                 name="nationality"
-                                value={customerInfo[i]?.nationality}
-                                onChange={(e) => handlePassengerChange(i, e)}
+                                value={customerInfo[startIndex + i]?.nationality}
+                                onChange={(e) => handlePassengerChange(startIndex + i, e)}
                             />
                         </div>
                         <div className={cx('phone')}>
@@ -97,84 +112,8 @@ function InfoCustomer() {
                             <input
                                 type="date"
                                 name="birthDay"
-                                value={customerInfo[i]?.birthDay}
-                                onChange={(e) => handlePassengerChange(i, e)}
-                            />
-                        </div>
-                    </div>
-                </ul>,
-            );
-        }
-
-        for (let i = 0; i < childCount; i++) {
-            forms.push(
-                <ul className={cx('info-family-member')} key={`child-${i}`}>
-                    <h2>Trẻ em {i + 1}</h2>
-                    <div className={cx('thong-tin-nguoi-nhan')}>
-                        <div className={cx('name')}>
-                            <p>Họ và tên</p>
-                            <input
-                                type="text"
-                                name="fullName"
-                                value={customerInfo[adultCount + i]?.fullName}
-                                onChange={(e) => handlePassengerChange(adultCount + i, e)}
-                            />
-                            <p>như trên CCCD (không dấu)</p>
-                        </div>
-                        <div className={cx('email')}>
-                            <p>Quốc tịch</p>
-                            <input
-                                type="text"
-                                name="nationality"
-                                value={customerInfo[adultCount + i]?.nationality}
-                                onChange={(e) => handlePassengerChange(adultCount + i, e)}
-                            />
-                        </div>
-                        <div className={cx('phone')}>
-                            <p>Ngày sinh</p>
-                            <input
-                                type="date"
-                                name="birthDay"
-                                value={customerInfo[adultCount + i]?.birthDay}
-                                onChange={(e) => handlePassengerChange(adultCount + i, e)}
-                            />
-                        </div>
-                    </div>
-                </ul>,
-            );
-        }
-
-        for (let i = 0; i < infantCount; i++) {
-            forms.push(
-                <ul className={cx('info-family-member')} key={`infant-${i}`}>
-                    <h2>Em bé {i + 1}</h2>
-                    <div className={cx('thong-tin-nguoi-nhan')}>
-                        <div className={cx('name')}>
-                            <p>Họ và tên</p>
-                            <input
-                                type="text"
-                                name="fullName"
-                                value={customerInfo[adultCount + childCount + i]?.fullName}
-                                onChange={(e) => handlePassengerChange(adultCount + childCount + i, e)}
-                            />
-                            <p>như trên CCCD (không dấu)</p>
-                        </div>
-                        <div className={cx('email')}>
-                            <p>Quốc tịch</p>
-                            <input
-                                type="text"
-                                name="nationality"
-                                value={customerInfo[adultCount + childCount + i]?.nationality}
-                                onChange={(e) => handlePassengerChange(adultCount + childCount + i, e)}
-                            />
-                        </div>
-                        <div className={cx('phone')}>
-                            <p>Ngày sinh</p>
-                            <input
-                                type="date"
-                                name="birthDay"
-                                value={customerInfo[adultCount + childCount + i]?.birthDay}
-                                onChange={(e) => handlePassengerChange(adultCount + childCount + i, e)}
+                                value={customerInfo[startIndex + i]?.birthDay}
+                                onChange={(e) => handlePassengerChange(startIndex + i, e)}
                             />
                         </div>
                     </div>
@@ -225,10 +164,14 @@ function InfoCustomer() {
                             </div>
                         </div>
                     </div>
+
                     <div className={cx('info-customer')}>
                         <h1>Thông tin hành khách</h1>
-                        {renderPassengerForms()}
+                        {renderPassengerForms(adultCount, 'Người lớn', 0)}
+                        {renderPassengerForms(childCount, 'Trẻ em', adultCount)}
+                        {renderPassengerForms(infantCount, 'Em bé', adultCount + childCount)}
                     </div>
+
                     {error && <span className={cx('error')}>{error}</span>}
                     <Button primary className={cx('next')} onClick={handleNextClick}>
                         TIẾP TỤC

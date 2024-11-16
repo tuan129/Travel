@@ -30,7 +30,7 @@ function TicketPlane() {
     const navigate = useNavigate();
     const { flights, returnFlights, seatClass, adultCount, childCount, infantCount, totalCustomer } = location.state;
     console.log(flights);
-    const seatMapping = seatClassMapping(seatClass);
+    const seat = seatClassMapping(seatClass);
     //Quản lý trạng xem chi tiết chuyến bay
     const [selectedFlight, setSelectedFlight] = useState(null);
     //Quản lý xem có phải khứ hồi hay ko
@@ -55,7 +55,7 @@ function TicketPlane() {
                     childCount,
                     infantCount,
                     totalCustomer,
-                    seatMapping,
+                    seat,
                 },
             });
         } else {
@@ -73,7 +73,7 @@ function TicketPlane() {
                 childCount,
                 infantCount,
                 totalCustomer,
-                seatMapping,
+                seat,
             },
         });
     };
@@ -98,7 +98,7 @@ function TicketPlane() {
                                     </p>
                                     <p className={cx('money')}>
                                         Giá vé:
-                                        {flight.tickets[seatMapping].price.toLocaleString()} VND
+                                        {flight.tickets[seat].price.toLocaleString()} VND
                                     </p>
                                 </div>
                                 <div className={cx('btn-handle')}>
@@ -124,7 +124,7 @@ function TicketPlane() {
                                             Thời gian cất cánh: {formatDateTime(flight.time.departure)} - Thời gian hạ
                                             cánh: {formatDateTime(flight.time.arrival)}
                                         </p>
-                                        <p>{flight.tickets[seatMapping].price.toLocaleString()} VND/ Khách </p>
+                                        <p>{flight.tickets[seat].price.toLocaleString()} VND/ Khách </p>
                                     </div>
                                 )}
                             </li>
@@ -144,7 +144,7 @@ function TicketPlane() {
                                         </span>
                                     </p>
                                     <p className={cx('money')}>
-                                        Giá vé: {returnFlight.tickets[seatMapping].price.toLocaleString()} VND
+                                        Giá vé: {returnFlight.tickets[seat].price.toLocaleString()} VND
                                     </p>
                                 </div>
                                 <div className={cx('btn-handle')}>
@@ -172,7 +172,7 @@ function TicketPlane() {
                                             Thời gian cất cánh: {formatDateTime(returnFlight.time.departure)} - Thời
                                             gian hạ cánh: {formatDateTime(returnFlight.time.arrival)}
                                         </p>
-                                        <p>{returnFlight.tickets[seatMapping].price.toLocaleString()} VNĐ/Khách </p>
+                                        <p>{returnFlight.tickets[seat].price.toLocaleString()} VNĐ/Khách </p>
                                     </div>
                                 )}
                             </li>
