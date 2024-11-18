@@ -110,8 +110,13 @@ function Register() {
                 </Button>
 
                 <div className={cx('login-orther')}>
-                    <span>
+                    {/* <span>
                         Đã có tài khoản?{' '}
+                        <Button text to="/login">
+                            ĐĂNG NHẬP
+                        </Button>
+                    </span> */}
+                    <span>
                         <Button text to="/login">
                             ĐĂNG NHẬP
                         </Button>

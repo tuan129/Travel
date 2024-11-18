@@ -81,16 +81,26 @@ function Login() {
                     </Button>
                 </div>
                 <div className={cx('login-orthers')}>
-                    <p>
+                    {/* <p>
                         Chưa có tài khoản?
                         <Button className={cx('btn-register')} text to="/register">
                             Đăng ký
                         </Button>
-                    </p>
-                    <p>
+                    </p> */}
+                    {/* <p>
                         Quên mật khẩu?
                         <Button text to="/forgetpass">
-                            Đổi mật khẩu
+                            Đặt lại mật khẩu
+                        </Button>
+                    </p> */}
+                    <p>
+                        <Button className={cx('btn-register')} text to="/register">
+                            ĐĂNG KÝ TÀI KHOẢN
+                        </Button>
+                    </p>
+                    <p>
+                        <Button text to="/forgetpass">
+                            QUÊN MẬT KHẨU
                         </Button>
                     </p>
                 </div>
