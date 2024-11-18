@@ -77,6 +77,7 @@ function ListFlight() {
     };
 
     const handleEdit = (flight) => {
+        console.log(flight);
         setIdFlight(flight._id);
         setEditData(flight);
     };
@@ -232,13 +233,24 @@ function ListFlight() {
                         },
                     }));
                 } else {
-                    setEditData((prevData) => ({
-                        ...prevData,
-                        [parentField]: {
-                            ...prevData[parentField],
-                            [subField]: newData.target.value,
-                        },
-                    }));
+                    setEditData((prevData) => {
+                        let updatedData = { ...prevData };
+
+                        // Duyệt qua các cấp để tìm đến đối tượng cần thay đổi
+                        let currentLevel = updatedData;
+                        const fields = field.split('.');
+
+                        for (let i = 0; i < fields.length - 1; i++) {
+                            currentLevel = currentLevel[fields[i]]; // Di chuyển xuống cấp con
+                        }
+
+                        const value = parseInt(newData.target.value);
+
+                        // Cập nhật giá trị của cấp cuối cùng
+                        currentLevel[fields[fields.length - 1]] = value;
+
+                        return updatedData;
+                    });
                 }
             } else {
                 setEditData((prevData) => ({ ...prevData, [field]: newData.target.value }));
@@ -377,14 +389,15 @@ function ListFlight() {
                                             <label className={cx('label-edit')}>
                                                 + Phổ thông:
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     value={editData.tickets.phoThong.price}
                                                     onChange={(e) => handleInputChange(e, 'tickets.phoThong.price')}
                                                     className={cx('input-edit')}
                                                 />
+                                                {console.log(editData.tickets.phoThong.price)}
                                                 VNĐ
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     value={editData.tickets.phoThong.soLuongVe}
                                                     onChange={(e) => handleInputChange(e, 'tickets.phoThong.soLuongVe')}
                                                     className={cx('input-edit')}
@@ -394,7 +407,7 @@ function ListFlight() {
                                             <label className={cx('label-edit')}>
                                                 + Phổ thông đặc biệt:
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     value={editData.tickets.phoThongDacBiet.price}
                                                     onChange={(e) =>
                                                         handleInputChange(e, 'tickets.phoThongDacBiet.price')
@@ -403,7 +416,7 @@ function ListFlight() {
                                                 />
                                                 VNĐ
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     value={editData.tickets.phoThongDacBiet.soLuongVe}
                                                     onChange={(e) =>
                                                         handleInputChange(e, 'tickets.phoThongDacBiet.soLuongVe')
@@ -415,14 +428,14 @@ function ListFlight() {
                                             <label className={cx('label-edit')}>
                                                 + Thương gia:
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     value={editData.tickets.thuongGia.price}
                                                     onChange={(e) => handleInputChange(e, 'tickets.thuongGia.price')}
                                                     className={cx('input-edit')}
                                                 />
                                                 VNĐ
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     value={editData.tickets.thuongGia.soLuongVe}
                                                     onChange={(e) =>
                                                         handleInputChange(e, 'tickets.thuongGia.soLuongVe')
@@ -434,14 +447,14 @@ function ListFlight() {
                                             <label className={cx('label-edit')}>
                                                 + Hạng nhất:
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     value={editData.tickets.hangNhat.price}
                                                     onChange={(e) => handleInputChange(e, 'tickets.hangNhat.price')}
                                                     className={cx('input-edit')}
                                                 />
                                                 VNĐ
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     value={editData.tickets.hangNhat.soLuongVe}
                                                     onChange={(e) => handleInputChange(e, 'tickets.hangNhat.soLuongVe')}
                                                     className={cx('input-edit')}
