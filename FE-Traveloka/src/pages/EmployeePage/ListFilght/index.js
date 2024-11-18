@@ -211,7 +211,7 @@ function ListFlight() {
     return (
         <div className={cx('wrapper-list-flight')}>
             <div className={cx('content')}>
-                <h1>DANH SÁCH</h1>
+                <h1>DANH SÁCH CHUYẾN BAY</h1>
                 <div className={cx('list-flight')}>
                     <ul className={cx('list-flight-items')}>
                         {flights.map((flight) => (
