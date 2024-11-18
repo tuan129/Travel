@@ -49,17 +49,18 @@ function Register() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('register')}>
-                <h2>REGISTER</h2>
+                <h2>ĐĂNG KÝ</h2>
                 <div className={cx('input')}>
                     <div className={cx('account')}>
                         <div className={cx('input-form')}>
                             <label>
-                                <span>Full name: </span>
+                                <span>Họ & Tên: </span>
                                 <input
                                     className={cx('name-account')}
                                     type="text"
                                     value={fullname}
                                     onChange={(e) => setFullname(e.target.value)}
+                                    placeholder= "Full name"
                                 />
                             </label>
                         </div>
@@ -71,6 +72,7 @@ function Register() {
                                     type="text"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    placeholder= "Email"
                                 />
                             </label>
                         </div>
@@ -78,23 +80,25 @@ function Register() {
                     <div className={cx('pass')}>
                         <div className={cx('input-form')}>
                             <label>
-                                <span>Password: </span>
+                                <span>Mật khẩu: </span>
                                 <input
                                     className={cx('password')}
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    placeholder= "Password"
                                 />
                             </label>
                         </div>
                         <div className={cx('input-form')}>
                             <label>
-                                <span>Re-Pass: </span>
+                                <span>Nhập lại mật khẩu: </span>
                                 <input
                                     className={cx('re-pass')}
                                     type="password"
                                     value={rePassword}
                                     onChange={(e) => setRePassword(e.target.value)}
+                                    placeholder= "Re-Password"
                                 />
                             </label>
                         </div>
@@ -102,14 +106,14 @@ function Register() {
                 </div>
                 {error && <p className={cx('error')}>{error}</p>}
                 <Button primary onClick={handleRegister}>
-                    REGISTER
+                    ĐĂNG KÝ
                 </Button>
 
                 <div className={cx('login-orther')}>
                     <span>
-                        Have an Account?{' '}
+                        Đã có tài khoản?{' '}
                         <Button text to="/login">
-                            LOGIN
+                            ĐĂNG NHẬP
                         </Button>
                     </span>
                 </div>

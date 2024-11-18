@@ -49,40 +49,47 @@ function ResetPass() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('reset')}>
-                <h2>RESET PASSWORD</h2>
+                <h2>ĐẶT LẠI MẬT KHẨU</h2>
                 <div className={cx('reset-inputs')}>
                     <div className={cx('reset-input')}>
                         <label>
                             <span>Email:</span>
-                            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        </label>
-                    </div>
-                    <div className={cx('reset-input')}>
-                        <label>
-                            <span>New Password:</span>
                             <input
-                                type="password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email"
                             />
                         </label>
                     </div>
                     <div className={cx('reset-input')}>
                         <label>
-                            <span>Confirm:</span>
+                            <span>Mật khẩu mới:</span>
+                            <input
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                placeholder= "New Password"
+                            />
+                        </label>
+                    </div>
+                    <div className={cx('reset-input')}>
+                        <label>
+                            <span>Nhập lại mật khẩu mới:</span>
                             <input
                                 type="password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder= "Re-Password"
                             />
                         </label>
                     </div>
                     {error && <p className={cx('error')}>{error}</p>}
                     <Button primary className={cx('reset-button')} onClick={handleResetPass}>
-                        RESET
+                        ĐỒNG Ý
                     </Button>
                     <Button text className={cx('back-to-login')} onClick={() => navigate('/login')}>
-                        Back to login
+                        ĐĂNG NHẬP
                     </Button>
                 </div>
             </div>

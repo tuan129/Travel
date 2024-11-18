@@ -16,7 +16,7 @@ function Login() {
 
     const handleLogin = async () => {
         if (!email || !password) {
-            setError('Email và mật khẩu không được để trống.');
+            setError('Email và Mật Khẩu không được để trống.');
             return;
         }
 
@@ -51,44 +51,46 @@ function Login() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('login')}>
-                <h2>LOGIN</h2>
+                <h2>ĐĂNG NHẬP</h2>
                 <div className={cx('input')}>
                     <div className={cx('input-form')}>
                         <label>
                             <span>Email: </span>
-                            <input 
-                            type="text" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)}
+                            <input
+                                type="text"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email"
                             />
                         </label>
                     </div>
                     <div className={cx('input-form')}>
                         <label>
-                            <span>Password: </span>
-                            <input 
-                            type="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
+                            <span>Mật khẩu: </span>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Password"
                             />
                         </label>
                     </div>
                     {error && <p className={cx('error')}>{error}</p>}
                     <Button primary onClick={handleLogin}>
-                        LOGIN
+                        ĐĂNG NHẬP
                     </Button>
                 </div>
                 <div className={cx('login-orthers')}>
                     <p>
-                        Don't have an account?
+                        Chưa có tài khoản?
                         <Button className={cx('btn-register')} text to="/register">
-                            Register
+                            Đăng ký
                         </Button>
                     </p>
                     <p>
-                        Forget Password ?
+                        Quên mật khẩu?
                         <Button text to="/forgetpass">
-                            Reset password
+                            Đổi mật khẩu
                         </Button>
                     </p>
                 </div>
