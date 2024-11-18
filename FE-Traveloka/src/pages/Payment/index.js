@@ -25,7 +25,7 @@ function Payment() {
     const seatMapping = location.state.seatClass;
     const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, contactInfo, customerInfo } =
         location.state;
-    console.log(flight);
+    console.log(customerInfo);
 
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
@@ -107,7 +107,8 @@ function Payment() {
                                             seatClass: seatMapping,
                                             totalPrice: flightPrice * totalCustomer,
                                         };
-                                        await axios.post('http://localhost:4000/api/booking', newBookings);
+                                        console.log(newBookings);
+                                        // await axios.post('http://localhost:4000/api/booking', newBookings);
                                         if (returnFlight) {
                                             const newBookings = {
                                                 user: users._id,
@@ -118,13 +119,14 @@ function Payment() {
                                                 seatClass: seatMapping,
                                                 totalPrice: returnTicketPrice * totalCustomer,
                                             };
-                                            await axios.post('http://localhost:4000/api/booking', newBookings);
+                                            console.log(newBookings);
+                                            // await axios.post('http://localhost:4000/api/booking', newBookings);
                                         }
                                         alert('Thanh toán thành công!');
                                     }
                                     console.log(res);
                                 } catch (err) {
-                                    console.log(err);
+                                    console.log('error', err);
                                 }
                             }}
                             onError={(err) => {

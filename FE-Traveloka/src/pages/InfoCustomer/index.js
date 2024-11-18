@@ -19,6 +19,49 @@ function InfoCustomer() {
         }, 3000);
     };
 
+    const seatInfo = flight.tickets[seat];
+    const seatCount = seatInfo.soLuongVe;
+    const bookedSeats = seatInfo.bookedSeats || [];
+
+    const generateSeatLayout = (seatCount) => {
+        const layout = [];
+        let row = [];
+        for (let i = 1; i <= seatCount; i++) {
+            const seatNumber = `A${i}`;
+            row.push(seatNumber);
+            if (i % 4 === 0 || i === seatCount) {
+                layout.push(row);
+                row = [];
+            }
+        }
+        return layout;
+    };
+
+    const seatLayout = generateSeatLayout(seatCount);
+
+    const [selectedSeats, setSelectedSeats] = useState([]);
+
+    const handleSeatClick = (seat) => {
+        if (selectedSeats.includes(seat)) {
+            // Bỏ chọn ghế và cập nhật customerInfo
+            setSelectedSeats(selectedSeats.filter((s) => s !== seat));
+            setCustomerInfo((prev) =>
+                prev.map((info) => (info.seatNumber === seat ? { ...info, seatNumber: '' } : info)),
+            );
+        } else if (selectedSeats.length < totalCustomer) {
+            // Chọn ghế và gán vào seatNumber của khách hàng tiếp theo
+            setSelectedSeats([...selectedSeats, seat]);
+            setCustomerInfo((prev) => {
+                const updatedCustomerInfo = [...prev];
+                const nextCustomerIndex = updatedCustomerInfo.findIndex((info) => info.seatNumber === '');
+                if (nextCustomerIndex !== -1) {
+                    updatedCustomerInfo[nextCustomerIndex].seatNumber = seat;
+                }
+                return updatedCustomerInfo;
+            });
+        }
+    };
+
     // Quản lý trạng thái thông tin liên hệ
     const [contactInfo, setContactInfo] = useState({
         fullName: '',
@@ -28,13 +71,26 @@ function InfoCustomer() {
 
     // Quản lý trạng thái thông tin khách hàng
     const [customerInfo, setCustomerInfo] = useState(
-        Array.from({ length: totalCustomer }, () => ({
-            fullName: '',
-            nationality: '',
-            birthDay: '',
-            customerType: '',
-            seatNumber: '',
-        })),
+        Array.from({ length: totalCustomer }, (_, index) => {
+            let customerType = '';
+
+            // Gán customerType dựa trên số lượng người lớn, trẻ em và em bé
+            if (index < adultCount) {
+                customerType = 'Adult';
+            } else if (index < adultCount + childCount) {
+                customerType = 'Child';
+            } else if (index < adultCount + childCount + infantCount) {
+                customerType = 'Infant';
+            }
+
+            return {
+                fullName: '',
+                nationality: '',
+                birthDay: '',
+                customerType,
+                seatNumber: '',
+            };
+        }),
     );
 
     // Lưu trữ trạng thái thông tin liên hệ
@@ -171,12 +227,33 @@ function InfoCustomer() {
                         {renderPassengerForms(childCount, 'Trẻ em', adultCount)}
                         {renderPassengerForms(infantCount, 'Em bé', adultCount + childCount)}
                     </div>
-
-                    {error && <span className={cx('error')}>{error}</span>}
-                    <Button primary className={cx('next')} onClick={handleNextClick}>
-                        TIẾP TỤC
-                    </Button>
                 </div>
+                <div className={cx('plane')}>
+                    <h2>Sơ đồ chỗ ngồi</h2>
+                    <div className={cx('seat-layout')}>
+                        {seatLayout.map((row, rowIndex) => (
+                            <div key={rowIndex} className={cx('seat-row')}>
+                                {row.map((seatNumber) => (
+                                    <button
+                                        key={seatNumber}
+                                        className={cx('seat', {
+                                            selected: selectedSeats.includes(seatNumber),
+                                            booked: bookedSeats.includes(seatNumber),
+                                        })}
+                                        onClick={() => handleSeatClick(seatNumber)}
+                                        disabled={bookedSeats.includes(seatNumber)}
+                                    >
+                                        {seatNumber}
+                                    </button>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                {error && <span className={cx('error')}>{error}</span>}
+                <Button primary className={cx('next')} onClick={handleNextClick}>
+                    TIẾP TỤC
+                </Button>
             </div>
         </div>
     );

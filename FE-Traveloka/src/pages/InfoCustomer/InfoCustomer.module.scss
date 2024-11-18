@@ -78,3 +78,80 @@
     font-weight: 500;
     width: fit-content;
 }
+
+
+.plane {
+    width: var(--default-layout-width);
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 100px;
+      background-color: #ddd;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 5px;
+    }
+  
+    &::before {
+      left: -60px;
+    }
+  
+    &::after {
+      right: -60px;
+    }
+  
+    h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+  
+    .seat-layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+  
+    .seat-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    .seat {
+      width: 40px;
+      height: 40px;
+      background-color: #eee;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  
+      &:hover:not(.booked):not(.selected) {
+        background-color: #ddd;
+      }
+  
+      &.selected {
+        background-color: var(--primary);
+        color: #fff;
+      }
+  
+      &.booked {
+        background-color: #d9534f;
+        color: #fff;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
