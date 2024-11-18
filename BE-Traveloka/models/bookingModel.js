@@ -46,7 +46,7 @@ const bookingSchema = new mongoose.Schema({
       },
       customerType: {
         type: String,
-        enum: ['adult', 'child', 'infant'],
+        enum: ['Adult', 'Child', 'Infant'],
         required: [true, 'Phải có kiểu khách hàng'],
       },
       seatNumber: {
@@ -60,13 +60,13 @@ const bookingSchema = new mongoose.Schema({
     enum: ['phoThong', 'phoThongDacBiet', 'thuongGia', 'hangNhat'],
     required: [true, 'khách hàng phải có một hạng ghế '],
   },
-  bookingDate: {
-    type: Date,
-    default: Date.now,
-  },
   totalPrice: {
     type: Number,
     required: [true, 'Phải có tổng giá tiền Booking'],
+  },
+  bookingDate: {
+    type: Date,
+    default: Date.now,
   },
 });
 

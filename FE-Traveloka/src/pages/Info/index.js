@@ -54,7 +54,7 @@ function Info() {
                         <div className={cx('content-left')}>
                             <div className={cx('my-booking')}>
                                 <FontAwesomeIcon className={cx('icon')} icon={faTableList} />
-                                <p>đặt chổ của tôi</p>
+                                <p>Đặt chỗ của tôi</p>
                             </div>
                         </div>
                     </div>

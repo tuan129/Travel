@@ -5,7 +5,8 @@ import classNames from 'classnames/bind';
 import { format } from 'date-fns';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import axios from 'axios';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const cx = classNames.bind(styles);
 
 function Payment() {
@@ -44,12 +45,23 @@ function Payment() {
             navigate('/login');
         }
     }, []);
-    console.log(users._id);
 
     const flightPrice = flight.tickets[seatMapping].price;
     const returnTicketPrice = returnFlight?.tickets[seatMapping]?.price || 0;
 
     const totalAmount = (flightPrice + returnTicketPrice) * totalCustomer;
+
+    const handleSuccessToast = () => {
+        toast.success('Thanh toán thành công!', {
+            onClose: () => {
+                navigate('/home');
+            },
+        });
+    };
+
+    const handleErrorToast = () => {
+        toast.error('Thanh toán thất bại. Vui lòng thử lại!');
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -97,6 +109,7 @@ function Payment() {
                             onApprove={async (data, actions) => {
                                 try {
                                     const res = await actions.order.capture();
+                                    console.log('nay la responese', res);
                                     if (res.status === 'COMPLETED') {
                                         const newBookings = {
                                             user: users._id,
@@ -108,7 +121,7 @@ function Payment() {
                                             totalPrice: flightPrice * totalCustomer,
                                         };
                                         console.log(newBookings);
-                                        // await axios.post('http://localhost:4000/api/booking', newBookings);
+                                        await axios.post('http://localhost:4000/api/booking', newBookings);
                                         if (returnFlight) {
                                             const newBookings = {
                                                 user: users._id,
@@ -120,13 +133,14 @@ function Payment() {
                                                 totalPrice: returnTicketPrice * totalCustomer,
                                             };
                                             console.log(newBookings);
-                                            // await axios.post('http://localhost:4000/api/booking', newBookings);
+                                            await axios.post('http://localhost:4000/api/booking', newBookings);
                                         }
-                                        alert('Thanh toán thành công!');
+                                        handleSuccessToast();
                                     }
                                     console.log(res);
                                 } catch (err) {
-                                    console.log('error', err);
+                                    console.log('error', err.data);
+                                    handleErrorToast();
                                 }
                             }}
                             onError={(err) => {
@@ -135,6 +149,7 @@ function Payment() {
                         />
                     </PayPalScriptProvider>
                 </div>
+                <ToastContainer />
             </div>
         </div>
     );

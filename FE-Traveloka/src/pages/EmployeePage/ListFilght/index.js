@@ -11,6 +11,9 @@ import Tippy from '@tippyjs/react/headless';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const cx = classNames.bind(styles);
 
 function ListFlight() {
@@ -27,14 +30,50 @@ function ListFlight() {
     const formatTime = (isoString) => {
         return format(new Date(isoString), 'HH:mm');
     };
-    const handleDelete = async (flightNumber) => {
+    const handleDelete = async (flightId) => {
         try {
-            await axios.delete(`http://localhost:4000/api/flight/${flightNumber}`);
-            setFlights((prevFlights) => prevFlights.filter((flight) => flight.flightNumber !== flightNumber));
+            console.log(flightId);
+            await axios.delete(`http://localhost:4000/api/flight/${flightId}`);
+            toast.success('Xóa thành công!', {
+                onClose: () => {
+                    window.location.reload();
+                },
+            });
         } catch (error) {
             console.error('Error deleting flight:', error);
-            alert('Failed to delete flight. Please try again.');
+            toast.error('Failed to delete flight. Please try again.');
         }
+    };
+
+    const showToast = (flightId) => {
+        toast.dismiss();
+        toast(
+            ({ closeToast }) => (
+                <div className={cx('toast-content')}>
+                    <h1>Bạn có chắc chắn muốn xóa?</h1>
+                    <div className={cx('toast-button')}>
+                        <Button
+                            primary
+                            onClick={() => {
+                                handleDelete(flightId);
+                                closeToast();
+                            }}
+                        >
+                            Có
+                        </Button>
+                        <Button onClick={closeToast}>Không</Button>
+                    </div>
+                </div>
+            ),
+            {
+                position: 'top-center',
+                autoClose: false,
+                closeOnClick: false,
+                draggable: false,
+                toastClassName: 'toast-yes-no',
+                bodyClassName: 'toast-yes-no-body',
+            },
+        );
     };
 
     const handleEdit = (flight) => {
@@ -427,7 +466,7 @@ function ListFlight() {
                                             <Button
                                                 className={cx('btn-delete')}
                                                 leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faTrashCan} />}
-                                                onClick={() => handleDelete(flight.flightCode)}
+                                                onClick={() => showToast(flight._id)}
                                             />
                                             <Button text className={cx('bnt-edit')} onClick={() => handleEdit(flight)}>
                                                 Edit
@@ -474,6 +513,7 @@ function ListFlight() {
                     </ul>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

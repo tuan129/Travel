@@ -19,6 +19,15 @@
         }
     }
 }
+.toast-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toast-button{
+    margin-top: 16px;
+}
 
 .list-flight {
     margin-top: 15px;
