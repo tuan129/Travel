@@ -274,7 +274,7 @@ function ListFlight() {
                                             </Tippy>
                                         </label>
                                         <label>
-                                            To
+                                            Đến
                                             <Tippy
                                                 placement="bottom-start"
                                                 interactive
@@ -308,7 +308,7 @@ function ListFlight() {
                                             </Tippy>
                                         </label>
                                         <label className={cx('date-departure')}>
-                                            Date
+                                            Ngày
                                             <input
                                                 type="date"
                                                 value={editData.date}
@@ -317,14 +317,14 @@ function ListFlight() {
                                             />
                                         </label>
                                         <label className={cx('time')}>
-                                            Time
+                                            Thời gian
                                             <input
                                                 type="time"
                                                 value={formatTime(editData.time.departure)}
                                                 onChange={(e) => handleInputChange(e, 'time.departure')}
                                                 className={cx('input-edit')}
                                             />
-                                            - To -
+                                            -
                                             <input
                                                 type="time"
                                                 value={formatTime(editData.time.arrival)}
@@ -430,7 +430,7 @@ function ListFlight() {
                                                 onClick={() => handleDelete(flight.flightCode)}
                                             />
                                             <Button text className={cx('bnt-edit')} onClick={() => handleEdit(flight)}>
-                                                Edit
+                                                SỬA
                                             </Button>
                                         </div>
                                         <p className={cx('place')}>
