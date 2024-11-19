@@ -9,6 +9,13 @@ const cx = classNames.bind(styles);
 
 function Viewcustomer() {
     const [flights, setFlights] = useState([]);
+    const formatType = (type) => {
+        if (type === 'Adult') {
+            return 'Người lớn';
+        } else if (type === 'Child') {
+            return 'Trẻ em';
+        } else return 'Em bé';
+    };
 
     useEffect(() => {
         const getBooking = async () => {
@@ -81,7 +88,7 @@ function Viewcustomer() {
                                                     <td>{customer.fullName}</td>
                                                     <td>{customer.seatNumber}</td>
                                                     <td>{customer.nationality}</td>
-                                                    <td>{customer.customerType}</td>
+                                                    <td>{formatType(customer.customerType)}</td>
                                                 </tr>
                                             )),
                                         )}
