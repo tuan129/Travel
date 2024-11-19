@@ -109,9 +109,7 @@
 }
 
 .booking{
-    box-shadow: 0px 1px 2px rgba(3, 18, 26, 0.20);
-    display: flex;
-    padding: 18px 12px;
+    // display: flex;
 
     img{
         object-fit: contain;
@@ -137,6 +135,8 @@
 .header-user-booking{
     display: flex;
     margin-bottom: 12px;
+    padding:12px 12px 0 12px;
+
 
     .info-booking{
         display: flex;
@@ -159,7 +159,14 @@
     }
 }
 
+.user-booking{
+    box-shadow: 0px 1px 2px rgba(3, 18, 26, 0.20);
+    margin-bottom: 24px;
+}
+
 .user-booking-content{
+    padding: 0 12px 12px 12px;
+
     p{
         font-size: 16px;
         font-weight: 500;

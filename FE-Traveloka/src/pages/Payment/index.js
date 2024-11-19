@@ -26,7 +26,6 @@ function Payment() {
     const seatMapping = location.state.seatClass;
     const { flight, returnFlight, adultCount, childCount, infantCount, totalCustomer, contactInfo, customerInfo } =
         location.state;
-    console.log(customerInfo);
 
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
@@ -54,7 +53,7 @@ function Payment() {
     const handleSuccessToast = () => {
         toast.success('Thanh toán thành công!', {
             onClose: () => {
-                navigate('/home');
+                navigate('/');
             },
         });
     };
@@ -62,6 +61,10 @@ function Payment() {
     const handleErrorToast = () => {
         toast.error('Thanh toán thất bại. Vui lòng thử lại!');
     };
+
+    const seatNumbers = customerInfo.map((customer) => customer.seatNumber);
+    console.log(seatNumbers);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -111,35 +114,60 @@ function Payment() {
                                     const res = await actions.order.capture();
                                     console.log('nay la responese', res);
                                     if (res.status === 'COMPLETED') {
-                                        const newBookings = {
-                                            user: users._id,
-                                            flight: flight._id,
-                                            status: 'checked-in',
-                                            infoContact: contactInfo,
-                                            infoCustomers: customerInfo,
-                                            seatClass: seatMapping,
-                                            totalPrice: flightPrice * totalCustomer,
-                                        };
-                                        console.log(newBookings);
-                                        await axios.post('http://localhost:4000/api/booking', newBookings);
-                                        if (returnFlight) {
+                                        const createBooking = async (
+                                            flight,
+                                            seatMapping,
+                                            totalCustomer,
+                                            seatNumbers,
+                                            ticketPrice,
+                                        ) => {
                                             const newBookings = {
                                                 user: users._id,
-                                                flight: returnFlight._id,
+                                                flight: flight._id,
                                                 status: 'checked-in',
                                                 infoContact: contactInfo,
                                                 infoCustomers: customerInfo,
                                                 seatClass: seatMapping,
-                                                totalPrice: returnTicketPrice * totalCustomer,
+                                                totalPrice: ticketPrice * totalCustomer,
                                             };
-                                            console.log(newBookings);
-                                            await axios.post('http://localhost:4000/api/booking', newBookings);
+
+                                            const newFlight = {
+                                                tickets: {
+                                                    ...flight.tickets,
+                                                    [seatMapping]: {
+                                                        price: flight.tickets[seatMapping].price,
+                                                        soLuongVe: flight.tickets[seatMapping].soLuongVe,
+                                                        soVeCon: flight.tickets[seatMapping].soVeCon - totalCustomer,
+                                                        bookedSeats: [
+                                                            ...flight.tickets[seatMapping].bookedSeats,
+                                                            ...seatNumbers,
+                                                        ],
+                                                    },
+                                                },
+                                            };
+                                            return axios.all([
+                                                axios.post('http://localhost:4000/api/booking', newBookings),
+                                                axios.patch(
+                                                    `http://localhost:4000/api/flight/${flight._id}`,
+                                                    newFlight,
+                                                ),
+                                            ]);
+                                        };
+                                        createBooking(flight, seatMapping, totalCustomer, seatNumbers, flightPrice);
+                                        if (returnFlight) {
+                                            createBooking(
+                                                returnFlight,
+                                                seatMapping,
+                                                totalCustomer,
+                                                seatNumbers,
+                                                returnTicketPrice,
+                                            );
                                         }
                                         handleSuccessToast();
                                     }
                                     console.log(res);
                                 } catch (err) {
-                                    console.log('error', err.data);
+                                    console.log('error', err);
                                     handleErrorToast();
                                 }
                             }}

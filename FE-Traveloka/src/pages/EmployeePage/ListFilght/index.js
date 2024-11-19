@@ -8,7 +8,7 @@ import CityItems from '~/components/CityItems';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { ToastContainer, toast } from 'react-toastify';
@@ -481,9 +481,14 @@ function ListFlight() {
                                                 leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faTrashCan} />}
                                                 onClick={() => showToast(flight._id)}
                                             />
-                                            <Button text className={cx('bnt-edit')} onClick={() => handleEdit(flight)}>
-                                                SỬA
-                                            </Button>
+                                            <Button
+                                                text
+                                                className={cx('bnt-edit')}
+                                                leftIcon={
+                                                    <FontAwesomeIcon className={cx('icon')} icon={faPenToSquare} />
+                                                }
+                                                onClick={() => handleEdit(flight)}
+                                            />
                                         </div>
                                         <p className={cx('place')}>
                                             Khởi hành: {flight.airfield.from.city} - {flight.airfield.from.nameAirfield}{' '}
