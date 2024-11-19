@@ -22,10 +22,14 @@ import {
     faPlaneDeparture,
     faUserLarge,
 } from '@fortawesome/free-solid-svg-icons';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const cx = classNames.bind(styles);
 
 function Home() {
+    const handleErrorToast = (err) => {
+        toast.error(err);
+    };
     const navigate = useNavigate();
     //lưu giữ trạng thái sân bay đi
     const [from, setFrom] = useState('');
@@ -174,10 +178,7 @@ function Home() {
 
     // Hàm để hiển thị thông báo lỗi
     const displayError = (message) => {
-        setError(message);
-        setTimeout(() => {
-            setError('');
-        }, 3000);
+        handleErrorToast(message);
     };
 
     //Call Api khi user nhập từ khóa
@@ -522,6 +523,7 @@ function Home() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }
