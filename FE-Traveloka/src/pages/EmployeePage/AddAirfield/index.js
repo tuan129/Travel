@@ -34,7 +34,7 @@ function AddAirfield() {
             });
 
             alert('Sân bay đã được thêm thành công!');
-            navigate('/listairfield'); //Điều hướng đến danh sách sân bay
+            // navigate('/listairfield'); //Điều hướng đến danh sách sân bay
         } catch (err) {
             console.error('Error adding airfield:', err);
             alert('Thêm sân bay thất bại. Vui lòng thử lại.');
