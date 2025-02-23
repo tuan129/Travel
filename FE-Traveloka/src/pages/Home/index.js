@@ -58,7 +58,7 @@ function Home() {
     const [showSearchResults, setShowSearchResults] = useState(false);
     const [isSelecting, setIsSelecting] = useState(true);
     //Thông báo lỗi
-    const [error, setError] = useState('');
+    // const [error, setError] = useState('');
 
     //Danh sách các hạng ghế
     const MENU_ITEMS = [
@@ -510,7 +510,6 @@ function Home() {
                                     </Menu>
                                 </div>
                             </div>
-                            {error && <p className={cx('error')}>{error}</p>}
                             <Button
                                 large
                                 leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faMagnifyingGlass} />}

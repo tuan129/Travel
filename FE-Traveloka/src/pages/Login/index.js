@@ -5,18 +5,23 @@ import axios from 'axios';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import styles from './Login.module.scss';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(styles);
 
 function Login() {
+    const handleErrorToast = (err) => {
+        toast.error(err);
+    };
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleLogin = async () => {
         if (!email || !password) {
-            setError('Email và Mật Khẩu không được để trống.');
+            handleErrorToast('Email và Mật Khẩu không được để trống.');
             return;
         }
 
@@ -41,10 +46,10 @@ function Login() {
                     window.location.reload();
                 }
             } else {
-                setError(data.message || 'Đăng nhập thất bại.');
+                handleErrorToast(data.message || 'Đăng nhập thất bại.');
             }
         } catch (error) {
-            setError('Đã xảy ra lỗi. Vui lòng thử lại.');
+            handleErrorToast('Đã xảy ra lỗi. Vui lòng thử lại.');
         }
     };
 
@@ -75,27 +80,14 @@ function Login() {
                             />
                         </label>
                     </div>
-                    {error && <p className={cx('error')}>{error}</p>}
                     <Button primary onClick={handleLogin}>
                         ĐĂNG NHẬP
                     </Button>
                 </div>
                 <div className={cx('login-orthers')}>
-                    {/* <p>
-                        Chưa có tài khoản?
-                        <Button className={cx('btn-register')} text to="/register">
-                            Đăng ký
-                        </Button>
-                    </p> */}
-                    {/* <p>
-                        Quên mật khẩu?
-                        <Button text to="/forgetpass">
-                            Đặt lại mật khẩu
-                        </Button>
-                    </p> */}
                     <p>
                         <Button className={cx('btn-register')} text to="/register">
-                            ĐĂNG KÝ TÀI KHOẢN
+                            ĐĂNG KÝ
                         </Button>
                     </p>
                     <p>
@@ -105,6 +97,7 @@ function Login() {
                     </p>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

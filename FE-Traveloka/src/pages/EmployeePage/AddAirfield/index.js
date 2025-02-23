@@ -10,6 +10,9 @@ import { Wrapper as PoperWrapper } from '~/components/Poper';
 import classNames from 'classnames/bind';
 import axios from 'axios';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const cx = classNames.bind(styles);
 
 function AddAirfield() {
@@ -18,11 +21,22 @@ function AddAirfield() {
     const [airfieldCode, setAirfieldCode] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
+    const handleErrorToast = (err) => {
+        toast.error(err);
+    };
+
+    const handleSuccessToast = (err) => {
+        toast.success(err, {
+            onClose: () => {
+                navigate('/listairfield'); //Điều hướng đến danh sách sân bay
+            },
+        });
+    };
 
     const handleAddAirfield = async () => {
         try {
             if (!airfieldName || !airfieldCode || !country || !city) {
-                alert('Vui lòng điền đầy đủ thông tin sân bay.');
+                handleErrorToast('Vui lòng điền đầy đủ thông tin sân bay.');
                 return;
             }
 
@@ -33,11 +47,10 @@ function AddAirfield() {
                 country: country,
             });
 
-            alert('Sân bay đã được thêm thành công!');
-            navigate('/listairfield'); //Điều hướng đến danh sách sân bay
+            handleSuccessToast('Sân bay đã được thêm thành công!');
         } catch (err) {
             console.error('Error adding airfield:', err);
-            alert('Thêm sân bay thất bại. Vui lòng thử lại.');
+            handleErrorToast('Thêm sân bay thất bại. Vui lòng thử lại.');
         }
     };
 
@@ -93,6 +106,7 @@ function AddAirfield() {
                     </Button>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

@@ -12,6 +12,8 @@ import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const cx = classNames.bind(styles);
 function AddFlight() {
     const navigate = useNavigate();
@@ -56,6 +58,7 @@ function AddFlight() {
                 const res = await axios.get(`http://localhost:4000/api/airfield/search?keyword=${searchKeyword}`);
                 const data = res.data;
                 setSearchAirfield(data.data.airfields);
+                console.log(data.data.airfields);
                 setShowAirfiled(true);
             } catch (err) {
                 console.error('Error fetching search results:', err);
@@ -108,6 +111,7 @@ function AddFlight() {
 
     const handleSelect = (airfields, type) => {
         if (type === 'departure') {
+            console.log(airfields);
             setFrom(`${airfields.city}`);
         } else if (type === 'arrival') {
             setTo(`${airfields.city}`);
@@ -117,11 +121,22 @@ function AddFlight() {
         setShowAirfiled(false);
         setShowAirline(false);
     };
+    const handleErrorToast = (err) => {
+        toast.error(err);
+    };
+
+    const handleSuccessToast = (err) => {
+        toast.success(err, {
+            onClose: () => {
+                navigate('/listfilght'); //Điều hướng đến danh sách sân bay
+            },
+        });
+    };
 
     const handleAddFlight = async () => {
         try {
             if (!from || !to) {
-                alert('Vui lòng chọn sân bay khởi hành và đến.');
+                handleErrorToast('Vui lòng chọn sân bay khởi hành và đến.');
                 return;
             }
             const departureTime = new Date(`${departureDate}T${departure}:00`);
@@ -157,11 +172,10 @@ function AddFlight() {
                     },
                 },
             });
-            alert('Flight added successfully!');
-            navigate('/listfilght');
+            handleSuccessToast('Flight added successfully!');
         } catch (err) {
             console.error('Error adding flight:', err);
-            alert('Failed to add flight. Please try again.');
+            handleErrorToast('Failed to add flight. Please try again.');
         }
     };
 
@@ -477,6 +491,7 @@ function AddFlight() {
                     THÊM
                 </Button>
             </div>
+            <ToastContainer />
         </div>
     );
 }

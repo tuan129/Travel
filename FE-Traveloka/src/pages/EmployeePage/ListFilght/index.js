@@ -24,6 +24,9 @@ function ListFlight() {
     const [searchAirfield, setSearchAirfield] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
 
+    const handleErrorToast = (err) => {
+        toast.error(err);
+    };
     const formatDate = (isoString) => {
         return format(new Date(isoString), 'dd/MM/yyyy');
     };
@@ -120,7 +123,7 @@ function ListFlight() {
             window.location.reload();
         } catch (err) {
             console.error('Error saving flight:', err);
-            alert('Failed to save flight. Please try again.');
+            handleErrorToast('Failed to save flight. Please try again.');
         }
     };
 
