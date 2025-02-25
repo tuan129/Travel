@@ -500,7 +500,7 @@ function Home() {
                                 </div>
 
                                 {/* Amount customer */}
-                                <div className="left-info">
+                                <div className={cx('left-info')}>
                                     <Menu items={MENU_ITEMS}>
                                         <div className={cx('amount-cus')}>
                                             <p className={cx('name-input')}>Hạng ghế</p>
@@ -520,6 +520,28 @@ function Home() {
                             </Button>
                         </div>
                     </div>
+                </div>
+                <div className={cx('review')}>
+                    <div className={cx('birth-day-travel')}>
+                        <h1>Mừng Sinh Nhật Traveloka, Sale đậm hết ga</h1>
+                        <p>Ưu đãi lên tới 50% cho vé máy bay, khách sạn và vé vui chơi</p>
+                        <img className={cx('birth-day-banner')} src={images.birthdayTravel} alt="#" />
+                        <h1>MÙA SALE HOA ANH ĐÀO</h1>
+                        <p>Coupon giảm đến 1 TRIỆU VNĐ</p>
+                        <img className={cx('birth-day-banner')} src={images.hoaAnhDao} alt="#" />
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <h1>Airline Partners</h1>
+                        <p>Domestic & International Airline Partners</p>
+                        <p>
+                            We are partnering with various airlines across the globe to get you to wherever you need to
+                            be.
+                        </p>
+                    </div>
+                    <div></div>
                 </div>
             </div>
             <ToastContainer />

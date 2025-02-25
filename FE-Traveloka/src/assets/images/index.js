@@ -49,6 +49,8 @@ const images = {
 
     banner: require('~/assets/images/banner.webp'),
 
+    birthdayTravel: require('~/assets/images/birthdayTravel.webp'),
+    hoaAnhDao: require('~/assets/images/hoaAnhDao.webp'),
     easyreschedule: require('~/assets/images/easyreschedule.png'),
     zzz: require('~/assets/images/zzz.png'),
     plane: require('~/assets/images/plane.svg').default,
