@@ -6,6 +6,7 @@
 .content {
     display: flex;
     flex-direction: column;
+    min-height: 70vh;
     width: 100%;
     border: 1px solid var(--black);
     border-radius: 10px;

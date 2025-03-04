@@ -7,7 +7,7 @@ const flightSchema = new mongoose.Schema({
     unique: true,
     match: /^[A-Z]{2}\d{3}$/,
     message:
-      'mã chuyến bay phải bắt đầu 2 chữ cái in hoa, và sau đó là 4 chữ số',
+      'mã chuyến bay phải bắt đầu 2 chữ cái in hoa, và sau đó là 3 chữ số',
   },
   airlines: {
     type: String,
