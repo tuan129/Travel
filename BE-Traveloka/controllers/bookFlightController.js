@@ -54,8 +54,6 @@ class GetBookingsStrategy extends BookingStrategy {
           ],
         });
       const bookings = await query;
-
-      console.log(bookings);
       res.status(200).json({
         status: 'success',
         results: bookings.length,
