@@ -531,18 +531,6 @@ function Home() {
                         <img className={cx('birth-day-banner')} src={images.hoaAnhDao} alt="#" />
                     </div>
                 </div>
-
-                <div>
-                    <div>
-                        <h1>Airline Partners</h1>
-                        <p>Domestic & International Airline Partners</p>
-                        <p>
-                            We are partnering with various airlines across the globe to get you to wherever you need to
-                            be.
-                        </p>
-                    </div>
-                    <div></div>
-                </div>
             </div>
             <ToastContainer />
         </div>
