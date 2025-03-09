@@ -71,7 +71,7 @@ class CreateBookingStrategy extends BookingStrategy {
       const newBooking = await Booking.create(req.body);
       res
         .status(200)
-        .json({ status: 'success', data: { booking: newBooking } });
+        .json({ status: 'success', data: { booking: newBooking } }); 
     } catch (err) {
       res.status(400).json({ status: 'fail', message: err.message });
     }
